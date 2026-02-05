@@ -34,13 +34,12 @@ function getServiceKey() {
 
 async function insertNotice(title: string, body: string, source: string, key: string) {
   const variants: Array<Record<string, string>> = [
-    { title, body, source },
     { title, content: body, source },
-    { titre: title, body, source },
     { titre: title, content: body, source },
     { name: title, text: body, source },
     { title, content: body },
     { titre: title, content: body },
+    { name: title, text: body },
   ];
 
   let lastError = "فشل إضافة الإعلان";
