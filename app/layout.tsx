@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  verification: {
+    google: "andYCQ-6yfVrn-DMes1tZti6qTwYs84zunI_vR3flL8",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
