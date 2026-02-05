@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/providers/Providers";
 import PWARegister from "@/components/providers/PWARegister";
+import InstallAppButton from "@/components/ui/InstallAppButton";
 
 export const metadata: Metadata = {
   title: "UGEM-FEG",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           <PWARegister />
           <Navbar />
+          <InstallAppButton />
           <main className="app-main">{children}</main>
         </Providers>
       </body>
