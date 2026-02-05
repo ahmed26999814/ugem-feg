@@ -28,16 +28,23 @@ function getServiceKey() {
   );
 }
 
+function buildSupabaseHeaders(key: string, withJson = false) {
+  const headers: Record<string, string> = { apikey: key };
+  // New Supabase keys (sb_secret / sb_publishable) are API keys, not JWTs.
+  if (!key.startsWith("sb_")) {
+    headers.Authorization = `Bearer ${key}`;
+  }
+  if (withJson) headers["Content-Type"] = "application/json";
+  return headers;
+}
+
 async function insertNotice(title: string, body: string, source: string, key: string) {
   let inferredType = "news";
   try {
     const probe = await fetch(
       `${SUPABASE_URL}/rest/v1/annonces?select=type&order=created_at.desc.nullslast&limit=1`,
       {
-        headers: {
-          apikey: key,
-          Authorization: `Bearer ${key}`,
-        },
+        headers: buildSupabaseHeaders(key),
         cache: "no-store",
       }
     );
@@ -56,9 +63,7 @@ async function insertNotice(title: string, body: string, source: string, key: st
   const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
     method: "POST",
     headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
+      ...buildSupabaseHeaders(key, true),
       Prefer: "return=representation",
     },
     body: JSON.stringify(payload),
@@ -138,8 +143,7 @@ export async function DELETE(req: Request) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces?id=eq.${encodeURIComponent(id)}`, {
       method: "DELETE",
       headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
+        ...buildSupabaseHeaders(serviceKey),
         Prefer: "return=representation",
       },
     });
