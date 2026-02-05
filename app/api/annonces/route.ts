@@ -29,8 +29,29 @@ function getServiceKey() {
 }
 
 async function insertNotice(title: string, body: string, source: string, key: string) {
+  let inferredType = "news";
+  try {
+    const probe = await fetch(
+      `${SUPABASE_URL}/rest/v1/annonces?select=type&order=created_at.desc.nullslast&limit=1`,
+      {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+        },
+        cache: "no-store",
+      }
+    );
+    if (probe.ok) {
+      const rows = (await probe.json()) as Array<{ type?: unknown }>;
+      const t = rows?.[0]?.type;
+      if (typeof t === "string" && t.trim()) inferredType = t.trim();
+    }
+  } catch {
+    // Keep safe fallback when probe fails.
+  }
+
   const content = source ? `${body}\n\nالمصدر: ${source}` : body;
-  const payload = [{ title, content }];
+  const payload = [{ title, content, type: inferredType }];
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
     method: "POST",
