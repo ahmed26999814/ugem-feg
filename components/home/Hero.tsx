@@ -34,16 +34,6 @@ export default function Hero() {
     [t]
   );
 
-  const quickLinks = useMemo(
-    () => [
-      { href: "/annonces", label: lang === "fr" ? "Annonces" : "الإعلانات" },
-      { href: "/archive", label: lang === "fr" ? "Archives" : "الأرشيف" },
-      { href: "/specialites", label: lang === "fr" ? "Spécialités" : "التخصصات" },
-      { href: "/timetables", label: lang === "fr" ? "Emplois" : "الجداول" },
-    ],
-    [lang]
-  );
-
   const goFromSearch = () => {
     const value = query.trim().toLowerCase();
     if (!value) return;
@@ -116,19 +106,6 @@ export default function Hero() {
           <button type="button" className="hero-search-btn" onClick={goFromSearch}>
             {lang === "fr" ? "Aller" : "اذهب"}
           </button>
-        </motion.div>
-
-        <motion.div className="hero-quick-links" variants={item}>
-          {quickLinks.map((link) => (
-            <button
-              key={link.href}
-              type="button"
-              onClick={() => router.push(link.href)}
-              className="hero-quick-chip"
-            >
-              {link.label}
-            </button>
-          ))}
         </motion.div>
 
         <motion.div className="hero-logo-wrap" variants={item} animate={reduce ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>

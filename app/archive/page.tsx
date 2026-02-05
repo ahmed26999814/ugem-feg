@@ -198,7 +198,7 @@ export default function ArchivePage() {
             </Dialog.Overlay>
             <Dialog.Content asChild>
               <motion.div
-                className="fixed inset-x-3 top-6 z-50 rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-900 md:inset-x-auto md:right-1/2 md:w-[460px] md:translate-x-1/2"
+                className="fixed inset-x-3 top-1/2 z-50 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-900 md:inset-x-auto md:right-1/2 md:w-[460px] md:translate-x-1/2"
                 initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -18 }}
                 animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}

@@ -181,22 +181,6 @@ export default function SpecialitesPage() {
 
         <section className="section-card mt-3">
           <div className="section-content">
-            <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
-              المراجعات وشروحات التخصصات متاحة على قناة تيليجرام:
-            </p>
-            <a
-              href="https://t.me/FEGugem"
-              target="_blank"
-              rel="noreferrer"
-              className="ui-action mt-2 inline-flex rounded-xl bg-sky-600 px-4 py-2 text-sm font-black text-white hover:bg-sky-500"
-            >
-              t.me/FEGugem
-            </a>
-          </div>
-        </section>
-
-        <section className="section-card mt-3">
-          <div className="section-content">
             <div className="relative inline-flex flex-wrap gap-2 rounded-xl bg-slate-100/80 p-1 dark:bg-slate-800/70">
               {levels.map((level) => (
                 <button
