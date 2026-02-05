@@ -80,10 +80,17 @@ export default function SuggestionsPage() {
                   }}
                   className={`suggestion-kind-btn ${kind === "site" ? "is-active is-site" : "is-site"}`}
                 >
-                  <span className="suggestion-kind-art is-site" aria-hidden="true">
-                    <span className="suggestion-person" />
-                    <span className="suggestion-arm" />
-                    <span className="suggestion-bubble">{isFr ? "Idea" : "اقتراح"}</span>
+                  <span className="suggestion-kind-art" aria-hidden="true">
+                    <svg className="suggestion-illustration is-site" viewBox="0 0 120 70" role="presentation">
+                      <circle className="sugg-head" cx="26" cy="20" r="10" />
+                      <rect className="sugg-body" x="16" y="30" width="20" height="24" rx="10" />
+                      <path className="sugg-arm wave" d="M34 36 C46 30, 54 28, 64 28" />
+                      <circle className="sugg-idea" cx="86" cy="18" r="8" />
+                      <rect className="sugg-bubble" x="70" y="28" width="38" height="16" rx="8" />
+                      <text className="sugg-bubble-text" x="89" y="40" textAnchor="middle">
+                        {isFr ? "Idea" : "اقتراح"}
+                      </text>
+                    </svg>
                   </span>
                   <span className="suggestion-kind-text">
                     {isFr ? "Suggestion pour le site" : "اقتراح للموقع"}
@@ -97,11 +104,19 @@ export default function SuggestionsPage() {
                   }}
                   className={`suggestion-kind-btn ${kind === "college" ? "is-active is-college" : "is-college"}`}
                 >
-                  <span className="suggestion-kind-art is-college" aria-hidden="true">
-                    <span className="suggestion-person sad" />
-                    <span className="suggestion-person helper" />
-                    <span className="suggestion-arm help" />
-                    <span className="suggestion-spark" />
+                  <span className="suggestion-kind-art" aria-hidden="true">
+                    <svg className="suggestion-illustration is-college" viewBox="0 0 120 70" role="presentation">
+                      <circle className="sugg-head sad" cx="30" cy="22" r="9" />
+                      <rect className="sugg-body sad" x="20" y="32" width="20" height="22" rx="9" />
+                      <path className="sugg-mouth sad" d="M26 24 Q30 20 34 24" />
+
+                      <circle className="sugg-head helper" cx="78" cy="20" r="9" />
+                      <rect className="sugg-body helper" x="68" y="30" width="22" height="24" rx="10" />
+                      <circle className="sugg-badge" cx="90" cy="36" r="4" />
+                      <path className="sugg-arm help" d="M68 38 C56 36, 48 36, 40 38" />
+
+                      <path className="sugg-heart" d="M96 18 C96 14, 102 14, 102 18 C102 22, 96 24, 96 28 C96 24, 90 22, 90 18 C90 14, 96 14, 96 18 Z" />
+                    </svg>
                   </span>
                   <span className="suggestion-kind-text">
                     {isFr ? "Probleme dans la faculte" : "لدي مشكلة في الكلية"}

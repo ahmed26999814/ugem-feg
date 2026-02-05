@@ -827,9 +827,109 @@ a {
 
 .suggestion-kind-art {
   position: relative;
-  width: 54px;
-  height: 34px;
+  width: 64px;
+  height: 40px;
   flex: 0 0 auto;
+}
+
+.suggestion-illustration {
+  width: 64px;
+  height: 40px;
+  display: block;
+}
+
+.suggestion-illustration .sugg-head,
+.suggestion-illustration .sugg-body {
+  fill: #38bdf8;
+}
+
+.suggestion-illustration.is-site .sugg-head,
+.suggestion-illustration.is-site .sugg-body {
+  fill: #38bdf8;
+}
+
+.suggestion-illustration.is-site .sugg-arm {
+  stroke: #0ea5e9;
+  stroke-width: 5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.suggestion-illustration.is-site .sugg-idea {
+  fill: #facc15;
+  filter: drop-shadow(0 2px 4px rgba(250, 204, 21, 0.4));
+}
+
+.suggestion-illustration.is-site .sugg-bubble {
+  fill: #ffffff;
+  stroke: rgba(14, 165, 233, 0.4);
+  stroke-width: 1.2;
+}
+
+.suggestion-illustration.is-site .sugg-bubble-text {
+  font-size: 9px;
+  font-weight: 800;
+  fill: #0f172a;
+}
+
+.suggestion-illustration.is-college .sugg-head.sad,
+.suggestion-illustration.is-college .sugg-body.sad {
+  fill: #fb923c;
+}
+
+.suggestion-illustration.is-college .sugg-head.helper,
+.suggestion-illustration.is-college .sugg-body.helper {
+  fill: #34d399;
+}
+
+.suggestion-illustration.is-college .sugg-arm.help {
+  stroke: #22c55e;
+  stroke-width: 5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.suggestion-illustration.is-college .sugg-mouth.sad {
+  stroke: #b45309;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.suggestion-illustration.is-college .sugg-badge {
+  fill: #facc15;
+  stroke: rgba(15, 23, 42, 0.2);
+  stroke-width: 1;
+}
+
+.suggestion-illustration.is-college .sugg-heart {
+  fill: #f87171;
+  opacity: 0.9;
+}
+
+.suggestion-illustration .wave {
+  animation: suggestion-wave 1.8s ease-in-out infinite;
+}
+
+.suggestion-illustration.is-college .help {
+  animation: suggestion-help 1.6s ease-in-out infinite;
+}
+
+.suggestion-illustration.is-college .sugg-heart {
+  animation: suggestion-pop 2.2s ease-in-out infinite;
+}
+
+.dark .suggestion-illustration.is-site .sugg-bubble {
+  fill: rgba(15, 23, 42, 0.85);
+  stroke: rgba(148, 163, 184, 0.4);
+}
+
+.dark .suggestion-illustration.is-site .sugg-bubble-text {
+  fill: #e2e8f0;
+}
+
+.dark .suggestion-illustration.is-college .sugg-badge {
+  stroke: rgba(15, 23, 42, 0.4);
 }
 
 .suggestion-kind-text {
@@ -971,7 +1071,10 @@ a {
   .suggestion-kind-art.is-site .suggestion-arm,
   .suggestion-kind-art.is-site .suggestion-bubble,
   .suggestion-kind-art.is-college .suggestion-person.sad,
-  .suggestion-kind-art.is-college .suggestion-arm.help {
+  .suggestion-kind-art.is-college .suggestion-arm.help,
+  .suggestion-illustration .wave,
+  .suggestion-illustration.is-college .help,
+  .suggestion-illustration.is-college .sugg-heart {
     animation: none;
   }
 }
