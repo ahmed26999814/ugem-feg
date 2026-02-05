@@ -44,7 +44,7 @@ export default function Footer() {
             </span>
             <span className="footer-dev-text">
               <small>تطوير وبرمجة</small>
-              <strong>Ahmed Dev Studio</strong>
+              <strong>بواسطة مصطفى بتعاون مع أحمد</strong>
             </span>
             <ArrowUpRight size={15} />
           </motion.button>
