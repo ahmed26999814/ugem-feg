@@ -20,7 +20,12 @@ function isValidAdmin(username: string, password: string) {
 }
 
 function getServiceKey() {
-  return process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return (
+    process.env.SUPABASE_SERVICE_ROLE_KEY ??
+    process.env.SUPABASE_SERVICE_KEY ??
+    process.env.SUPABASE_SECRET_KEY ??
+    process.env.SUPABASE_SERVICE_ROLE
+  );
 }
 
 export async function POST(req: Request) {
@@ -41,9 +46,9 @@ export async function POST(req: Request) {
     }
 
     const serviceKey = getServiceKey();
-    if (!serviceKey) {
+    if (!serviceKey || serviceKey.startsWith("sb_publishable_")) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY غير مضبوط في .env.local" },
+        { error: "Service role key غير مضبوط (SUPABASE_SERVICE_ROLE_KEY)" },
         { status: 500 }
       );
     }
@@ -90,9 +95,9 @@ export async function DELETE(req: Request) {
     }
 
     const serviceKey = getServiceKey();
-    if (!serviceKey) {
+    if (!serviceKey || serviceKey.startsWith("sb_publishable_")) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY غير مضبوط في .env.local" },
+        { error: "Service role key غير مضبوط (SUPABASE_SERVICE_ROLE_KEY)" },
         { status: 500 }
       );
     }

@@ -5,7 +5,7 @@ export const UGEM_CONTACTS = {
   facebook: "https://www.facebook.com/UGEMFEG",
   mediaPhone: "+22231682774",
   presidentPhone: "+22248539265",
-  whatsapp: "+22248539265",
+  whatsapp: "+22231682774",
 };
 
 export const WHATSAPP_GROUPS = [
