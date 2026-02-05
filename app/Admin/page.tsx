@@ -66,7 +66,7 @@ export default function AdminAnnoncesPage() {
     setLoading(true);
     setMsg(null);
 
-    const res = await fetch("/api/annonces", {
+    const res = await fetch("/api/annonces-v2", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password, title, body, source }),
@@ -89,7 +89,7 @@ export default function AdminAnnoncesPage() {
 
   const removeNotice = async (id: string) => {
     setLoading(true);
-    const res = await fetch("/api/annonces", {
+    const res = await fetch("/api/annonces-v2", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password, id }),
