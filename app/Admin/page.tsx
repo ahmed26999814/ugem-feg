@@ -113,7 +113,7 @@ export default function AdminAnnoncesPage() {
         <section className="section-card">
           <h1 className="text-3xl font-black">Admin - الإعلانات</h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            هذه الصفحة مخصصة للإدارة فقط عبر المسار /Admin.
+            هذه الصفحة مخصصة للإدارة فقط عبر المسار /Admin (أو /admin).
           </p>
 
           {!authed ? (
