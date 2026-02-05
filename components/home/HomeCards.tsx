@@ -17,6 +17,7 @@ import {
 
 type CardItem = {
   titleKey: string;
+  desc: { ar: string; fr: string };
   href: string;
   icon?: LucideIcon;
   logo?: boolean;
@@ -24,18 +25,18 @@ type CardItem = {
 };
 
 const cards: CardItem[] = [
-  { titleKey: "nav.home", href: "/", icon: House, gradient: "from-indigo-600 to-blue-500" },
-  { titleKey: "nav.annonces", href: "/annonces", icon: BellRing, gradient: "from-purple-600 to-fuchsia-500" },
-  { titleKey: "nav.archive", href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
-  { titleKey: "nav.reviews", href: "/reviews", icon: Star, gradient: "from-violet-700 to-indigo-500" },
-  { titleKey: "nav.feg", href: "/feg", icon: Landmark, gradient: "from-pink-700 to-rose-500" },
-  { titleKey: "nav.ugem", href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
-  { titleKey: "nav.groups", href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
-  { titleKey: "nav.specialites", href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
+  { titleKey: "nav.home", desc: { ar: "الواجهة الرئيسية", fr: "Page principale" }, href: "/", icon: House, gradient: "from-indigo-600 to-blue-500" },
+  { titleKey: "nav.annonces", desc: { ar: "آخر الأخبار الرسمية", fr: "Actualités officielles" }, href: "/annonces", icon: BellRing, gradient: "from-purple-600 to-fuchsia-500" },
+  { titleKey: "nav.archive", desc: { ar: "ملفات ومحاضرات PDF", fr: "Fichiers et supports PDF" }, href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
+  { titleKey: "nav.reviews", desc: { ar: "ملخصات وشروحات", fr: "Résumés et explications" }, href: "/reviews", icon: Star, gradient: "from-violet-700 to-indigo-500" },
+  { titleKey: "nav.feg", desc: { ar: "معلومات عن الكلية", fr: "Infos sur la faculté" }, href: "/feg", icon: Landmark, gradient: "from-pink-700 to-rose-500" },
+  { titleKey: "nav.ugem", desc: { ar: "عن قسم الاتحاد", fr: "Section UGEM" }, href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
+  { titleKey: "nav.groups", desc: { ar: "روابط المجموعات", fr: "Liens des groupes" }, href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
+  { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
 ];
 
 export default function HomeCards() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
 
@@ -115,6 +116,7 @@ export default function HomeCards() {
                     )}
                   </motion.div>
                   <h3 className="home-card-title">{t(card.titleKey)}</h3>
+                  <p className="home-card-subtitle">{lang === "fr" ? card.desc.fr : card.desc.ar}</p>
 
                   {ripples
                     .filter((r) => r.key === key)

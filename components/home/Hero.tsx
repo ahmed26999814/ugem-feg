@@ -3,13 +3,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Search, GraduationCap } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 
 export default function Hero() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const router = useRouter();
   const reduce = useReducedMotion();
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(40);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
@@ -30,6 +33,44 @@ export default function Hero() {
     () => t("hero.title").split(" "),
     [t]
   );
+
+  const quickLinks = useMemo(
+    () => [
+      { href: "/annonces", label: lang === "fr" ? "Annonces" : "الإعلانات" },
+      { href: "/archive", label: lang === "fr" ? "Archives" : "الأرشيف" },
+      { href: "/specialites", label: lang === "fr" ? "Spécialités" : "التخصصات" },
+      { href: "/timetables", label: lang === "fr" ? "Emplois" : "الجداول" },
+    ],
+    [lang]
+  );
+
+  const goFromSearch = () => {
+    const value = query.trim().toLowerCase();
+    if (!value) return;
+
+    if (value.includes("اعلان") || value.includes("annonce")) {
+      router.push("/annonces");
+      return;
+    }
+    if (value.includes("ارشيف") || value.includes("archive")) {
+      router.push("/archive");
+      return;
+    }
+    if (value.includes("تخصص") || value.includes("special")) {
+      router.push("/specialites");
+      return;
+    }
+    if (value.includes("جدول") || value.includes("emploi")) {
+      router.push("/timetables");
+      return;
+    }
+    if (value.includes("مراجعة") || value.includes("revision")) {
+      router.push("/reviews");
+      return;
+    }
+
+    router.push("/annonces");
+  };
 
   const container = {
     hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
@@ -62,7 +103,32 @@ export default function Hero() {
       <motion.div className="hero-inner" variants={container} initial="hidden" animate="show">
         <motion.div className="hero-search" variants={item}>
           <Search size={18} className="text-slate-500" />
-          <input type="text" placeholder={t("hero.search")} className="hero-search-input" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") goFromSearch();
+            }}
+            placeholder={t("hero.search")}
+            className="hero-search-input"
+          />
+          <button type="button" className="hero-search-btn" onClick={goFromSearch}>
+            {lang === "fr" ? "Aller" : "اذهب"}
+          </button>
+        </motion.div>
+
+        <motion.div className="hero-quick-links" variants={item}>
+          {quickLinks.map((link) => (
+            <button
+              key={link.href}
+              type="button"
+              onClick={() => router.push(link.href)}
+              className="hero-quick-chip"
+            >
+              {link.label}
+            </button>
+          ))}
         </motion.div>
 
         <motion.div className="hero-logo-wrap" variants={item} animate={reduce ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>

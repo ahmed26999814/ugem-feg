@@ -571,16 +571,23 @@ a {
 .hero-search {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid rgba(15, 23, 42, 0.14);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 999px;
-  padding: 10px 12px;
+  padding: 8px 10px 8px 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.hero-search:focus-within {
+  border-color: rgba(14, 165, 233, 0.55);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
 }
 
 .dark .hero-search {
-  border-color: rgba(148, 163, 184, 0.35);
-  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(148, 163, 184, 0.44);
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
 }
 
 .hero-search-input {
@@ -589,10 +596,57 @@ a {
   background: transparent;
   width: 100%;
   font-size: 14px;
+  color: #0f172a;
 }
 
 .dark .hero-search-input {
   color: #e5e7eb;
+}
+
+.hero-search-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.hero-search-btn:hover {
+  filter: brightness(1.05);
+}
+
+.hero-quick-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-quick-chip {
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  background: rgba(255, 255, 255, 0.78);
+  color: #334155;
+  border-radius: 999px;
+  padding: 6px 11px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+
+.hero-quick-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(14, 165, 233, 0.5);
+}
+
+.dark .hero-quick-chip {
+  border-color: rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.65);
+  color: #cbd5e1;
 }
 
 .hero-logo-wrap {
@@ -703,17 +757,17 @@ a {
 .home-card {
   position: relative;
   overflow: hidden;
-  min-height: 150px;
+  min-height: 162px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
   color: #fff;
-  padding: 14px;
+  padding: 14px 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  transition: box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
 }
 
 .home-card:hover {
@@ -728,9 +782,18 @@ a {
 }
 
 .home-card-title {
-  margin: 0;
+  margin: 4px 0 0;
   font-size: 1.06rem;
   font-weight: 900;
+  text-align: center;
+}
+
+.home-card-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.77rem;
+  font-weight: 700;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .ripple {
@@ -982,11 +1045,16 @@ a {
   }
 
   .hero-search {
-    padding: 9px 10px;
+    padding: 8px 9px;
   }
 
   .hero-search-input {
     font-size: 13px;
+  }
+
+  .hero-search-btn {
+    padding: 7px 10px;
+    font-size: 11px;
   }
 
   .cards-grid {
@@ -995,14 +1063,18 @@ a {
   }
 
   .home-card {
-    min-height: 132px;
+    min-height: 144px;
     border-radius: 16px;
-    padding: 12px;
+    padding: 11px;
   }
 
   .home-card-title {
     font-size: 0.95rem;
     text-align: center;
+  }
+
+  .home-card-subtitle {
+    font-size: 0.69rem;
   }
 
   .main-footer {
