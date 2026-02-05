@@ -886,16 +886,17 @@ a {
   stroke-width: 1.2;
 }
 
-.suggestion-illustration .sugg-accent {
-  animation: suggestion-pop 2.2s ease-in-out infinite;
+.suggestion-illustration .sugg-badge-ring {
+  fill: none;
+  stroke: #facc15;
+  stroke-width: 1.5;
 }
 
-.suggestion-illustration .wave {
-  animation: suggestion-wave 1.8s ease-in-out infinite;
-}
-
-.suggestion-illustration .help {
-  animation: suggestion-help 1.6s ease-in-out infinite;
+.suggestion-illustration .sugg-moustache {
+  stroke: #0f172a;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
 }
 
 .dark .suggestion-illustration.is-site {
@@ -908,6 +909,10 @@ a {
 
 .dark .suggestion-illustration .sugg-badge {
   stroke: rgba(15, 23, 42, 0.45);
+}
+
+.dark .suggestion-illustration .sugg-moustache {
+  stroke: #0f172a;
 }
 
 .suggestion-kind-text {
@@ -1050,9 +1055,6 @@ a {
   .suggestion-kind-art.is-site .suggestion-bubble,
   .suggestion-kind-art.is-college .suggestion-person.sad,
   .suggestion-kind-art.is-college .suggestion-arm.help,
-  .suggestion-illustration .wave,
-  .suggestion-illustration.is-college .help,
-  .suggestion-illustration .sugg-accent,
   .suggestion-illustration .sugg-line {
     animation: none;
   }

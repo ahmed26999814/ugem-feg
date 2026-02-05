@@ -84,7 +84,7 @@ export default function SuggestionsPage() {
                     <svg className="suggestion-illustration is-site" viewBox="0 0 120 70" role="presentation">
                       <circle className="sugg-fill" cx="24" cy="18" r="9" />
                       <path className="sugg-fill" d="M14 30 C14 24, 34 24, 34 30 V50 C34 56, 14 56, 14 50 Z" />
-                      <path className="sugg-line wave" d="M34 34 C46 30, 54 30, 64 34" />
+                      <path className="sugg-line" d="M34 34 C46 30, 54 30, 64 34" />
                       <rect className="sugg-line" x="58" y="32" width="32" height="20" rx="4" />
                       <line className="sugg-line" x1="58" y1="46" x2="90" y2="46" />
                       <circle className="sugg-accent" cx="96" cy="18" r="7" />
@@ -113,9 +113,24 @@ export default function SuggestionsPage() {
 
                       <circle className="sugg-fill helper" cx="84" cy="18" r="8" />
                       <path className="sugg-fill helper" d="M74 28 C74 22, 96 22, 96 28 V50 C96 56, 74 56, 74 50 Z" />
-                      <path className="sugg-line help" d="M74 36 C62 34, 54 34, 44 36" />
+                      <path className="sugg-line" d="M74 36 C62 34, 54 34, 44 36" />
                       <path className="sugg-badge" d="M96 34 L102 36 L100 42 L96 44 L92 42 L90 36 Z" />
-                      <path className="sugg-accent" d="M104 12 C104 8, 110 8, 110 12 C110 16, 104 18, 104 22 C104 18, 98 16, 98 12 C98 8, 104 8, 104 12 Z" />
+                      <path className="sugg-moustache" d="M80 18 C82 20, 86 20, 88 18" />
+                      <defs>
+                        <clipPath id="ugem-badge-clip">
+                          <circle cx="104" cy="14" r="7" />
+                        </clipPath>
+                      </defs>
+                      <circle className="sugg-badge-ring" cx="104" cy="14" r="7.5" />
+                      <image
+                        href="/ugem-logo.jpg"
+                        x="97"
+                        y="7"
+                        width="14"
+                        height="14"
+                        clipPath="url(#ugem-badge-clip)"
+                        preserveAspectRatio="xMidYMid slice"
+                      />
                     </svg>
                   </span>
                   <span className="suggestion-kind-text">
