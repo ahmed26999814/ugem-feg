@@ -137,7 +137,7 @@ export default function Hero() {
             href="https://tinyurl.com/5fcndzzt"
             target="_blank"
             rel="noreferrer"
-            className="btn-shimmer btn-dark"
+            className="btn-shimmer btn-dark btn-results-highlight"
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 330, damping: 18 }}

@@ -760,6 +760,21 @@ a {
   color: #fff;
 }
 
+.btn-results-highlight {
+  border: 2px solid #facc15;
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.22), 0 10px 24px rgba(15, 23, 42, 0.26);
+}
+
+.btn-results-highlight:hover {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.24), 0 14px 28px rgba(15, 23, 42, 0.3);
+}
+
+.dark .btn-results-highlight {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.28), 0 12px 24px rgba(2, 6, 23, 0.4);
+}
+
 .cards-shell {
   padding: 8px 0 20px;
 }
