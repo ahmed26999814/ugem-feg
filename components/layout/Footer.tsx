@@ -108,6 +108,14 @@ export default function Footer() {
           </AnimatePresence>
         </motion.div>
       </div>
+      <div className="footer-collage">
+        <img
+          src="/publicugem-collage.jpg"
+          alt="لقطات من أنشطة الاتحاد العام للطلاب الموريتانيين"
+          className="footer-collage-img"
+          loading="lazy"
+        />
+      </div>
     </footer>
   );
 }
