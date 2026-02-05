@@ -73,6 +73,24 @@ const SPECIALITES: Specialite[] = [
   {
     code: "FC",
     name: "Finance et Comptabilite",
+    level: "L2",
+    semesters: [
+      { id: "S3", title: "Semestre 3 (S3)", subjects: ["Strategie d'entreprise", "Comptabilite des societes 1", "Systeme financier mauritanien", "Entreprise et Banques", "Marketing", "Logiciels comptables", "Anglais des affaires", "Droit administratif", "Droit commercial", "Methodes d'aide a la decision"] },
+      { id: "S4", title: "Semestre 4 (S4)", subjects: ["Comptabilite des societes 2", "Comptabilite analytique", "Analyse financiere", "Finance islamique", "Gestion de portefeuilles", "Finance des marches", "Fiscalite", "Instruments de credit", "Droit du travail", "Gestion des Ressources Humaines"] },
+    ],
+  },
+  {
+    code: "BA",
+    name: "Banque et Assurance",
+    level: "L2",
+    semesters: [
+      { id: "S3", title: "Semestre 3 (S3)", subjects: ["Comptabilite de societes", "Anglais des affaires", "Droit administratif", "Marketing", "Droit commercial", "Entreprise et Banque", "Systeme financier mauritanien", "Methodes d'aide a la decision", "Strategie d'entreprise", "Logiciels comptables"] },
+      { id: "S4", title: "Semestre 4 (S4)", subjects: ["Comptabilite bancaire 3", "Assurance des biens et personnes 4", "Technique bancaire 3", "Finance islamique 2", "Finance des marches 4", "Analyse financiere 4", "Commerce international 2", "Droit des assurances 4", "Logiciel bancaire 2", "Gestion des ressources humaines 2"] },
+    ],
+  },
+  {
+    code: "FC",
+    name: "Finance et Comptabilite",
     level: "L3",
     semesters: [
       { id: "S5", title: "Semestre 5 (S5)", subjects: ["Gestion de tresorerie", "Controle de gestion", "Analyse financiere approfondie", "Methode d'evaluation d'entreprise", "Marches financiers", "Audit financier", "Normes comptables internationales", "Choix d'investissement", "Droit bancaire et financier", "Initiation au milieu professionnel"] },
