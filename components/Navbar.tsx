@@ -12,6 +12,7 @@ const navItems = [
   { href: "/", ar: "الرئيسية", fr: "Accueil" },
   { href: "/annonces", ar: "الإعلانات", fr: "Annonces" },
   { href: "/archive", ar: "الأرشيف", fr: "Archives" },
+  { href: "/reviews", ar: "المراجعات", fr: "Avis" },
   { href: "/specialites", ar: "التخصصات", fr: "Spécialités" },
   { href: "/groupes", ar: "المجموعات", fr: "Groupes" },
   { href: "/timetables", ar: "الجداول", fr: "Emplois" },
