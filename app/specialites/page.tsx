@@ -84,8 +84,8 @@ const SPECIALITES: Specialite[] = [
     name: "Banque et Assurance",
     level: "L3",
     semesters: [
-      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Produits bancaires", "Gestion des risques", "Techniques d'assurance", "Analyse de credit", "Reglementation financiere"] },
-      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Marches financiers", "Assurance avancee", "Conformite bancaire", "Projet BA", "Stage de specialisation"] },
+      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Gestion portefeuille", "Comptabilite bancaire 2", "Gestion des risques", "Finance islamique 2", "Analyse financiere approfondie", "Gestion de patrimoine", "Fiscalite", "Choix d'investissement", "Droit bancaire et financier", "Initiation au milieu professionnel"] },
+      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Project"] },
     ],
   },
   {
