@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useLang } from "@/lib/i18n";
 import {
   House,
   BellRing,
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 
 type CardItem = {
-  title: string;
+  titleKey: string;
   href: string;
   icon?: LucideIcon;
   logo?: boolean;
@@ -23,17 +24,18 @@ type CardItem = {
 };
 
 const cards: CardItem[] = [
-  { title: "الرئيسية", href: "/", icon: House, gradient: "from-indigo-600 to-blue-500" },
-  { title: "الإعلانات", href: "/annonces", icon: BellRing, gradient: "from-purple-600 to-fuchsia-500" },
-  { title: "الأرشيف", href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
-  { title: "المراجعات", href: "/reviews", icon: Star, gradient: "from-violet-700 to-indigo-500" },
-  { title: "عن الكلية", href: "/feg", icon: Landmark, gradient: "from-pink-700 to-rose-500" },
-  { title: "عن الاتحاد", href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
-  { title: "المجموعات", href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
-  { title: "التخصصات", href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
+  { titleKey: "nav.home", href: "/", icon: House, gradient: "from-indigo-600 to-blue-500" },
+  { titleKey: "nav.annonces", href: "/annonces", icon: BellRing, gradient: "from-purple-600 to-fuchsia-500" },
+  { titleKey: "nav.archive", href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
+  { titleKey: "nav.reviews", href: "/reviews", icon: Star, gradient: "from-violet-700 to-indigo-500" },
+  { titleKey: "nav.feg", href: "/feg", icon: Landmark, gradient: "from-pink-700 to-rose-500" },
+  { titleKey: "nav.ugem", href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
+  { titleKey: "nav.groups", href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
+  { titleKey: "nav.specialites", href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
 ];
 
 export default function HomeCards() {
+  const { t } = useLang();
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
 
@@ -112,7 +114,7 @@ export default function HomeCards() {
                       Icon && <Icon size={46} className="text-white" />
                     )}
                   </motion.div>
-                  <h3 className="home-card-title">{card.title}</h3>
+                  <h3 className="home-card-title">{t(card.titleKey)}</h3>
 
                   {ripples
                     .filter((r) => r.key === key)

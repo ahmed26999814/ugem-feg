@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Search, GraduationCap } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 
 export default function Hero() {
+  const { t } = useLang();
   const reduce = useReducedMotion();
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(40);
@@ -25,8 +27,8 @@ export default function Hero() {
   }, [reduce]);
 
   const words = useMemo(
-    () => "مرحباً بكم في الموقع الرسمي لقسم الاتحاد العام للطلاب الموريتانيين".split(" "),
-    []
+    () => t("hero.title").split(" "),
+    [t]
   );
 
   const container = {
@@ -60,7 +62,7 @@ export default function Hero() {
       <motion.div className="hero-inner" variants={container} initial="hidden" animate="show">
         <motion.div className="hero-search" variants={item}>
           <Search size={18} className="text-slate-500" />
-          <input type="text" placeholder="ابحث هنا... (الأرشيف، الإعلانات، التخصصات...)" className="hero-search-input" />
+          <input type="text" placeholder={t("hero.search")} className="hero-search-input" />
         </motion.div>
 
         <motion.div className="hero-logo-wrap" variants={item} animate={reduce ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
@@ -81,10 +83,10 @@ export default function Hero() {
           ))}
         </motion.h1>
 
-        <motion.p className="hero-gold" variants={item}>كلية الاقتصاد والتسيير</motion.p>
+        <motion.p className="hero-gold" variants={item}>{t("hero.fac")}</motion.p>
 
         <motion.p className="hero-desc" variants={item}>
-          منصة متكاملة وحديثة تساعد الطلبة على الوصول السريع إلى كل الأقسام الرسمية والمعلومات الموثوقة.
+          {t("hero.desc")}
         </motion.p>
 
         <motion.div className="hero-actions" variants={item}>
@@ -98,7 +100,7 @@ export default function Hero() {
             transition={{ type: "spring", stiffness: 330, damping: 18 }}
           >
             <GraduationCap size={18} />
-            <span>نتائج الامتحانات</span>
+            <span>{t("nav.results")}</span>
           </motion.a>
         </motion.div>
       </motion.div>
