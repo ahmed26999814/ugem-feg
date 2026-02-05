@@ -50,6 +50,30 @@ a {
   text-decoration: none;
 }
 
+.brand-motion {
+  display: inline-block;
+  animation: brand-slide 6s ease-in-out infinite;
+}
+
+@keyframes brand-slide {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-motion {
+    animation: none;
+  }
+}
+
 .app-main {
   padding-top: 146px;
 }

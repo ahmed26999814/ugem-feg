@@ -44,7 +44,7 @@ export default function Navbar() {
                 alt="UGEM"
                 className="h-9 w-9 shrink-0 rounded-full border border-white object-cover shadow-sm sm:h-10 sm:w-10"
               />
-              <span className="min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5">
+              <span className="brand-motion min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5">
                 {lang === "fr" ? "UGEM - Faculté d'Économie et de Gestion" : "الاتحاد العام كلية الاقتصاد والتسيير"}
               </span>
             </Link>
