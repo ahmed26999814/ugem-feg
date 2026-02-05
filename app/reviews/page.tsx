@@ -21,8 +21,9 @@ const DATA: Record<Level, ReviewItem[]> = {
     { title: "FC L2", url: "https://t.me/ugemfcl2" },
   ],
   L3: [
-    { title: "GRH L3", url: "https://t.me/ugemGRHL2" },
-    { title: "FC BA GR L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
+    { title: "FC L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
+    { title: "BA L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
+    { title: "GRH L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
   ],
 };
 
