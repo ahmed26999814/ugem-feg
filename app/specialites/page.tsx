@@ -66,8 +66,8 @@ const SPECIALITES: Specialite[] = [
     name: "Finance et Comptabilite",
     level: "L3",
     semesters: [
-      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Comptabilite approfondie", "Gestion financiere avancee", "Audit comptable", "Fiscalite", "Controle de gestion"] },
-      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Normes comptables", "Analyse financiere", "Cas pratiques FC", "Projet de fin d'etudes", "Stage d'application"] },
+      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Gestion de tresorerie", "Controle de gestion", "Analyse financiere approfondie", "Methode d'evaluation d'entreprise", "Marches financiers", "Audit financier", "Normes comptables internationales", "Choix d'investissement", "Droit bancaire et financier", "Initiation au milieu professionnel"] },
+      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Project"] },
     ],
   },
   {
@@ -75,8 +75,8 @@ const SPECIALITES: Specialite[] = [
     name: "Gestion des Ressources Humaines",
     level: "L3",
     semesters: [
-      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Recrutement et selection", "Gestion des carrieres", "Evaluation des performances", "Droit social applique", "Communication organisationnelle"] },
-      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Management des equipes", "Formation et developpement", "Systemes d'information RH", "Projet RH", "Stage professionnel"] },
+      { id: "S5", title: "Semestre 5 (S5)", subjects: ["Source de motivation du personnel", "Politique de remuneration", "Audit des ressources humaines", "Droit penal general", "Communication interne 2", "Sociologie des organisations", "Outils de pilotage RH", "Dialogue et climat social", "Gestion des connaissances", "Initiation au milieu professionnel"] },
+      { id: "S6", title: "Semestre 6 (S6)", subjects: ["Project"] },
     ],
   },
   {
