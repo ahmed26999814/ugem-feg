@@ -1,59 +1,37 @@
-﻿"use client";
+"use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { BookOpenCheck, Sparkles } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
+type Level = "L1" | "L2" | "L3";
+type ReviewItem = { title: string; url: string };
+
+const DATA: Record<Level, ReviewItem[]> = {
+  L1: [
+    { title: "Economie Gestion L1", url: "https://t.me/+0rEDprzjZkdjODA0" },
+    { title: "BA L1", url: "https://t.me/+Q_d3bdj-g1AwY2Rk" },
+    { title: "GRH L1", url: "https://t.me/+SWVO4EruRS1mNzlk" },
+    { title: "FC L1", url: "https://t.me/+bVPo2uhb641kOThk" },
+  ],
+  L2: [
+    { title: "Economie Gestion L2", url: "https://t.me/+-jvODv5Ry4Y4NjFk" },
+    { title: "BA L2", url: "https://t.me/+4cL2aX9KUuk5OGI0" },
+    { title: "GRH L2", url: "https://t.me/+hEwCz983LaszZDM8" },
+    { title: "FC L2", url: "https://t.me/+NyRPP3om2Pc1NWE8" },
+  ],
+  L3: [
+    { title: "FC BA GRH L3", url: "https://t.me/+03kJd70YnvgyM2Zk" },
+  ],
+};
+
+const LEVELS: Level[] = ["L1", "L2", "L3"];
+
 export default function ReviewsPage() {
   const { lang } = useLang();
   const isFr = lang === "fr";
-  const reviewLinks = [
-    {
-      ar: "Economie Gestion L2",
-      fr: "Economie Gestion L2",
-      url: "https://t.me/+-jvODv5Ry4Y4NjFk",
-    },
-    {
-      ar: "BA L2",
-      fr: "BA L2",
-      url: "https://t.me/+4cL2aX9KUuk5OGI0",
-    },
-    {
-      ar: "GRH L2",
-      fr: "GRH L2",
-      url: "https://t.me/+hEwCz983LaszZDM8",
-    },
-    {
-      ar: "FC L2",
-      fr: "FC L2",
-      url: "https://t.me/+NyRPP3om2Pc1NWE8",
-    },
-    {
-      ar: "BA L1",
-      fr: "BA L1",
-      url: "https://t.me/+Q_d3bdj-g1AwY2Rk",
-    },
-    {
-      ar: "GRH L1",
-      fr: "GRH L1",
-      url: "https://t.me/+SWVO4EruRS1mNzlk",
-    },
-    {
-      ar: "FC L1",
-      fr: "FC L1",
-      url: "https://t.me/+bVPo2uhb641kOThk",
-    },
-    {
-      ar: "Economie Gestion L1",
-      fr: "Economie Gestion L1",
-      url: "https://t.me/+0rEDprzjZkdjODA0",
-    },
-    {
-      ar: "FC BA GRH L3",
-      fr: "FC BA GRH L3",
-      url: "https://t.me/+03kJd70YnvgyM2Zk",
-    },
-  ];
+  const [level, setLevel] = useState<Level | null>(null);
 
   return (
     <div className="page-shell">
@@ -69,35 +47,68 @@ export default function ReviewsPage() {
               <BookOpenCheck size={18} />
             </span>
             <h1 className="mt-3 text-2xl font-black md:text-3xl">
-              {isFr ? "Revisions" : "المراجعات"}
+              {isFr ? "Revisions" : "?????????"}
             </h1>
             <p className="ui-muted mt-3">
               {isFr
-                ? "Section dediee aux revues et ressources de revision pour chaque niveau."
-                : "قسم مخصص للمراجعات ومصادر المراجعة المفيدة لكل مستوى."}
+                ? "Acces organise par niveau pour retrouver rapidement les revisions."
+                : "???? ???? ??? ??????? ??? ??? ????????? ?????."}
             </p>
-
-            <div className="mt-4 grid gap-2 md:grid-cols-2">
-              {reviewLinks.map((item) => (
-                <a
-                  key={item.url}
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ui-action inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-slate-800 hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                >
-                  <span className="inline-flex items-center gap-2">
-                    <Sparkles size={15} className="text-yellow-600 dark:text-yellow-300" />
-                    {isFr ? item.fr : item.ar}
-                  </span>
-                  <span className="text-xs font-black text-slate-500 dark:text-slate-300">
-                    {isFr ? "Telegram" : "تيليجرام"}
-                  </span>
-                </a>
-              ))}
-            </div>
           </div>
         </motion.section>
+
+        <section className="section-card mt-3 app-phone-panel">
+          <div className="section-content">
+            <p className="mb-2 text-sm font-bold">
+              {isFr ? "1. Choisissez le niveau" : "1. ???? ????? ????????"}
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {LEVELS.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setLevel(item)}
+                  className={`ui-action rounded-xl border px-3 py-2 text-sm font-black ${
+                    level === item
+                      ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-400/50 dark:bg-emerald-500/25 dark:text-emerald-100"
+                      : "border-slate-200 bg-white text-slate-900 hover:border-emerald-300 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-emerald-500/40"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            <p className="mb-2 mt-4 text-sm font-bold">
+              {isFr ? "2. Choisissez la filiere" : "2. ???? ??????"}
+            </p>
+            {level ? (
+              <div className="grid gap-2 md:grid-cols-2">
+                {DATA[level].map((item) => (
+                  <a
+                    key={item.url}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ui-action inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-slate-800 hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <Sparkles size={15} className="text-yellow-600 dark:text-yellow-300" />
+                      {item.title}
+                    </span>
+                    <span className="text-xs font-black text-slate-500 dark:text-slate-300">
+                      {isFr ? "Telegram" : "????????"}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p className="ui-muted rounded-xl border border-dashed border-slate-300 px-3 py-2 text-sm dark:border-slate-700">
+                {isFr ? "Selectionnez un niveau pour afficher les liens." : "???? ????? ???? ???? ???????."}
+              </p>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
