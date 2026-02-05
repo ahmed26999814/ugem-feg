@@ -78,24 +78,14 @@ export default function Footer() {
                 </div>
 
                 <p className="footer-dev-lab-copy">يتم الآن بناء واجهة احترافية بعناية.</p>
-                <div className="footer-dev-lab-links">
-                  <a
-                    className="footer-dev-lab-link"
-                    href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    واتساب المطور
-                  </a>
-                  <a
-                    className="footer-dev-lab-link"
-                    href={`https://wa.me/${UGEM_CONTACTS.mediaPhone.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    واتساب مسؤول الإعلام
-                  </a>
-                </div>
+                <a
+                  className="footer-dev-lab-link"
+                  href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  واتساب المطور
+                </a>
               </motion.div>
             ) : null}
           </AnimatePresence>
@@ -108,13 +98,11 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.45, delay: 0.08 }}
         >
-          <a href={unionWhatsapp} target="_blank" rel="noreferrer" className="footer-chip">
-            <MessageCircle size={16} />
-            <span>واتساب الاتحاد</span>
+          <a href={unionWhatsapp} target="_blank" rel="noreferrer" className="footer-chip" aria-label="واتساب الاتحاد" title="واتساب الاتحاد">
+            <MessageCircle size={17} />
           </a>
-          <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip">
-            <Facebook size={16} />
-            <span>فيسبوك الاتحاد</span>
+          <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip" aria-label="فيسبوك الاتحاد" title="فيسبوك الاتحاد">
+            <Facebook size={17} />
           </a>
         </motion.div>
       </div>
