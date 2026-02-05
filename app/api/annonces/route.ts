@@ -140,17 +140,30 @@ export async function DELETE(req: Request) {
       );
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces?id=eq.${encodeURIComponent(id)}`, {
-      method: "DELETE",
-      headers: {
-        ...buildSupabaseHeaders(serviceKey),
-        Prefer: "return=representation",
-      },
-    });
+    const columns = ["id", "Primary", "primary", "uuid", "uid"];
+    let deleted = false;
+    let lastError = "فشل حذف الإعلان";
 
-    if (!res.ok) {
+    for (const col of columns) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces?${col}=eq.${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          ...buildSupabaseHeaders(serviceKey),
+          Prefer: "return=representation",
+        },
+      });
+
+      if (res.ok) {
+        deleted = true;
+        break;
+      }
+
       const text = await res.text();
-      return NextResponse.json({ error: text || "فشل حذف الإعلان" }, { status: 500 });
+      lastError = text || lastError;
+    }
+
+    if (!deleted) {
+      return NextResponse.json({ error: lastError }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true });

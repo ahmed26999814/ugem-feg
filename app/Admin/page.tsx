@@ -10,6 +10,31 @@ type Notice = {
   source?: string;
   created_at?: string;
 };
+type Row = Record<string, unknown>;
+
+function toText(value: unknown, fallback = ""): string {
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return String(value);
+  return fallback;
+}
+
+function normalizeRow(row: Row, index: number): Notice {
+  const id =
+    toText(row.id) ||
+    toText(row.Primary) ||
+    toText(row.primary) ||
+    toText(row.uuid) ||
+    toText(row.uid) ||
+    `row-${index}`;
+
+  return {
+    id,
+    title: toText(row.title) || toText(row.titre) || toText(row.name) || "إعلان",
+    body: toText(row.body) || toText(row.content) || toText(row.text) || "",
+    source: toText(row.source) || undefined,
+    created_at: toText(row.created_at) || undefined,
+  };
+}
 
 const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
@@ -39,8 +64,8 @@ export default function AdminAnnoncesPage() {
       cache: "no-store",
     });
     if (!res.ok) return;
-    const data = (await res.json()) as Notice[];
-    setItems(Array.isArray(data) ? data : []);
+    const data = (await res.json()) as Row[];
+    setItems((Array.isArray(data) ? data : []).map(normalizeRow));
   };
 
   useEffect(() => {
