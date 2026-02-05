@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MessageCircle, Facebook, Code2, Sparkles } from "lucide-react";
-import { UGEM_CONTACTS } from "@/lib/prefs";
+import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 
 export default function Footer() {
   const unionWhatsapp = `https://wa.me/${UGEM_CONTACTS.whatsapp.replace(/\D/g, "")}`;
@@ -31,7 +31,7 @@ export default function Footer() {
           </p>
           <motion.a
             className="footer-dev-btn"
-            href="https://wa.me/22231682774"
+            href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
             target="_blank"
             rel="noreferrer"
             whileHover={{ y: -2, scale: 1.02 }}
