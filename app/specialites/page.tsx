@@ -62,6 +62,15 @@ const SPECIALITES: Specialite[] = [
     ],
   },
   {
+    code: "GRH",
+    name: "Gestion des Ressources Humaines",
+    level: "L2",
+    semesters: [
+      { id: "S3", title: "Semestre 3 (S3)", subjects: ["GEPEC", "Recrutement", "Evaluation de competence", "Gestion financiere 2", "Analyse financiere", "Droit du travail 2", "Hygiene et securite de travail", "Logiciel paie", "Anglais des affaires", "Redaction administrative"] },
+      { id: "S4", title: "Semestre 4 (S4)", subjects: ["Bilan social", "Plan et ingenierie de formation", "Securite sociale", "Economie du travail", "Leadership et habiletes de direction", "Sociologie du travail", "Droit du travail 3", "Droit administratif", "Redaction administrative 2", "Communication interne 1", "Systeme d'information RH"] },
+    ],
+  },
+  {
     code: "FC",
     name: "Finance et Comptabilite",
     level: "L3",
