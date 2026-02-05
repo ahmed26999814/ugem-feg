@@ -32,6 +32,42 @@ function getServiceKey() {
   );
 }
 
+async function insertNotice(title: string, body: string, source: string, key: string) {
+  const variants: Array<Record<string, string>> = [
+    { title, body, source },
+    { title, content: body, source },
+    { titre: title, body, source },
+    { titre: title, content: body, source },
+    { name: title, text: body, source },
+    { title, content: body },
+    { titre: title, content: body },
+  ];
+
+  let lastError = "فشل إضافة الإعلان";
+
+  for (const item of variants) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
+      method: "POST",
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify([item]),
+    });
+
+    if (res.ok) {
+      const inserted = await res.json();
+      return { ok: true as const, inserted };
+    }
+
+    lastError = (await res.text()) || lastError;
+  }
+
+  return { ok: false as const, error: lastError };
+}
+
 export async function POST(req: Request) {
   try {
     const data = (await req.json()) as Payload;
@@ -57,24 +93,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
-      method: "POST",
-      headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
-      body: JSON.stringify([{ title, body, source }]),
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      return NextResponse.json({ error: text || "فشل إضافة الإعلان" }, { status: 500 });
+    const insertedResult = await insertNotice(title, body, source, serviceKey);
+    if (!insertedResult.ok) {
+      return NextResponse.json({ error: insertedResult.error }, { status: 500 });
     }
 
-    const inserted = await res.json();
-    return NextResponse.json({ ok: true, inserted });
+    return NextResponse.json({ ok: true, inserted: insertedResult.inserted });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
