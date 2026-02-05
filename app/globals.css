@@ -1268,7 +1268,7 @@ a {
   color: #0f172a;
 }
 
-.footer-collage {
+.home-collage {
   width: min(1120px, calc(100% - 24px));
   margin: 16px auto 0;
   border-radius: 18px;
@@ -1278,7 +1278,7 @@ a {
   background: rgba(15, 23, 42, 0.2);
 }
 
-.footer-collage-img {
+.home-collage-img {
   display: block;
   width: 100%;
   height: auto;
@@ -1391,7 +1391,7 @@ a {
     justify-content: center;
   }
 
-  .footer-collage {
+  .home-collage {
     width: min(1120px, calc(100% - 16px));
     border-radius: 14px;
   }

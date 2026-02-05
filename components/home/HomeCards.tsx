@@ -133,6 +133,14 @@ export default function HomeCards() {
           );
         })}
       </motion.div>
+      <div className="home-collage">
+        <img
+          src="/publicugem-collage.jpg"
+          alt="لقطات من أنشطة الاتحاد العام للطلاب الموريتانيين"
+          className="home-collage-img"
+          loading="lazy"
+        />
+      </div>
     </section>
   );
 }
