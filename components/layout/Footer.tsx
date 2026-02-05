@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, Facebook, ArrowUpRight, Laptop2, UserRound, Wrench } from "lucide-react";
+import { MessageCircle, Facebook, Laptop2, UserRound, Wrench } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 
 export default function Footer() {
@@ -46,7 +46,6 @@ export default function Footer() {
               <small>تطوير وبرمجة</small>
               <strong>بواسطة مصطفى بتعاون مع أحمد</strong>
             </span>
-            <ArrowUpRight size={15} />
           </motion.button>
 
           <AnimatePresence initial={false}>
