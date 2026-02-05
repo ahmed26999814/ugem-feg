@@ -82,14 +82,15 @@ export default function SuggestionsPage() {
                 >
                   <span className="suggestion-kind-art" aria-hidden="true">
                     <svg className="suggestion-illustration is-site" viewBox="0 0 120 70" role="presentation">
-                      <circle className="sugg-head" cx="26" cy="20" r="10" />
-                      <rect className="sugg-body" x="16" y="30" width="20" height="24" rx="10" />
-                      <path className="sugg-arm wave" d="M34 36 C46 30, 54 28, 64 28" />
-                      <circle className="sugg-idea" cx="86" cy="18" r="8" />
-                      <rect className="sugg-bubble" x="70" y="28" width="38" height="16" rx="8" />
-                      <text className="sugg-bubble-text" x="89" y="40" textAnchor="middle">
-                        {isFr ? "Idea" : "اقتراح"}
-                      </text>
+                      <circle className="sugg-fill" cx="24" cy="18" r="9" />
+                      <path className="sugg-fill" d="M14 30 C14 24, 34 24, 34 30 V50 C34 56, 14 56, 14 50 Z" />
+                      <path className="sugg-line wave" d="M34 34 C46 30, 54 30, 64 34" />
+                      <rect className="sugg-line" x="58" y="32" width="32" height="20" rx="4" />
+                      <line className="sugg-line" x1="58" y1="46" x2="90" y2="46" />
+                      <circle className="sugg-accent" cx="96" cy="18" r="7" />
+                      <line className="sugg-accent-line" x1="96" y1="6" x2="96" y2="10" />
+                      <line className="sugg-accent-line" x1="106" y1="12" x2="102" y2="14" />
+                      <line className="sugg-accent-line" x1="86" y1="12" x2="90" y2="14" />
                     </svg>
                   </span>
                   <span className="suggestion-kind-text">
@@ -106,16 +107,15 @@ export default function SuggestionsPage() {
                 >
                   <span className="suggestion-kind-art" aria-hidden="true">
                     <svg className="suggestion-illustration is-college" viewBox="0 0 120 70" role="presentation">
-                      <circle className="sugg-head sad" cx="30" cy="22" r="9" />
-                      <rect className="sugg-body sad" x="20" y="32" width="20" height="22" rx="9" />
-                      <path className="sugg-mouth sad" d="M26 24 Q30 20 34 24" />
+                      <circle className="sugg-fill sad" cx="28" cy="20" r="8" />
+                      <path className="sugg-fill sad" d="M18 30 C18 24, 38 24, 38 30 V48 C38 54, 18 54, 18 48 Z" />
+                      <path className="sugg-line sad" d="M24 22 Q28 19 32 22" />
 
-                      <circle className="sugg-head helper" cx="78" cy="20" r="9" />
-                      <rect className="sugg-body helper" x="68" y="30" width="22" height="24" rx="10" />
-                      <circle className="sugg-badge" cx="90" cy="36" r="4" />
-                      <path className="sugg-arm help" d="M68 38 C56 36, 48 36, 40 38" />
-
-                      <path className="sugg-heart" d="M96 18 C96 14, 102 14, 102 18 C102 22, 96 24, 96 28 C96 24, 90 22, 90 18 C90 14, 96 14, 96 18 Z" />
+                      <circle className="sugg-fill helper" cx="84" cy="18" r="8" />
+                      <path className="sugg-fill helper" d="M74 28 C74 22, 96 22, 96 28 V50 C96 56, 74 56, 74 50 Z" />
+                      <path className="sugg-line help" d="M74 36 C62 34, 54 34, 44 36" />
+                      <path className="sugg-badge" d="M96 34 L102 36 L100 42 L96 44 L92 42 L90 36 Z" />
+                      <path className="sugg-accent" d="M104 12 C104 8, 110 8, 110 12 C110 16, 104 18, 104 22 C104 18, 98 16, 98 12 C98 8, 104 8, 104 12 Z" />
                     </svg>
                   </span>
                   <span className="suggestion-kind-text">
