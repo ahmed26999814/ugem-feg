@@ -51,7 +51,7 @@ async function insertNotice(title: string, body: string, source: string, key: st
   }
 
   const content = source ? `${body}\n\nالمصدر: ${source}` : body;
-  const payload = [{ title, content, type: inferredType }];
+  const payload = [{ title, content, type: inferredType, is_active: true }];
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
     method: "POST",
