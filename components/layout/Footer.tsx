@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Facebook, Code2, Sparkles } from "lucide-react";
+import { MessageCircle, Facebook, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 
 export default function Footer() {
@@ -37,9 +37,14 @@ export default function Footer() {
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Code2 size={16} />
-            <span>تم التطوير بواسطة أحمد</span>
-            <Sparkles size={15} />
+            <span className="footer-dev-icon">
+              <BadgeCheck size={14} />
+            </span>
+            <span className="footer-dev-text">
+              <small>تم التطوير بواسطة</small>
+              <strong>أحمد</strong>
+            </span>
+            <ArrowUpRight size={15} />
           </motion.a>
         </motion.div>
 
