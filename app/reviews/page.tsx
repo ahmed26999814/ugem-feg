@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -47,12 +47,12 @@ export default function ReviewsPage() {
               <BookOpenCheck size={18} />
             </span>
             <h1 className="mt-3 text-2xl font-black md:text-3xl">
-              {isFr ? "Revisions" : "?????????"}
+              {isFr ? "Revisions" : "المراجعات"}
             </h1>
             <p className="ui-muted mt-3">
               {isFr
                 ? "Acces organise par niveau pour retrouver rapidement les revisions."
-                : "???? ???? ??? ??????? ??? ??? ????????? ?????."}
+                : "وصول مرتب حسب السنوات حتى تصل للمراجعات بسرعة."}
             </p>
           </div>
         </motion.section>
@@ -60,7 +60,7 @@ export default function ReviewsPage() {
         <section className="section-card mt-3 app-phone-panel">
           <div className="section-content">
             <p className="mb-2 text-sm font-bold">
-              {isFr ? "1. Choisissez le niveau" : "1. ???? ????? ????????"}
+              {isFr ? "1. Choisissez le niveau" : "1. اختر السنة الدراسية"}
             </p>
             <div className="grid grid-cols-3 gap-2">
               {LEVELS.map((item) => (
@@ -80,7 +80,7 @@ export default function ReviewsPage() {
             </div>
 
             <p className="mb-2 mt-4 text-sm font-bold">
-              {isFr ? "2. Choisissez la filiere" : "2. ???? ??????"}
+              {isFr ? "2. Choisissez la filiere" : "2. اختر التخصص"}
             </p>
             {level ? (
               <div className="grid gap-2 md:grid-cols-2">
@@ -97,14 +97,14 @@ export default function ReviewsPage() {
                       {item.title}
                     </span>
                     <span className="text-xs font-black text-slate-500 dark:text-slate-300">
-                      {isFr ? "Telegram" : "????????"}
+                      {isFr ? "Telegram" : "تيليجرام"}
                     </span>
                   </a>
                 ))}
               </div>
             ) : (
               <p className="ui-muted rounded-xl border border-dashed border-slate-300 px-3 py-2 text-sm dark:border-slate-700">
-                {isFr ? "Selectionnez un niveau pour afficher les liens." : "???? ????? ???? ???? ???????."}
+                {isFr ? "Selectionnez un niveau pour afficher les liens." : "اختر السنة اولا لعرض الروابط."}
               </p>
             )}
           </div>
