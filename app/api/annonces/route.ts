@@ -11,6 +11,8 @@ type Payload = {
 
 const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
+const SUPABASE_ANON_FALLBACK =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_a9vgnTKPnx9SK1u8wKHoTw_37glO0q3";
 
 const ADMIN_USER = process.env.ANNONCES_ADMIN_USER ?? "ugem feg";
 const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "31682774";
@@ -25,7 +27,8 @@ function getServiceKey() {
     process.env.SUPABASE_SERVICE_KEY ??
     process.env.SUPABASE_SECRET_KEY ??
     process.env.SUPABASE_SERVICE_ROLE ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+    SUPABASE_ANON_FALLBACK
   );
 }
 
