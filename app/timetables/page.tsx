@@ -106,7 +106,7 @@ export default function TimetablesPage() {
           <AnimatePresence mode="wait" custom={direction}>
             {step === 1 && (
               <motion.div key="step-1" custom={direction} variants={slideHorizontal} initial="enter" animate="center" exit="exit">
-                <p className="mb-2 text-sm font-bold">الخطوة 1: اختيار السنة</p>
+                <p className="mb-2 text-sm font-bold text-slate-900 dark:text-slate-100">الخطوة 1: اختيار السنة</p>
                 <div className="grid gap-2 sm:grid-cols-3">
                   {(["L1", "L2", "L3"] as const).map((item) => (
                     <button
@@ -122,7 +122,7 @@ export default function TimetablesPage() {
                         setLevel(item);
                         setSemesterId(null);
                       }}
-                      className="ui-action rounded-xl border border-slate-200 bg-white px-4 py-3 text-right text-sm font-black hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-yellow-500/40"
+                      className="ui-action rounded-xl border border-slate-200 bg-white px-4 py-3 text-right text-sm font-black text-slate-900 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40"
                     >
                       {item}
                     </button>
@@ -134,7 +134,7 @@ export default function TimetablesPage() {
             {step === 2 && (
               <motion.div key="step-2" custom={direction} variants={slideHorizontal} initial="enter" animate="center" exit="exit">
                 <div className="mb-2 flex items-center justify-between">
-                  <p className="text-sm font-bold">الخطوة 2: اختيار السداسي</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-slate-100">الخطوة 2: اختيار السداسي</p>
                   <button
                     onClick={() => {
                       setDirection(-1);
@@ -162,7 +162,7 @@ export default function TimetablesPage() {
                           setDirection(1);
                           setSemesterId(item.id);
                         }}
-                        className="ui-action rounded-xl border border-slate-200 bg-white px-4 py-3 text-right text-sm font-black hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-yellow-500/40"
+                        className="ui-action rounded-xl border border-slate-200 bg-white px-4 py-3 text-right text-sm font-black text-slate-900 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40"
                       >
                         {item.id}
                       </button>
@@ -175,7 +175,7 @@ export default function TimetablesPage() {
             {step === 3 && semester && (
               <motion.div key="step-3" custom={direction} variants={slideHorizontal} initial="enter" animate="center" exit="exit">
                 <div className="mb-2 flex items-center justify-between">
-                  <p className="text-sm font-bold">الخطوة 3: الروابط</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-slate-100">الخطوة 3: الروابط</p>
                   <button
                     onClick={() => {
                       setDirection(-1);
