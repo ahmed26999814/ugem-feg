@@ -78,14 +78,24 @@ export default function Footer() {
                 </div>
 
                 <p className="footer-dev-lab-copy">يتم الآن بناء واجهة احترافية بعناية.</p>
-                <a
-                  className="footer-dev-lab-link"
-                  href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  التواصل مع المطور
-                </a>
+                <div className="footer-dev-lab-links">
+                  <a
+                    className="footer-dev-lab-link"
+                    href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    واتساب المطور
+                  </a>
+                  <a
+                    className="footer-dev-lab-link"
+                    href={`https://wa.me/${UGEM_CONTACTS.mediaPhone.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    واتساب مسؤول الإعلام
+                  </a>
+                </div>
               </motion.div>
             ) : null}
           </AnimatePresence>

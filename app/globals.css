@@ -897,8 +897,14 @@ a {
   color: #e2e8f0;
 }
 
-.footer-dev-lab-link {
+.footer-dev-lab-links {
   margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-dev-lab-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
