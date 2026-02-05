@@ -10,19 +10,19 @@ type ReviewItem = { title: string; url: string };
 
 const DATA: Record<Level, ReviewItem[]> = {
   L1: [
-    { title: "Economie Gestion L1", url: "https://t.me/+0rEDprzjZkdjODA0" },
-    { title: "BA L1", url: "https://t.me/+Q_d3bdj-g1AwY2Rk" },
-    { title: "GRH L1", url: "https://t.me/+SWVO4EruRS1mNzlk" },
-    { title: "FC L1", url: "https://t.me/+bVPo2uhb641kOThk" },
+    { title: "Economie Gestion L1", url: "https://t.me/fegegl1" },
+    { title: "BA L1", url: "https://t.me/+SPKzi3K9yjoyZmY8" },
+    { title: "GRH L1", url: "https://t.me/ugemGRHL1" },
+    { title: "FC L1", url: "https://t.me/+MCOboRlMZC8zNTg8" },
   ],
   L2: [
-    { title: "Economie Gestion L2", url: "https://t.me/+-jvODv5Ry4Y4NjFk" },
-    { title: "BA L2", url: "https://t.me/+4cL2aX9KUuk5OGI0" },
-    { title: "GRH L2", url: "https://t.me/+hEwCz983LaszZDM8" },
-    { title: "FC L2", url: "https://t.me/+NyRPP3om2Pc1NWE8" },
+    { title: "Economie Gestion L2", url: "https://t.me/ugemEGL2" },
+    { title: "BA L2", url: "https://t.me/ugemfedBAl2" },
+    { title: "FC L2", url: "https://t.me/ugemfcl2" },
   ],
   L3: [
-    { title: "FC BA GRH L3", url: "https://t.me/+03kJd70YnvgyM2Zk" },
+    { title: "GRH L3", url: "https://t.me/ugemGRHL2" },
+    { title: "FC BA GR L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
   ],
 };
 
