@@ -26,9 +26,40 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const { lang, toggleLang } = useLang();
   const [mounted, setMounted] = useState(false);
+  const [typedTitle, setTypedTitle] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => setMounted(true), []);
   const isDark = mounted && theme === "dark";
+  const brandTitle =
+    lang === "fr"
+      ? "UGEM - Faculte d'Economie et de Gestion"
+      : "الاتحاد العام للطلاب الموريتانيين - قسم كلية الاقتصاد والتسيير";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setTypedTitle(brandTitle);
+      setIsTyping(false);
+      return;
+    }
+
+    setTypedTitle("");
+    setIsTyping(true);
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedTitle(brandTitle.slice(0, index));
+      if (index >= brandTitle.length) {
+        window.clearInterval(timer);
+        setIsTyping(false);
+      }
+    }, 35);
+
+    return () => window.clearInterval(timer);
+  }, [brandTitle]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/80">
@@ -44,8 +75,13 @@ export default function Navbar() {
                 alt="UGEM"
                 className="h-9 w-9 shrink-0 rounded-full border border-white object-cover shadow-sm sm:h-10 sm:w-10"
               />
-              <span className="brand-motion min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5">
-                {lang === "fr" ? "UGEM - Faculté d'Économie et de Gestion" : "الاتحاد العام للطلاب الموريتانيين - قسم كلية الاقتصاد والتسيير"}
+              <span
+                className={cn(
+                  "brand-motion min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5",
+                  isTyping && "is-typing"
+                )}
+              >
+                {typedTitle || "\u00A0"}
               </span>
             </Link>
 
