@@ -24,7 +24,8 @@ function getServiceKey() {
     process.env.SUPABASE_SERVICE_ROLE_KEY ??
     process.env.SUPABASE_SERVICE_KEY ??
     process.env.SUPABASE_SECRET_KEY ??
-    process.env.SUPABASE_SERVICE_ROLE
+    process.env.SUPABASE_SERVICE_ROLE ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 }
 
@@ -46,9 +47,9 @@ export async function POST(req: Request) {
     }
 
     const serviceKey = getServiceKey();
-    if (!serviceKey || serviceKey.startsWith("sb_publishable_")) {
+    if (!serviceKey) {
       return NextResponse.json(
-        { error: "Service role key غير مضبوط (SUPABASE_SERVICE_ROLE_KEY)" },
+        { error: "Supabase key غير مضبوط في متغيرات البيئة" },
         { status: 500 }
       );
     }
@@ -95,9 +96,9 @@ export async function DELETE(req: Request) {
     }
 
     const serviceKey = getServiceKey();
-    if (!serviceKey || serviceKey.startsWith("sb_publishable_")) {
+    if (!serviceKey) {
       return NextResponse.json(
-        { error: "Service role key غير مضبوط (SUPABASE_SERVICE_ROLE_KEY)" },
+        { error: "Supabase key غير مضبوط في متغيرات البيئة" },
         { status: 500 }
       );
     }
