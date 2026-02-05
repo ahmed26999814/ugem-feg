@@ -39,9 +39,9 @@ export default function FegPage() {
               className="h-16 w-16 rounded-full border border-white bg-white p-1 object-contain shadow"
             />
             <div>
-              <h1 className="text-2xl font-black md:text-4xl">ة ااتصاد اتسر (FEG)</h1>
+              <h1 className="text-2xl font-black md:text-4xl">كلية الاقتصاد والتسيير (FEG)</h1>
               <p className="mt-1 text-sm font-bold text-yellow-700 dark:text-yellow-300">
-                جاعة اشط اعصرة - Nouakchott - Mauritanie
+                جامعة نواكشوط العصرية - Nouakchott - Mauritanie
               </p>
             </div>
           </div>
@@ -59,25 +59,25 @@ export default function FegPage() {
               value="institution"
               className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100"
             >
-              ااتاء اشأة
+              الانتماء والنشأة
             </Tabs.Trigger>
             <Tabs.Trigger
               value="programs"
               className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100"
             >
-              ابراج اتخصصات
+              البرامج والتخصصات
             </Tabs.Trigger>
             <Tabs.Trigger
               value="infra"
               className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100"
             >
-              ابة اأشطة
+              البنية والأنشطة
             </Tabs.Trigger>
             <Tabs.Trigger
               value="admin"
               className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100"
             >
-              اإدارة اصادر
+              الإدارة والمصادر
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -86,26 +86,26 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn}>
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <Landmark size={18} className="text-yellow-700 dark:text-yellow-300" />
-                ااتاء اؤسس
+                الانتماء المؤسسي
               </h2>
               <p className="mt-2 text-sm">
-                ة ااتصاد اتسر  إحد ات جاعة اشط اعصرة (Université de Nouakchott Al Aasriya)
-                 اجاعة اعة ارئسة ف اعاصة اشط رتاا.
+                كلية الاقتصاد والتسيير هي إحدى كليات جامعة نواكشوط العصرية (Université de Nouakchott Al Aasriya)،
+                وهي الجامعة العمومية الرئيسية في العاصمة نواكشوط، موريتانيا.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                <Badge>تأسست اجاعة: 1981</Badge>
-                <Badge>إعادة اتظ: 2016</Badge>
+                <Badge>تأسست الجامعة: 1981</Badge>
+                <Badge>إعادة التنظيم: 2016</Badge>
               </div>
             </motion.article>
 
             <motion.article className="section-card" variants={cardIn}>
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <CalendarClock size={18} className="text-yellow-700 dark:text-yellow-300" />
-                شأة اة تطرا
+                نشأة الكلية وتطورها
               </h2>
               <p className="mt-2 text-sm">
-                خا اسات اأخرة خصصا ف سة 2025 ت فص س ادراسات ااتصادة ع اة اسابة إشاء
-                ة ااتصاد اتسر ة ستة ف إطار ة اجاعة تضح اتخصصات تحس جدة ات اجاع.
+                خلال السنوات الأخيرة وخصوصًا في سنة 2025 تم فصل قسم الدراسات الاقتصادية عن الكلية السابقة، وإنشاء
+                كلية الاقتصاد والتسيير ككلية مستقلة في إطار هيكلة الجامعة وتوضيح التخصصات وتحسين جودة التكوين الجامعي.
               </p>
             </motion.article>
             </motion.div>
@@ -116,22 +116,22 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn}>
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <GraduationCap size={18} className="text-yellow-700 dark:text-yellow-300" />
-                ظا ادراسة
+                نظام الدراسة
               </h2>
-              <p className="mt-2 text-sm">تعتد اة ظا LMD: Licence - Master - Doctorat ع ستات L1 L2 L3.</p>
+              <p className="mt-2 text-sm">تعتمد الكلية نظام LMD: Licence - Master - Doctorat مع مستويات L1 وL2 وL3.</p>
             </motion.article>
 
             <motion.article className="section-card" variants={cardIn}>
-              <h3 className="text-lg font-black">اتخصصات اعتدة</h3>
+              <h3 className="text-lg font-black">التخصصات المعتمدة</h3>
               <div className="mt-3 grid gap-3 md:grid-cols-3">
                 <div className="rounded-2xl border border-slate-200 bg-white/85 p-3 dark:border-slate-700 dark:bg-slate-900/70">
                   <h4 className="font-black">L1</h4>
-                  <p className="mt-1 text-sm">جذع شتر (ظا LMD)</p>
+                  <p className="mt-1 text-sm">جذع مشترك (نظام LMD)</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-white/85 p-3 dark:border-slate-700 dark:bg-slate-900/70">
                   <h4 className="font-black">L2</h4>
                   <ul className="mt-1 space-y-1 text-sm">
-                    <li>- conomie - Gestion</li>
+                    <li>- Économie - Gestion</li>
                     <li>- Finance et Comptabilité (FC)</li>
                     <li>- Gestion des Ressources Humaines (GRH)</li>
                     <li>- Banque et Assurance (BA)</li>
@@ -153,10 +153,10 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn}>
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <Languages size={18} className="text-yellow-700 dark:text-yellow-300" />
-                غة اتدرس
+                لغة التدريس
               </h2>
               <p className="mt-2 text-sm">
-                اغة اأساسة تدرس  اغة افرسة تستع اعربة ف بعض اجاب اإدارة اتاصة.
+                اللغة الأساسية للتدريس هي اللغة الفرنسية، وتستعمل العربية في بعض الجوانب الإدارية والتواصلية.
               </p>
             </motion.article>
             </motion.div>
@@ -165,26 +165,26 @@ export default function FegPage() {
           <Tabs.Content value="infra" className="mt-3 grid gap-3">
             <motion.section className="section-card" variants={fadeUp} initial="hidden" animate="show">
               <div className="section-content">
-                <h2 className="text-xl font-black">ابة اأشطة</h2>
-                <p className="ui-muted mt-2">اختر افئة عرض اتفاص بش ظ:</p>
+                <h2 className="text-xl font-black">البنية والأنشطة</h2>
+                <p className="ui-muted mt-2">اختر الفئة لعرض التفاصيل بشكل منظم:</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
                     onClick={() => setInfraView((prev) => (prev === "infra" ? null : "infra"))}
                     className={`ui-action border ${infraView === "infra" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    ابة اتحتة
+                    البنية التحتية
                   </button>
                   <button
                     onClick={() => setInfraView((prev) => (prev === "activities" ? null : "activities"))}
                     className={`ui-action border ${infraView === "activities" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    اأشطة
+                    الأنشطة
                   </button>
                   <button
                     onClick={() => setInfraView((prev) => (prev === "students" ? null : "students"))}
                     className={`ui-action border ${infraView === "students" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    أضاع اطاب
+                    أوضاع الطلاب
                   </button>
                 </div>
               </div>
@@ -193,39 +193,39 @@ export default function FegPage() {
             <motion.div variants={staggerContainer} initial="hidden" animate="show" className="grid gap-3">
               {!infraView && (
                 <motion.article className="section-card" variants={cardIn}>
-                  <p className="ui-muted">اختر أحد اأزرار باأع عرض اتفاص.</p>
+                  <p className="ui-muted">اختر أحد الأزرار بالأعلى لعرض التفاصيل.</p>
                 </motion.article>
               )}
               {infraView === "infra" && (
                 <motion.article className="section-card" variants={cardIn}>
                   <h2 className="inline-flex items-center gap-2 text-xl font-black">
                     <Building2 size={18} className="text-yellow-700 dark:text-yellow-300" />
-                    ابة اتحتة اتجزات
+                    البنية التحتية والتجهيزات
                   </h2>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button
                       onClick={() => setInfraDetail((prev) => (prev === "amphi" ? null : "amphi"))}
                       className={`ui-action border ${infraDetail === "amphi" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                     >
-                      ادرجات
+                      المدرجات
                     </button>
                     <button
                       onClick={() => setInfraDetail((prev) => (prev === "td" ? null : "td"))}
                       className={`ui-action border ${infraDetail === "td" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                     >
-                      اعات TD
+                      قاعات TD
                     </button>
                     <button
                       onClick={() => setInfraDetail((prev) => (prev === "tp" ? null : "tp"))}
                       className={`ui-action border ${infraDetail === "tp" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                     >
-                      اعات TP
+                      قاعات TP
                     </button>
                   </div>
 
                   {infraDetail === "amphi" && (
                     <div className="mt-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
-                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">ادرجات</p>
+                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">المدرجات</p>
                       <ul className="mt-2 space-y-1 text-sm">
                         <li>- G1</li>
                         <li>- G2</li>
@@ -237,15 +237,15 @@ export default function FegPage() {
 
                   {infraDetail === "td" && (
                     <div className="mt-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
-                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">اعات اأعا اتطبة TD</p>
-                      <p className="mt-1 text-sm">حا 68 اعة أعا تطبة خصصة درس اتطبة.</p>
+                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">قاعات الأعمال التطبيقية TD</p>
+                      <p className="mt-1 text-sm">حوالي 68 قاعة أعمال تطبيقية مخصّصة للدروس التطبيقية.</p>
                     </div>
                   )}
 
                   {infraDetail === "tp" && (
                     <div className="mt-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
-                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">اعات اأعا اتطبة TP</p>
-                      <p className="mt-1 text-sm">3 اعات TP خصصة إعاات جزة باحاسب.</p>
+                      <p className="text-sm font-bold text-slate-500 dark:text-slate-300">قاعات الأعمال التطبيقية TP</p>
+                      <p className="mt-1 text-sm">3 قاعات TP مخصّصة للإعلاميات ومجهّزة بالحواسيب.</p>
                     </div>
                   )}
                 </motion.article>
@@ -255,13 +255,13 @@ export default function FegPage() {
                 <motion.article className="section-card" variants={cardIn}>
                   <h2 className="inline-flex items-center gap-2 text-xl font-black">
                     <Microscope size={18} className="text-yellow-700 dark:text-yellow-300" />
-                    اأشطة اأحداث
+                    الأنشطة والأحداث
                   </h2>
                   <ul className="mt-2 space-y-1 text-sm">
-                    <li>- أا دراسة</li>
-                    <li>- دات عة</li>
-                    <li>- اشات عة ح ضاا اتصادة اة</li>
-                    <li>- ثا: أا دراسة ح أثر ااة اإساة ف إصاح طاع اتأ</li>
+                    <li>- أيام دراسية</li>
+                    <li>- ندوات علمية</li>
+                    <li>- نقاشات علمية حول قضايا اقتصادية ومالية</li>
+                    <li>- مثال: أيام دراسية حول أثر المالية الإسلامية في إصلاح قطاع التأمين</li>
                   </ul>
                 </motion.article>
               )}
@@ -270,11 +270,11 @@ export default function FegPage() {
                 <motion.article className="section-card" variants={cardIn}>
                   <h2 className="inline-flex items-center gap-2 text-xl font-black">
                     <Users size={18} className="text-yellow-700 dark:text-yellow-300" />
-                    أضاع اطاب
+                    أوضاع الطلاب
                   </h2>
                   <p className="mt-2 text-sm">
-                    شدت اة ف فترات سابة إضرابات طابة طاب أادة إدارة ث ت استئاف ادراسة بعد اتفاات
-                    ب اطا اإدار ث اطاب.
+                    شهدت الكلية في فترات سابقة إضرابات طلابية ومطالب أكاديمية وإدارية، ثم تم استئناف الدراسة بعد اتفاقات
+                    بين الطاقم الإداري وممثلي الطلاب.
                   </p>
                 </motion.article>
               )}
@@ -285,23 +285,23 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <School size={18} className="text-yellow-700 dark:text-yellow-300" />
-                إدارة اة اتعا
+                إدارة الكلية والتعاون
               </h2>
-              <p className="mt-2 text-sm">عد اة: اأستاذ حد عبد ا عرف.</p>
+              <p className="mt-2 text-sm">عميد الكلية: الأستاذ محمد عبد الله عرفه.</p>
               <p className="mt-2 text-sm">
-                تجد تعاات أادة ع ؤسسات خارجة  با تع اتفاات ع عد ادحة دراسات اعا.
+                توجد تعاونات أكاديمية مع مؤسسات خارجية، من بينها توقيع اتفاقيات مع معهد الدوحة للدراسات العليا.
               </p>
             </motion.article>
 
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
-              <h2 className="text-xl font-black">صدر رس رتبط باة</h2>
+              <h2 className="text-xl font-black">مصدر رسمي مرتبط بالكلية</h2>
               <a
                 href="https://tinyurl.com/5fcndzzt"
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 inline-flex items-center gap-2 rounded-xl bg-yellow-500 px-4 py-2 text-sm font-black text-slate-900 hover:bg-yellow-400"
               >
-                ع اة / تائج ااتحاات ااختبارات
+                موقع الكلية / نتائج الامتحانات والاختبارات
                 <ExternalLink size={16} />
               </a>
             </motion.article>
@@ -311,4 +311,3 @@ export default function FegPage() {
     </div>
   );
 }
-

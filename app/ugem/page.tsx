@@ -15,52 +15,52 @@ import {
 import { cardIn, fadeUp, staggerContainer } from "@/components/motion/variants";
 
 const missionItems = [
-  "ادفاع ع اح اأادة ااجتاعة طاب",
-  " طاب اشغاات اطاب إ إدارة اة",
-  "تضح ارارات اإدارة اباغات ارسة",
-  "رافة اطاب ف اضاا اأادة (اتسج ااتحاات اتج)",
-  "تأطر تج اطاب اجدد (خصصا طبة اسة اأ L1)",
-  "اساة ف تحس ظرف ادراسة اخدات اجاعة",
-  "حاربة اإشاعات شر اعة اصححة",
-  "تعزز رح اتضا اع اطاب",
+  "الدفاع عن الحقوق الأكاديمية والاجتماعية للطلاب",
+  "نقل مطالب وانشغالات الطلاب إلى إدارة الكلية",
+  "توضيح القرارات الإدارية والبلاغات الرسمية",
+  "مرافقة الطلاب في القضايا الأكاديمية (التسجيل، الامتحانات، التوجيه)",
+  "تأطير وتوجيه الطلاب الجدد (خصوصًا طلبة السنة الأولى L1)",
+  "المساهمة في تحسين ظروف الدراسة والخدمات الجامعية",
+  "محاربة الإشاعات ونشر المعلومة الصحيحة",
+  "تعزيز روح التضامن والعمل الطلابي",
 ];
 
 const leadership = [
-  "حد اختار اج  رئس اس",
-  "إبرا عبدا با  اائب اأ",
-  "حد عبدا حبس  اائب اثا",
+  "محمد المختار انجيه — رئيس القسم",
+  "إبراهيم عبدولا با — النائب الأول",
+  "محمد عبدالله لحبوس — النائب الثاني",
 ];
 
 const office = [
-  "اصطف عبدا اد  سؤ اإعا",
-  " حد س  سؤة ااتساب اتعبئة اتحسس",
-  "فاطة دا  سؤة ااتساب",
-  "حد شغف ا (اعض)  سؤ اثافة اراضة",
-  "بت عبد ادا  سؤة اساء",
-  "زة إبرا   سؤة اعاات اخارجة",
-  "أحد حبب  سؤ اشؤ اطابة",
-  "حد عا سد أحد  سؤ اطبة اأجاب",
-  "أحد اب سا  سؤ اتظ",
-  "أساء حد  سؤة ااة",
+  "المصطفى عبدالله مادي — مسؤول الإعلام",
+  "منى محمد يسلم — مسؤولة الانتساب والتعبئة والتحسيس",
+  "فاطمة ديا — مسؤولة الانتساب",
+  "محمد شغف يايينه (العويض) — مسؤول الثقافة والرياضة",
+  "بنيته عبد الدايم — مسؤولة النساء",
+  "زينة إبراهيم لي — مسؤولة العلاقات الخارجية",
+  "أحمد لحبيب — مسؤول الشؤون الطلابية",
+  "محمد عالي سيدي أحمد — مسؤول الطلبة الأجانب",
+  "أحمد يابه سالم — مسؤول التنظيم",
+  "أسماء محمد — مسؤولة المالية",
 ];
 
 const deputies = [
-  "ا اختار اتد  ائب سؤ اإعا",
-  "اغ اطب  ائب سؤ ااتساب",
-  "حد  سد ااد  ائب سؤ اتظ",
-  "اساة فا اجا  ائب سؤ اتعبئة اتحسس",
-  "فاطة اثابت (فا)  ائب سؤة اساء",
-  "اا ادا اسد  ائب سؤة اعاات اخارجة",
-  "أحد سا با  ائب سؤ اشؤ اطابة",
-  "زدا د  ائب سؤ اثافة اراضة",
-  "حفصة أسا دب  ائب سؤة ااة",
+  "ماكه المختار التلميدي — نائب مسؤول الإعلام",
+  "امغيلي القطب — نائب مسؤول الانتساب",
+  "محمد لمين سيدي الهادي — نائب مسؤول التنظيم",
+  "السالكة فال اجوالي — نائب مسؤول التعبئة والتحسيس",
+  "فاطمة الثابت (فاه) — نائب مسؤولة النساء",
+  "الناه الداه اسويدي — نائب مسؤولة العلاقات الخارجية",
+  "أحمد سالك بناهي — نائب مسؤول الشؤون الطلابية",
+  "زيدان مولود — نائب مسؤول الثقافة والرياضة",
+  "حفصة أنساني ديوب — نائب مسؤولة المالية",
 ];
 
 type TeamView = "leaders" | "officials" | "deputies";
 type TeamMember = { role: string; name: string };
 
 function toMember(item: string, fallbackRole: string): TeamMember {
-  const parts = item.split("").map((p) => p.trim());
+  const parts = item.split("—").map((p) => p.trim());
   return { name: parts[0] ?? item, role: parts[1] ?? fallbackRole };
 }
 
@@ -70,17 +70,17 @@ export default function UgemPage() {
 
   const teamMembersMap = useMemo<Record<TeamView, TeamMember[]>>(
     () => ({
-      leaders: leadership.map((i) => toMember(i, "اادة")),
-      officials: office.map((i) => toMember(i, "سؤ")),
-      deputies: deputies.map((i) => toMember(i, "ائب")),
+      leaders: leadership.map((i) => toMember(i, "القيادة")),
+      officials: office.map((i) => toMember(i, "مسؤول")),
+      deputies: deputies.map((i) => toMember(i, "نائب")),
     }),
     []
   );
 
   const teamTitleMap: Record<TeamView, string> = {
-    leaders: "اادة",
-    officials: "اسؤ",
-    deputies: "ااب",
+    leaders: "القيادة",
+    officials: "المسؤولون",
+    deputies: "النواب",
   };
 
   const activeMembers = teamView ? teamMembersMap[teamView] : [];
@@ -93,9 +93,9 @@ export default function UgemPage() {
           <div className="flex flex-wrap items-center gap-3">
             <img src="/ugem-logo.jpg" alt="UGEM" className="h-16 w-16 rounded-full border border-white object-cover shadow" />
             <div>
-              <h1 className="text-2xl font-black md:text-4xl">ااتحاد اعا طاب ارتا</h1>
+              <h1 className="text-2xl font-black md:text-4xl">الاتحاد العام للطلاب الموريتانيين</h1>
               <p className="mt-1 text-sm font-bold text-yellow-700 dark:text-yellow-300">
-                ة ااتصاد اتسر  جاعة اشط اعصرة | UGEM  FEG
+                كلية الاقتصاد والتسيير – جامعة نواكشوط العصرية | UGEM – FEG
               </p>
             </div>
           </div>
@@ -110,16 +110,16 @@ export default function UgemPage() {
         <Tabs.Root defaultValue="about" dir="rtl" className="mt-3">
           <Tabs.List className="section-card scrollbar-hide flex max-w-full gap-2 overflow-x-auto p-2">
             <Tabs.Trigger value="about" className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100">
-              اجة ابذة
+              الجهة والنبذة
             </Tabs.Trigger>
             <Tabs.Trigger value="mission" className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100">
-              ارساة اا
+              الرسالة والمهام
             </Tabs.Trigger>
             <Tabs.Trigger value="team" className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100">
-              اتب
+              المكتب
             </Tabs.Trigger>
             <Tabs.Trigger value="contact" className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100">
-              اتاص
+              التواصل
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -128,23 +128,23 @@ export default function UgemPage() {
               <motion.article className="section-card" variants={cardIn}>
                 <h2 className="inline-flex items-center gap-2 text-xl font-black">
                   <BadgeCheck size={18} className="text-yellow-700 dark:text-yellow-300" />
-                  اجة
+                  الجهة
                 </h2>
                 <p className="mt-2 text-sm">
-                  س تابع  ااتحاد اعا طاب ارتا (UGEM)  ابة طابة طة رخصة تُعد اإطار
-                  اشرع اث طاب اتع اعا ف رتاا.
+                  قسم تابع لـ الاتحاد العام للطلاب الموريتانيين (UGEM)، وهو نقابة طلابية وطنية مرخّصة، تُعد الإطار
+                  الشرعي الممثل لطلاب التعليم العالي في موريتانيا.
                 </p>
               </motion.article>
 
               <motion.article className="section-card" variants={cardIn}>
                 <h2 className="inline-flex items-center gap-2 text-xl font-black">
                   <Users2 size={18} className="text-yellow-700 dark:text-yellow-300" />
-                  بذة ع ااتحاد
+                  نبذة عن الاتحاد
                 </h2>
                 <p className="mt-2 text-sm">
-                  ع س ااتحاد اعا طاب ارتا بة ااتصاد اتسر ع ادفاع ع اح اأادة
-                  ااجتاعة طاب تث تثا سؤا أا إدارة اة اساة ف تحس اظرف ادراسة
-                  شر اع اطاب ف ج  ااضباط ااحترا.
+                  يعمل قسم الاتحاد العام للطلاب الموريتانيين بكلية الاقتصاد والتسيير على الدفاع عن الحقوق الأكاديمية
+                  والاجتماعية للطلاب، وتمثيلهم تمثيلًا مسؤولًا أمام إدارة الكلية، والمساهمة في تحسين الظروف الدراسية
+                  ونشر الوعي الطلابي في جو من الانضباط والاحترام.
                 </p>
               </motion.article>
             </motion.div>
@@ -154,11 +154,11 @@ export default function UgemPage() {
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <Megaphone size={18} className="text-yellow-700 dark:text-yellow-300" />
-                رساة اس
+                رسالة القسم
               </h2>
               <p className="mt-2 text-sm">
-                تث اطاب تثا سؤا  اشغاات طاب بش ظ شر اع اطاب اساة ف
-                استرار تحس اعة اتعة داخ اة.
+                تمثيل الطلاب تمثيلًا مسؤولًا، نقل انشغالاتهم ومطالبهم بشكل منظم، نشر الوعي الطلابي، والمساهمة في
+                استقرار وتحسين العملية التعليمية داخل الكلية.
               </p>
             </motion.article>
 
@@ -181,8 +181,8 @@ export default function UgemPage() {
           <Tabs.Content value="team" className="mt-3 grid gap-3">
             <motion.section className="section-card" variants={fadeUp} initial="hidden" animate="show">
               <div className="section-content">
-                <h2 className="text-xl font-black">تشة تب اس</h2>
-                <p className="ui-muted mt-2">اختر افئة ث اضغط ع اصب عرض ااس بطرة ظة.</p>
+                <h2 className="text-xl font-black">تشكيلة مكتب القسم</h2>
+                <p className="ui-muted mt-2">اختر الفئة ثم اضغط على المنصب لعرض الاسم بطريقة منظمة.</p>
 
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
@@ -192,7 +192,7 @@ export default function UgemPage() {
                     }}
                     className={`ui-action border ${teamView === "leaders" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    اادة
+                    القيادة
                   </button>
                   <button
                     onClick={() => {
@@ -201,7 +201,7 @@ export default function UgemPage() {
                     }}
                     className={`ui-action border ${teamView === "officials" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    اسؤ
+                    المسؤولون
                   </button>
                   <button
                     onClick={() => {
@@ -210,7 +210,7 @@ export default function UgemPage() {
                     }}
                     className={`ui-action border ${teamView === "deputies" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
-                    ااب
+                    النواب
                   </button>
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default function UgemPage() {
                     <p className="mt-1 text-base font-black">{activeMember.name}</p>
                   </motion.div>
                 ) : (
-                  <p className="ui-muted mt-3">اختر صبا عرض ااس.</p>
+                  <p className="ui-muted mt-3">اختر منصبًا لعرض الاسم.</p>
                 )}
               </motion.section>
             )}
@@ -251,7 +251,7 @@ export default function UgemPage() {
 
           <Tabs.Content value="contact" className="mt-3 grid gap-3 md:grid-cols-2">
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
-              <h2 className="text-xl font-black">سائ اتاص</h2>
+              <h2 className="text-xl font-black">وسائل التواصل</h2>
               <div className="mt-3 grid gap-2">
                 <a
                   href="https://www.facebook.com/UGEMFEG"
@@ -259,28 +259,28 @@ export default function UgemPage() {
                   rel="noreferrer"
                   className="inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900"
                 >
-                  صفحة فسب ارسة
+                  صفحة فيسبوك الرسمية
                   <Facebook size={16} />
                 </a>
                 <a
                   href="tel:+22231682774"
                   className="inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900"
                 >
-                  سؤ اإعا: +222 31 68 27 74
+                  مسؤول الإعلام: +222 31 68 27 74
                   <Phone size={16} />
                 </a>
                 <a
                   href="tel:+22248539265"
                   className="inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900"
                 >
-                  رئس اس: +222 48 53 92 65
+                  رئيس القسم: +222 48 53 92 65
                   <Phone size={16} />
                 </a>
                 <a
                   href="/groupes"
                   className="inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900"
                 >
-                  جعات اتساب حسب اتخصص است ادراس
+                  مجموعات واتساب حسب التخصص والمستوى الدراسي
                   <MessageCircle size={16} />
                 </a>
               </div>
@@ -294,17 +294,17 @@ export default function UgemPage() {
             >
               <h2 className="inline-flex items-center gap-2 text-xl font-black">
                 <ShieldCheck size={18} className="text-red-700 dark:text-red-300" />
-                تب  طاب
+                تنبيه مهم للطلاب
               </h2>
               <p className="mt-2 text-sm font-bold text-red-700 dark:text-red-300">
-                 ا ُشر ع س ااتحاد ب ع عات ؤدة  اإدارة أ صادر رسة.
+                كل ما يُنشر عن قسم الاتحاد مبني على معلومات مؤكدة من الإدارة أو مصادر رسمية.
               </p>
               <p className="mt-2 text-sm font-bold text-red-700 dark:text-red-300">
-                رج عد تدا اإشاعات اتاص ع ث ااتحاد باشرة عد أ استفسار.
+                يرجى عدم تداول الإشاعات، والتواصل مع ممثلي الاتحاد مباشرة عند أي استفسار.
               </p>
               <p className="mt-3 text-sm">
-                ااتحاد اعا طاب ارتا  صت اطاب داخ ة ااتصاد اتسر ت ف ع اطاب
-                تظ تعا.
+                الاتحاد العام للطلاب الموريتانيين هو صوت الطالب داخل كلية الاقتصاد والتسيير، وقوته في وعي الطلاب،
+                تنظيمهم، وتعاونهم.
               </p>
             </motion.article>
           </Tabs.Content>
@@ -313,4 +313,3 @@ export default function UgemPage() {
     </div>
   );
 }
-
