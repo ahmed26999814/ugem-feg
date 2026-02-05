@@ -13,7 +13,7 @@ const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
 
 const ADMIN_USER = process.env.ANNONCES_ADMIN_USER ?? "ugem feg";
-const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "31682774";
+const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "44881891";
 
 function isValidAdmin(username: string, password: string) {
   return username.trim().toLowerCase() === ADMIN_USER.toLowerCase() && password.trim() === ADMIN_PASS;

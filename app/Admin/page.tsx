@@ -73,7 +73,7 @@ export default function AdminAnnoncesPage() {
   }, [authed]);
 
   const login = () => {
-    if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "31682774") {
+    if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "44881891") {
       setAuthed(true);
       setMsg("تم تسجيل الدخول.");
     } else {
