@@ -43,7 +43,6 @@ export default function Footer() {
               <Laptop2 size={14} />
             </span>
             <span className="footer-dev-text">
-              <small>تطوير وبرمجة</small>
               <strong>إعداد وتطوير المصطفى وأحمد</strong>
             </span>
           </motion.button>
