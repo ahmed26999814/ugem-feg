@@ -1,12 +1,23 @@
-﻿import type { ReactNode } from "react";
+﻿import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import "./globals.css";
-import Providers from "@/components/providers/Providers";
 import Navbar from "@/components/Navbar";
+import Providers from "@/components/providers/Providers";
+import PWARegister from "@/components/providers/PWARegister";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "UGEM-FEG",
   description: "UGEM-FEG Platform",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "UGEM-FEG",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -14,6 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body>
         <Providers>
+          <PWARegister />
           <Navbar />
           <main className="app-main">{children}</main>
         </Providers>
