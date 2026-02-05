@@ -1,10 +1,12 @@
 ﻿"use client";
 
-import { motion } from "framer-motion";
-import { MessageCircle, Facebook, ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { MessageCircle, Facebook, ArrowUpRight, Laptop2, UserRound, Wrench } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 
 export default function Footer() {
+  const [showDevLab, setShowDevLab] = useState(false);
   const unionWhatsapp = `https://wa.me/${UGEM_CONTACTS.whatsapp.replace(/\D/g, "")}`;
 
   return (
@@ -29,32 +31,66 @@ export default function Footer() {
             الاتحاد العام للطلاب الموريتانيين - قسم كلية الاقتصاد والتسيير، إطار طلابي رسمي
             يخدم الطلبة ويدافع عن حقوقهم الأكاديمية والاجتماعية.
           </p>
-          <motion.a
+
+          <motion.button
+            type="button"
             className="footer-dev-btn"
-            href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
+            onClick={() => setShowDevLab((prev) => !prev)}
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span className="footer-dev-scene" aria-hidden="true">
-              <span className="footer-dev-person">
-                <span className="footer-dev-head" />
-                <span className="footer-dev-arm" />
-              </span>
-              <span className="footer-dev-laptop">
-                <span className="footer-dev-screen">
-                  <span className="footer-dev-cursor" />
-                </span>
-                <span className="footer-dev-base" />
-              </span>
+            <span className="footer-dev-icon" aria-hidden="true">
+              <Laptop2 size={14} />
             </span>
             <span className="footer-dev-text">
-              <small>تم التطوير بواسطة</small>
-              <strong>أحمد</strong>
+              <small>تطوير وبرمجة</small>
+              <strong>Ahmed Dev Studio</strong>
             </span>
             <ArrowUpRight size={15} />
-          </motion.a>
+          </motion.button>
+
+          <AnimatePresence initial={false}>
+            {showDevLab ? (
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 14 }}
+                transition={{ duration: 0.28 }}
+                className="footer-dev-lab"
+              >
+                <div className="footer-dev-lab-scene" aria-hidden="true">
+                  <motion.span
+                    className="footer-dev-lab-person"
+                    animate={{ y: [0, -1.5, 0] }}
+                    transition={{ duration: 1.2, repeat: Infinity }}
+                  >
+                    <UserRound size={13} />
+                  </motion.span>
+                  <span className="footer-dev-lab-laptop">
+                    <Laptop2 size={16} />
+                    <motion.i
+                      className="footer-dev-lab-typing"
+                      animate={{ opacity: [0.3, 1, 0.3], x: [0, 2, 0] }}
+                      transition={{ duration: 0.7, repeat: Infinity }}
+                    />
+                  </span>
+                  <span className="footer-dev-lab-tools">
+                    <Wrench size={12} />
+                  </span>
+                </div>
+
+                <p className="footer-dev-lab-copy">يتم الآن بناء واجهة احترافية بعناية.</p>
+                <a
+                  className="footer-dev-lab-link"
+                  href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  التواصل مع المطور
+                </a>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </motion.div>
 
         <motion.div
