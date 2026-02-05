@@ -71,44 +71,23 @@ export default function SuggestionsPage() {
                 : "مساحة مخصصة لاستقبال اقتراحات الطلاب حول الموقع ومشاكلهم في الكلية."}
             </p>
 
-            <div className="mt-4 flex items-center gap-2">
-              {[1, 2, 3, 4].map((s) => (
-                <span
-                  key={s}
-                  className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-black ${
-                    step >= s
-                      ? "bg-emerald-500 text-white"
-                      : "bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-200"
-                  }`}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-
             {step === 1 && (
               <div className="mt-4 grid gap-2 md:grid-cols-2">
                 <button
                   type="button"
                   onClick={() => setKind("site")}
-                  className={`ui-action rounded-xl border px-3 py-2 text-sm font-black ${
-                    kind === "site"
-                      ? "border-sky-500 bg-sky-500 text-white dark:bg-sky-500/25 dark:text-sky-100"
-                      : "border-slate-200 bg-white text-slate-800 hover:bg-sky-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                  }`}
+                  className={`suggestion-kind-btn ${kind === "site" ? "is-active is-site" : "is-site"}`}
                 >
-                  {isFr ? "Suggestion pour le site" : "اقتراح للموقع"}
+                  <MessageSquarePlus size={16} />
+                  <span>{isFr ? "Suggestion pour le site" : "اقتراح للموقع"}</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setKind("college")}
-                  className={`ui-action rounded-xl border px-3 py-2 text-sm font-black ${
-                    kind === "college"
-                      ? "border-rose-500 bg-rose-500 text-white dark:bg-rose-500/25 dark:text-rose-100"
-                      : "border-slate-200 bg-white text-slate-800 hover:bg-rose-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                  }`}
+                  className={`suggestion-kind-btn ${kind === "college" ? "is-active is-college" : "is-college"}`}
                 >
-                  {isFr ? "Probleme dans la faculte" : "مشكلة في الكلية"}
+                  <AlertCircle size={16} />
+                  <span>{isFr ? "Probleme dans la faculte" : "مشكلة في الكلية"}</span>
                 </button>
               </div>
             )}
@@ -144,13 +123,18 @@ export default function SuggestionsPage() {
 
             {step === 3 && (
               <div className="mt-4 grid gap-2">
-                <textarea
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
-                  rows={6}
-                  placeholder={isFr ? "Ecrivez votre message en detail..." : "اكتب رسالتك/مشكلتك بالتفصيل..."}
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                />
+                <div className="float-field">
+                  <textarea
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
+                    rows={6}
+                    placeholder=" "
+                    className="float-input"
+                  />
+                  <label className="float-label">
+                    {isFr ? "Decrivez votre message..." : "وصف الاقتراح أو المشكلة"}
+                  </label>
+                </div>
                 <div className="inline-flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
                   <AlertCircle size={14} className="mt-0.5 shrink-0" />
                   <span>
@@ -239,4 +223,3 @@ export default function SuggestionsPage() {
     </div>
   );
 }
-
