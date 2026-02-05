@@ -33,38 +33,27 @@ function getServiceKey() {
 }
 
 async function insertNotice(title: string, body: string, source: string, key: string) {
-  const variants: Array<Record<string, string>> = [
-    { title, content: body, source },
-    { titre: title, content: body, source },
-    { name: title, text: body, source },
-    { title, content: body },
-    { titre: title, content: body },
-    { name: title, text: body },
-  ];
+  const content = source ? `${body}\n\nالمصدر: ${source}` : body;
+  const payload = [{ title, content }];
 
-  let lastError = "فشل إضافة الإعلان";
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
 
-  for (const item of variants) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
-      method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
-      body: JSON.stringify([item]),
-    });
-
-    if (res.ok) {
-      const inserted = await res.json();
-      return { ok: true as const, inserted };
-    }
-
-    lastError = (await res.text()) || lastError;
+  if (!res.ok) {
+    const text = await res.text();
+    return { ok: false as const, error: text || "فشل إضافة الإعلان" };
   }
 
-  return { ok: false as const, error: lastError };
+  const inserted = await res.json();
+  return { ok: true as const, inserted };
 }
 
 export async function POST(req: Request) {
