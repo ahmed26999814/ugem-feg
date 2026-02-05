@@ -196,6 +196,19 @@ a {
   color: #cbd5e1;
 }
 
+/* Improve readability for Tailwind slate text utilities in dark mode */
+.dark .text-slate-500 {
+  color: #a8b3c7 !important;
+}
+
+.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
 .ui-action {
   min-height: 44px;
   border-radius: 12px;
