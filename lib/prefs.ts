@@ -1,5 +1,5 @@
 ﻿export const RESULTS_URL = "https://tinyurl.com/5fcndzzt";
-export const DEV_WHATSAPP = "+22244881891";
+export const DEV_WHATSAPP = "+22231682774";
 
 export const UGEM_CONTACTS = {
   facebook: "https://www.facebook.com/UGEMFEG",

@@ -31,7 +31,7 @@ export default function Footer() {
           </p>
           <motion.a
             className="footer-dev-btn"
-            href="https://wa.me/22244881891"
+            href="https://wa.me/22231682774"
             target="_blank"
             rel="noreferrer"
             whileHover={{ y: -2, scale: 1.02 }}
