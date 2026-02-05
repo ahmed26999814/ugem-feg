@@ -11,6 +11,7 @@ import { cn } from "@/lib/cn";
 const navItems = [
   { href: "/", ar: "الرئيسية", fr: "Accueil" },
   { href: "/annonces", ar: "الإعلانات", fr: "Annonces" },
+  { href: "/suggestions", ar: "الاقتراحات", fr: "Suggestions" },
   { href: "/archive", ar: "الأرشيف", fr: "Archives" },
   { href: "/reviews", ar: "المراجعات", fr: "Avis" },
   { href: "/specialites", ar: "التخصصات", fr: "Spécialités" },
