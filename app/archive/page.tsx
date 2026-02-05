@@ -113,7 +113,7 @@ export default function ArchivePage() {
             <p className="mb-2 text-sm font-bold">1. اختر السنة الدراسية</p>
             <button
               onClick={() => setLevelPickerOpen(true)}
-              className="ui-action inline-flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold hover:border-emerald-400 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-emerald-400/50"
+              className="ui-action inline-flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-900 hover:border-emerald-400 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-emerald-400/50"
             >
               <span className="inline-flex items-center gap-2">
                 <CalendarRange size={15} />
@@ -154,8 +154,8 @@ export default function ArchivePage() {
                       }}
                       className={`ui-action rounded-xl border px-3 py-2 text-right text-sm font-semibold transition ${
                         picked?.url === item.url
-                          ? "border-emerald-500 bg-emerald-100 text-slate-900 dark:bg-emerald-500/20 dark:text-emerald-200"
-                          : "border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-emerald-500/40"
+                          ? "border-emerald-500 bg-emerald-100 text-emerald-900 dark:border-emerald-400/50 dark:bg-emerald-500/20 dark:text-emerald-200"
+                          : "border-slate-200 bg-white text-slate-800 hover:border-emerald-300 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-emerald-500/40"
                       }`}
                     >
                       <span className="inline-flex items-center gap-1.5">
@@ -178,7 +178,7 @@ export default function ArchivePage() {
             <button
               onClick={handleSearch}
               disabled={!canSearch}
-              className="ui-action cta-shine mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+              className="ui-action cta-shine mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-black text-white dark:from-emerald-500 dark:to-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Search size={15} />
               بحث
@@ -224,8 +224,8 @@ export default function ArchivePage() {
                       }}
                       className={`ui-action rounded-xl border px-3 py-2 text-sm font-black ${
                         level === item
-                          ? "border-emerald-500 bg-emerald-500 text-white"
-                          : "border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-emerald-500/40"
+                          ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-400/50 dark:bg-emerald-500/25 dark:text-emerald-100"
+                          : "border-slate-200 bg-white text-slate-900 hover:border-emerald-300 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-emerald-500/40"
                       }`}
                     >
                       {item}

@@ -144,17 +144,17 @@ export default function SpecialitesPage() {
   const levelStyles: Record<Level, { pill: string; button: string; card: string }> = {
     L1: {
       pill: "border-emerald-300 bg-emerald-100 text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-300",
-      button: "bg-emerald-500 text-white",
+      button: "bg-emerald-500 text-white dark:bg-emerald-500/25 dark:text-emerald-100",
       card: "from-emerald-50/80 to-white dark:from-emerald-500/10 dark:to-slate-900",
     },
     L2: {
       pill: "border-sky-300 bg-sky-100 text-sky-800 dark:border-sky-500/40 dark:bg-sky-500/20 dark:text-sky-300",
-      button: "bg-sky-500 text-white",
+      button: "bg-sky-500 text-white dark:bg-sky-500/25 dark:text-sky-100",
       card: "from-sky-50/80 to-white dark:from-sky-500/10 dark:to-slate-900",
     },
     L3: {
       pill: "border-violet-300 bg-violet-100 text-violet-800 dark:border-violet-500/40 dark:bg-violet-500/20 dark:text-violet-300",
-      button: "bg-violet-500 text-white",
+      button: "bg-violet-500 text-white dark:bg-violet-500/25 dark:text-violet-100",
       card: "from-violet-50/80 to-white dark:from-violet-500/10 dark:to-slate-900",
     },
   };
@@ -192,7 +192,7 @@ export default function SpecialitesPage() {
                   }}
                   className={`relative z-10 rounded-lg px-4 py-2 text-sm font-black transition ${
                     activeLevel === level
-                      ? "text-slate-900 dark:text-slate-900"
+                      ? "text-slate-900 dark:text-slate-50"
                       : "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
                   }`}
                 >
