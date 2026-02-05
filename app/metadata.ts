@@ -81,8 +81,8 @@ export function buildMetadata(
     },
 
     icons: {
-      icon: "/feg-logo.png",     // public/feg-logo.png
-      apple: "/feg-logo.png",
+      icon: "/ugem-logo.jpg",     // public/ugem-logo.jpg
+      apple: "/ugem-logo.jpg",
     },
 
     robots: {

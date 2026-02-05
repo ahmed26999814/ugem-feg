@@ -11,10 +11,14 @@ export const metadata: Metadata = {
   title: "UGEM-FEG",
   description: "UGEM-FEG Platform",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/ugem-logo.jpg",
+    apple: "/ugem-logo.jpg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "UGEM-FEG",
+    title: "UGEM",
   },
   formatDetection: {
     telephone: false,
