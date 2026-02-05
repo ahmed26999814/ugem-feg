@@ -758,6 +758,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 }
 
 .footer-chip {
@@ -839,6 +840,7 @@ a {
 
 .footer-dev-lab {
   margin-top: 10px;
+  flex-basis: 100%;
   width: min(360px, 100%);
   border-radius: 16px;
   border: 1px solid rgba(251, 191, 36, 0.35);

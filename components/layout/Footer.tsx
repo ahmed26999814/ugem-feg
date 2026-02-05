@@ -32,18 +32,35 @@ export default function Footer() {
             يخدم الطلبة ويدافع عن حقوقهم الأكاديمية والاجتماعية.
           </p>
 
+        </motion.div>
+
+        <motion.div
+          className="footer-links"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: 0.08 }}
+        >
+          <a href={unionWhatsapp} target="_blank" rel="noreferrer" className="footer-chip" aria-label="واتساب الاتحاد" title="واتساب الاتحاد">
+            <MessageCircle size={17} />
+          </a>
+          <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip" aria-label="فيسبوك الاتحاد" title="فيسبوك الاتحاد">
+            <Facebook size={17} />
+          </a>
           <motion.button
             type="button"
             className="footer-dev-btn"
             onClick={() => setShowDevLab((prev) => !prev)}
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            aria-label="إعداد وتطوير"
+            title="إعداد وتطوير"
           >
             <span className="footer-dev-icon" aria-hidden="true">
               <Laptop2 size={14} />
             </span>
             <span className="footer-dev-text">
-              <strong>إعداد وتطوير المصطفى وأحمد</strong>
+              <strong>إعداد وتطوير</strong>
             </span>
           </motion.button>
 
@@ -77,7 +94,7 @@ export default function Footer() {
                   </span>
                 </div>
 
-                <p className="footer-dev-lab-copy">يتم الآن بناء واجهة احترافية بعناية.</p>
+                <p className="footer-dev-lab-copy">إعداد وتطوير المصطفى وأحمد</p>
                 <a
                   className="footer-dev-lab-link"
                   href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
@@ -89,21 +106,6 @@ export default function Footer() {
               </motion.div>
             ) : null}
           </AnimatePresence>
-        </motion.div>
-
-        <motion.div
-          className="footer-links"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.08 }}
-        >
-          <a href={unionWhatsapp} target="_blank" rel="noreferrer" className="footer-chip" aria-label="واتساب الاتحاد" title="واتساب الاتحاد">
-            <MessageCircle size={17} />
-          </a>
-          <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip" aria-label="فيسبوك الاتحاد" title="فيسبوك الاتحاد">
-            <Facebook size={17} />
-          </a>
         </motion.div>
       </div>
     </footer>
