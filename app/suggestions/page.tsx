@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
@@ -8,13 +8,14 @@ import { UGEM_CONTACTS } from "@/lib/prefs";
 
 type Kind = "site" | "college" | null;
 
+type Step = 1 | 2 | 3;
+
 export default function SuggestionsPage() {
   const { lang } = useLang();
   const isFr = lang === "fr";
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<Step>(1);
   const [kind, setKind] = useState<Kind>(null);
-  const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
   const [studentCode, setStudentCode] = useState("");
   const [name, setName] = useState("");
@@ -23,13 +24,12 @@ export default function SuggestionsPage() {
     kind !== "college" || /^[EBeb][A-Za-z0-9-]{2,}$/.test(studentCode.trim());
 
   const canNextStep1 = kind !== null;
-  const canNextStep2 = title.trim().length > 2 && studentCodeValid;
-  const canNextStep3 = details.trim().length > 10;
-  const canSend = canNextStep1 && canNextStep2 && canNextStep3;
+  const canNextStep2 = details.trim().length > 10 && studentCodeValid;
+  const canSend = canNextStep1 && canNextStep2;
 
   const kindLabel = useMemo(() => {
     if (kind === "site") return isFr ? "Suggestion du site" : "اقتراح للموقع";
-    if (kind === "college") return isFr ? "Probleme a la faculte" : "مشكلة في الكلية";
+    if (kind === "college") return isFr ? "Probleme dans la faculte" : "مشكلة في الكلية";
     return isFr ? "Non choisi" : "غير محدد";
   }, [isFr, kind]);
 
@@ -38,7 +38,6 @@ export default function SuggestionsPage() {
     const lines = [
       isFr ? "*Formulaire Suggestions*" : "*نموذج الاقتراحات*",
       `${isFr ? "Type" : "النوع"}: ${kindLabel}`,
-      `${isFr ? "Titre" : "العنوان"}: ${title || "-"}`,
       `${isFr ? "Message" : "الرسالة"}: ${details || "-"}`,
       kind === "college"
         ? `${isFr ? "Code etudiant" : "رقم الطالب"}: ${studentCode || "-"}`
@@ -47,7 +46,7 @@ export default function SuggestionsPage() {
     ].filter(Boolean);
 
     return `https://wa.me/${to}?text=${encodeURIComponent(lines.join("\n"))}`;
-  }, [details, isFr, kind, kindLabel, name, studentCode, title]);
+  }, [details, isFr, kind, kindLabel, name, studentCode]);
 
   return (
     <div className="page-shell">
@@ -75,32 +74,44 @@ export default function SuggestionsPage() {
               <div className="mt-4 grid gap-2 md:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => setKind("site")}
+                  onClick={() => {
+                    setKind("site");
+                    setStep(2);
+                  }}
                   className={`suggestion-kind-btn ${kind === "site" ? "is-active is-site" : "is-site"}`}
                 >
-                  <MessageSquarePlus size={16} />
-                  <span>{isFr ? "Suggestion pour le site" : "اقتراح للموقع"}</span>
+                  <span className="suggestion-kind-art is-site" aria-hidden="true">
+                    <span className="suggestion-person" />
+                    <span className="suggestion-arm" />
+                    <span className="suggestion-bubble">{isFr ? "Idea" : "اقتراح"}</span>
+                  </span>
+                  <span className="suggestion-kind-text">
+                    {isFr ? "Suggestion pour le site" : "اقتراح للموقع"}
+                  </span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => setKind("college")}
+                  onClick={() => {
+                    setKind("college");
+                    setStep(2);
+                  }}
                   className={`suggestion-kind-btn ${kind === "college" ? "is-active is-college" : "is-college"}`}
                 >
-                  <AlertCircle size={16} />
-                  <span>{isFr ? "Probleme dans la faculte" : "مشكلة في الكلية"}</span>
+                  <span className="suggestion-kind-art is-college" aria-hidden="true">
+                    <span className="suggestion-person sad" />
+                    <span className="suggestion-person helper" />
+                    <span className="suggestion-arm help" />
+                    <span className="suggestion-spark" />
+                  </span>
+                  <span className="suggestion-kind-text">
+                    {isFr ? "Probleme dans la faculte" : "لدي مشكلة في الكلية"}
+                  </span>
                 </button>
               </div>
             )}
 
             {step === 2 && (
               <div className="mt-4 grid gap-2">
-                <input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder={isFr ? "Titre" : "اكتب عنوانًا واضحًا"}
-                  className="ui-field rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-                />
-
                 {kind === "college" && (
                   <>
                     <input
@@ -118,11 +129,7 @@ export default function SuggestionsPage() {
                     ) : null}
                   </>
                 )}
-              </div>
-            )}
 
-            {step === 3 && (
-              <div className="mt-4 grid gap-2">
                 <div className="float-field">
                   <textarea
                     value={details}
@@ -132,7 +139,7 @@ export default function SuggestionsPage() {
                     className="float-input"
                   />
                   <label className="float-label">
-                    {isFr ? "Decrivez votre message..." : "وصف الاقتراح أو المشكلة"}
+                    {isFr ? "Decrivez votre message..." : "اكتب التفاصيل هنا"}
                   </label>
                 </div>
                 <div className="inline-flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
@@ -146,14 +153,11 @@ export default function SuggestionsPage() {
               </div>
             )}
 
-            {step === 4 && (
+            {step === 3 && (
               <div className="mt-4 grid gap-2">
                 <div className="rounded-xl border border-slate-200 bg-white p-3 text-sm dark:border-slate-700 dark:bg-slate-900">
                   <p>
                     <span className="font-black">{isFr ? "Type" : "النوع"}:</span> {kindLabel}
-                  </p>
-                  <p className="mt-1">
-                    <span className="font-black">{isFr ? "Titre" : "العنوان"}:</span> {title}
                   </p>
                   <p className="mt-1">
                     <span className="font-black">{isFr ? "Message" : "الرسالة"}:</span> {details}
@@ -178,22 +182,18 @@ export default function SuggestionsPage() {
               {step > 1 ? (
                 <button
                   type="button"
-                  onClick={() => setStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3 | 4) : prev))}
+                  onClick={() => setStep((prev) => (prev > 1 ? ((prev - 1) as Step) : prev))}
                   className="ui-action rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-black text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                 >
                   {isFr ? "Retour" : "رجوع"}
                 </button>
               ) : null}
 
-              {step < 4 ? (
+              {step < 3 ? (
                 <button
                   type="button"
-                  onClick={() => setStep((prev) => (prev < 4 ? ((prev + 1) as 1 | 2 | 3 | 4) : prev))}
-                  disabled={
-                    (step === 1 && !canNextStep1) ||
-                    (step === 2 && !canNextStep2) ||
-                    (step === 3 && !canNextStep3)
-                  }
+                  onClick={() => setStep((prev) => (prev < 3 ? ((prev + 1) as Step) : prev))}
+                  disabled={(step === 1 && !canNextStep1) || (step === 2 && !canNextStep2)}
                   className="ui-action rounded-xl bg-emerald-600 px-4 py-2 text-sm font-black text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isFr ? "Suivant" : "التالي"}
