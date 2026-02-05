@@ -54,7 +54,8 @@ export default function FegPage() {
         </motion.section>
 
         <Tabs.Root defaultValue="institution" dir="rtl" className="mt-3">
-          <Tabs.List className="section-card scrollbar-hide flex max-w-full gap-2 overflow-x-auto p-2">
+          <div className="section-card p-0">
+            <Tabs.List className="scrollbar-hide flex w-full flex-nowrap gap-2 overflow-x-auto p-2">
             <Tabs.Trigger
               value="institution"
               className="shrink-0 rounded-xl border border-slate-200 bg-white/85 px-3 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:border-yellow-300 hover:bg-yellow-50 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-500 data-[state=active]:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800 dark:data-[state=active]:border-yellow-400/60 dark:data-[state=active]:bg-yellow-500/20 dark:data-[state=active]:text-yellow-100"
@@ -79,7 +80,8 @@ export default function FegPage() {
             >
               الإدارة والمصادر
             </Tabs.Trigger>
-          </Tabs.List>
+            </Tabs.List>
+          </div>
 
           <Tabs.Content value="institution" className="mt-3 grid gap-3">
             <motion.div variants={staggerContainer} initial="hidden" animate="show" className="grid gap-3">
