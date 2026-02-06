@@ -24,7 +24,7 @@ export default function ComingSoon() {
             سيتم إطلاق هذا الموقع قريبا ..
           </p>
           <p className="coming-soon-line line-hashtag" style={lineTwoStyle}>
-            #نخدم الطلاب_نخدم_الوطن
+            #نخدم_الطلاب_نخدم_الوطن ✌🏻💛
           </p>
         </div>
       </div>

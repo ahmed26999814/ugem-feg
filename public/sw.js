@@ -1,4 +1,4 @@
-const CACHE_NAME = "ugem-feg-v6";
+const CACHE_NAME = "ugem-feg-v7";
 const APP_SHELL = ["/coming-soon", "/ugem-logo.jpg", "/MMM.jpg"];
 
 self.addEventListener("install", (event) => {
