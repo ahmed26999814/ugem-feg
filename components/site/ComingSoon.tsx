@@ -8,14 +8,8 @@ const lineOneStyle = {
 
 const lineTwoStyle = {
   "--type-steps": 28,
-  "--type-width": "26ch",
-  "--type-delay": "4s",
-} as CSSProperties;
-
-const lineThreeStyle = {
-  "--type-steps": 28,
   "--type-width": "24ch",
-  "--type-delay": "7.8s",
+  "--type-delay": "4.2s",
 } as CSSProperties;
 
 export default function ComingSoon() {
@@ -29,10 +23,7 @@ export default function ComingSoon() {
           <p className="coming-soon-line line-primary" style={lineOneStyle}>
             سيتم إطلاق هذا الموقع قريبا ..
           </p>
-          <p className="coming-soon-line line-warm" style={lineTwoStyle}>
-            شكرا علي صبركم معنا ..
-          </p>
-          <p className="coming-soon-line line-hashtag" style={lineThreeStyle}>
+          <p className="coming-soon-line line-hashtag" style={lineTwoStyle}>
             #نخدم الطلاب_نخدم_الوطن
           </p>
         </div>
