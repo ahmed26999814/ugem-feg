@@ -1,3 +1,5 @@
+import ComingSoon from "@/components/site/ComingSoon";
+
 export default function ComingSoonPage() {
-  return <section className="coming-soon" aria-hidden="true" />;
+  return <ComingSoon />;
 }

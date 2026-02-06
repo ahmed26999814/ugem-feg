@@ -1,11 +1,18 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { SITE_CLOSED } from "./lib/siteState";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname === "/coming-soon") {
-    return NextResponse.next();
+  if (SITE_CLOSED) {
+    if (pathname === "/coming-soon") {
+      return NextResponse.next();
+    }
+
+    const url = req.nextUrl.clone();
+    url.pathname = "/coming-soon";
+    return NextResponse.redirect(url);
   }
 
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
@@ -14,9 +21,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const url = req.nextUrl.clone();
-  url.pathname = "/coming-soon";
-  return NextResponse.rewrite(url);
+  return NextResponse.next();
 }
 
 export const config = {

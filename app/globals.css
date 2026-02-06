@@ -87,6 +87,62 @@ a {
   z-index: -1;
 }
 
+.coming-soon-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 22px 28px;
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.88));
+  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.coming-soon-logo-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 6px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coming-soon-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.coming-soon-title {
+  margin: 0;
+  font-size: clamp(1.3rem, 3.8vw, 2.15rem);
+  font-weight: 900;
+  line-height: 1.6;
+  color: #0f172a;
+}
+
+.coming-soon-typing {
+  display: inline-block;
+  direction: rtl;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  padding-left: 8px;
+  border-left: 3px solid #0f172a;
+  animation: coming-typing 3.6s steps(30, end) 0.4s forwards, coming-caret 0.8s step-end infinite;
+}
+
+.site-closed {
+  overflow: hidden;
+}
+
 .dark .coming-soon {
   background: radial-gradient(circle at 18% 12%, rgba(244, 196, 48, 0.15), transparent 48%),
     radial-gradient(circle at 82% 88%, rgba(47, 168, 79, 0.14), transparent 55%),
@@ -96,6 +152,25 @@ a {
 
 .dark .coming-soon::after {
   background: rgba(2, 6, 23, 0.3);
+}
+
+.dark .coming-soon-title {
+  color: #f8fafc;
+}
+
+.dark .coming-soon-typing {
+  border-left-color: #f8fafc;
+}
+
+.dark .coming-soon-frame {
+  border-color: rgba(148, 163, 184, 0.3);
+  background: linear-gradient(140deg, rgba(15, 23, 42, 0.9), rgba(17, 24, 39, 0.86));
+  box-shadow: 0 24px 54px rgba(2, 6, 23, 0.6);
+}
+
+.dark .coming-soon-logo-wrap {
+  border-color: rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.8);
 }
 
 .brand-motion {
@@ -138,12 +213,48 @@ a {
   }
 }
 
+@keyframes coming-typing {
+  to {
+    max-width: 30ch;
+  }
+}
+
+@keyframes coming-caret {
+  0%,
+  100% {
+    border-left-color: currentColor;
+  }
+  50% {
+    border-left-color: transparent;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .brand-motion {
+  .brand-motion,
+  .coming-soon-typing {
     animation: none;
   }
   .brand-motion.is-typing::after {
     animation: none;
+  }
+  .coming-soon-typing {
+    max-width: none;
+    border-left-color: transparent;
+  }
+}
+
+@media (max-width: 640px) {
+  .coming-soon-frame {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 18px;
+  }
+  .coming-soon-logo-wrap {
+    width: 76px;
+    height: 76px;
+  }
+  .coming-soon-title {
+    text-align: center;
   }
 }
 
