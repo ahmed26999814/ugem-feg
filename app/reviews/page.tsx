@@ -18,6 +18,7 @@ const DATA: Record<Level, ReviewItem[]> = {
   L2: [
     { title: "Economie Gestion L2", url: "https://t.me/ugemEGL2" },
     { title: "BA L2", url: "https://t.me/ugemfedBAl2" },
+    { title: "GRH L2", url: "https://t.me/ugemGRHL2" },
     { title: "FC L2", url: "https://t.me/ugemfcl2" },
   ],
   L3: [
