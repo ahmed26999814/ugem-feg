@@ -50,6 +50,54 @@ a {
   text-decoration: none;
 }
 
+.coming-soon {
+  position: fixed;
+  inset: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  isolation: isolate;
+  z-index: 10;
+  background: radial-gradient(circle at 18% 12%, rgba(244, 196, 48, 0.18), transparent 48%),
+    radial-gradient(circle at 82% 88%, rgba(47, 168, 79, 0.16), transparent 55%),
+    linear-gradient(135deg, rgba(248, 250, 252, 0.92), rgba(244, 246, 250, 0.96));
+  color: #0f172a;
+}
+
+.coming-soon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/MMM.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.28;
+  filter: saturate(1.05) contrast(1.05);
+  z-index: -2;
+}
+
+.coming-soon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: -1;
+}
+
+.dark .coming-soon {
+  background: radial-gradient(circle at 18% 12%, rgba(244, 196, 48, 0.15), transparent 48%),
+    radial-gradient(circle at 82% 88%, rgba(47, 168, 79, 0.14), transparent 55%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(10, 16, 30, 0.96));
+  color: #f8fafc;
+}
+
+.dark .coming-soon::after {
+  background: rgba(2, 6, 23, 0.3);
+}
+
 .brand-motion {
   display: inline-block;
   position: relative;

@@ -23,6 +23,7 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isComingSoon = pathname === "/coming-soon";
   const { theme, setTheme } = useTheme();
   const { lang, toggleLang } = useLang();
   const [mounted, setMounted] = useState(false);
@@ -60,6 +61,8 @@ export default function Navbar() {
 
     return () => window.clearInterval(timer);
   }, [brandTitle]);
+
+  if (isComingSoon) return null;
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/80">

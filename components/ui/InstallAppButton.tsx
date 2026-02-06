@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 
 type DeferredInstallPrompt = Event & {
   prompt: () => Promise<void>;
@@ -8,10 +9,15 @@ type DeferredInstallPrompt = Event & {
 };
 
 export default function InstallAppButton() {
+  const pathname = usePathname();
+  const isComingSoon = pathname === "/coming-soon";
+
   const [promptEvent, setPromptEvent] = useState<DeferredInstallPrompt | null>(null);
   const [iosHint, setIosHint] = useState(false);
 
   useEffect(() => {
+    if (isComingSoon) return;
+
     const ua = navigator.userAgent.toLowerCase();
     const isIOS = /iphone|ipad|ipod/.test(ua);
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
@@ -28,9 +34,10 @@ export default function InstallAppButton() {
 
     window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
     return () => window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
-  }, []);
+  }, [isComingSoon]);
 
   const canInstall = useMemo(() => Boolean(promptEvent) || iosHint, [promptEvent, iosHint]);
+  if (isComingSoon) return null;
   if (!canInstall) return null;
 
   const onInstall = async () => {
@@ -53,4 +60,3 @@ export default function InstallAppButton() {
     </button>
   );
 }
-

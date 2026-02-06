@@ -1,5 +1,5 @@
-const CACHE_NAME = "ugem-feg-v1";
-const APP_SHELL = ["/", "/annonces", "/specialites", "/archive", "/feg-logo.png", "/ugem-logo.jpg"];
+const CACHE_NAME = "ugem-feg-v3";
+const APP_SHELL = ["/coming-soon", "/ugem-logo.jpg", "/MMM.jpg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -40,10 +40,9 @@ self.addEventListener("fetch", (event) => {
           }
           return res;
         })
-        .catch(() => cached || caches.match("/"));
+        .catch(() => cached || caches.match("/coming-soon"));
 
       return cached || network;
     })
   );
 });
-
