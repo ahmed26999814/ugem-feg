@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { SITE_ACCESS_CODE, SITE_ACCESS_COOKIE } from "@/lib/siteState";
+import { SITE_ACCESS_CODE } from "@/lib/siteState";
 
 export default function Admin2Page() {
-  const router = useRouter();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmed = code.trim();
     if (trimmed !== SITE_ACCESS_CODE) {
@@ -17,11 +15,19 @@ export default function Admin2Page() {
       return;
     }
 
-    const maxAge = 60 * 60 * 24 * 7;
-    document.cookie = `${SITE_ACCESS_COOKIE}=${SITE_ACCESS_CODE}; path=/; max-age=${maxAge}; samesite=lax`;
+    const res = await fetch("/api/admin2", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: trimmed }),
+    }).catch(() => null);
+
+    if (!res || !res.ok) {
+      setError("الكود غير صحيح.");
+      return;
+    }
+
     setError("");
-    router.push("/");
-    router.refresh();
+    window.location.href = "/";
   };
 
   return (
