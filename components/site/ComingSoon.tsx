@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import { Facebook, MessageCircle } from "lucide-react";
+import { UGEM_CONTACTS } from "@/lib/prefs";
 
 const lineOneStyle = {
   "--type-steps": 34,
@@ -13,6 +15,8 @@ const lineTwoStyle = {
 } as CSSProperties;
 
 export default function ComingSoon() {
+  const unionWhatsapp = `https://wa.me/${UGEM_CONTACTS.whatsapp.replace(/\D/g, "")}`;
+
   return (
     <section className="coming-soon" aria-live="polite">
       <div className="coming-soon-frame">
@@ -27,6 +31,28 @@ export default function ComingSoon() {
             #نخدم_الطلاب_نخدم_الوطن ✌🏻💛
           </p>
         </div>
+      </div>
+      <div className="coming-soon-social">
+        <a
+          href={unionWhatsapp}
+          className="coming-soon-social-link is-whatsapp"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="واتساب الاتحاد"
+          title="واتساب الاتحاد"
+        >
+          <MessageCircle size={18} />
+        </a>
+        <a
+          href={UGEM_CONTACTS.facebook}
+          className="coming-soon-social-link is-facebook"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="فيسبوك الاتحاد"
+          title="فيسبوك الاتحاد"
+        >
+          <Facebook size={18} />
+        </a>
       </div>
     </section>
   );
