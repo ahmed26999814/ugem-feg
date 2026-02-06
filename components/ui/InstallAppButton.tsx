@@ -10,7 +10,7 @@ type DeferredInstallPrompt = Event & {
 
 export default function InstallAppButton() {
   const pathname = usePathname();
-  const isComingSoon = pathname === "/coming-soon";
+  const isComingSoon = pathname === "/coming-soon" || pathname === "/admin2";
 
   const [promptEvent, setPromptEvent] = useState<DeferredInstallPrompt | null>(null);
   const [iosHint, setIosHint] = useState(false);

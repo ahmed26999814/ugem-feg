@@ -6,8 +6,6 @@ import Navbar from "@/components/Navbar";
 import Providers from "@/components/providers/Providers";
 import PWARegister from "@/components/providers/PWARegister";
 import InstallAppButton from "@/components/ui/InstallAppButton";
-import ComingSoon from "@/components/site/ComingSoon";
-import { SITE_CLOSED } from "@/lib/siteState";
 
 export const metadata: Metadata = {
   title: "UGEM-FEG",
@@ -33,17 +31,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={SITE_CLOSED ? "site-closed" : undefined}>
-        {SITE_CLOSED ? (
-          <ComingSoon />
-        ) : (
-          <Providers>
-            <PWARegister />
-            <Navbar />
-            <InstallAppButton />
-            <main className="app-main">{children}</main>
-          </Providers>
-        )}
+      <body>
+        <Providers>
+          <PWARegister />
+          <Navbar />
+          <InstallAppButton />
+          <main className="app-main">{children}</main>
+        </Providers>
       </body>
     </html>
   );

@@ -23,7 +23,7 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isComingSoon = pathname === "/coming-soon";
+  const isComingSoon = pathname === "/coming-soon" || pathname === "/admin2";
   const { theme, setTheme } = useTheme();
   const { lang, toggleLang } = useLang();
   const [mounted, setMounted] = useState(false);
