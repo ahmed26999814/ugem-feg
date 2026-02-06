@@ -120,23 +120,46 @@ a {
   object-fit: cover;
 }
 
-.coming-soon-title {
-  margin: 0;
-  font-size: clamp(1.3rem, 3.8vw, 2.15rem);
-  font-weight: 900;
-  line-height: 1.6;
-  color: #0f172a;
+.coming-soon-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
-.coming-soon-typing {
+.coming-soon-line {
+  margin: 0;
+  font-size: clamp(1.05rem, 3.4vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1.6;
   display: inline-block;
   direction: rtl;
   white-space: nowrap;
   overflow: hidden;
   max-width: 0;
-  padding-left: 8px;
-  border-left: 3px solid #0f172a;
-  animation: coming-typing 3.6s steps(30, end) 0.4s forwards, coming-caret 0.8s step-end infinite;
+  padding-left: 10px;
+  --caret-color: #0f172a;
+  border-left: 3px solid var(--caret-color, currentColor);
+  animation: coming-typing var(--type-duration, 3.4s) steps(var(--type-steps, 30), end)
+      var(--type-delay, 0s) forwards,
+    coming-caret 0.8s step-end infinite;
+}
+
+.line-primary {
+  background: linear-gradient(135deg, var(--ugem-yellow), var(--ugem-green), var(--ugem-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.line-warm {
+  color: var(--ugem-red);
+}
+
+.line-hashtag {
+  font-size: clamp(0.95rem, 3vw, 1.5rem);
+  color: var(--ugem-green);
 }
 
 .site-closed {
@@ -154,12 +177,12 @@ a {
   background: rgba(2, 6, 23, 0.3);
 }
 
-.dark .coming-soon-title {
-  color: #f8fafc;
+.dark .coming-soon-line {
+  --caret-color: #f8fafc;
 }
 
-.dark .coming-soon-typing {
-  border-left-color: #f8fafc;
+.dark .line-primary {
+  text-shadow: 0 10px 20px rgba(2, 6, 23, 0.5);
 }
 
 .dark .coming-soon-frame {
@@ -215,7 +238,7 @@ a {
 
 @keyframes coming-typing {
   to {
-    max-width: 30ch;
+    max-width: var(--type-width, 30ch);
   }
 }
 
@@ -231,13 +254,13 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .brand-motion,
-  .coming-soon-typing {
+  .coming-soon-line {
     animation: none;
   }
   .brand-motion.is-typing::after {
     animation: none;
   }
-  .coming-soon-typing {
+  .coming-soon-line {
     max-width: none;
     border-left-color: transparent;
   }
@@ -253,7 +276,7 @@ a {
     width: 76px;
     height: 76px;
   }
-  .coming-soon-title {
+  .coming-soon-text {
     text-align: center;
   }
 }
