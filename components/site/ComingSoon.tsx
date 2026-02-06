@@ -8,7 +8,7 @@ const lineOneStyle = {
 
 const lineTwoStyle = {
   "--type-steps": 28,
-  "--type-width": "24ch",
+  "--type-width": "28ch",
   "--type-delay": "4.2s",
 } as CSSProperties;
 

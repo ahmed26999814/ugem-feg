@@ -139,10 +139,12 @@ a {
   max-width: 0;
   padding-left: 10px;
   --caret-color: #0f172a;
+  --extra-animation: none;
   border-left: 3px solid var(--caret-color, currentColor);
   animation: coming-typing var(--type-duration, 3.4s) steps(var(--type-steps, 30), end)
       var(--type-delay, 0s) forwards,
-    coming-caret 0.8s step-end infinite;
+    coming-caret 0.8s step-end infinite,
+    var(--extra-animation);
 }
 
 .line-primary {
@@ -161,7 +163,7 @@ a {
   background-clip: text;
   color: transparent;
   text-shadow: 0 8px 18px rgba(250, 204, 21, 0.35);
-  animation: hashtag-shine 3.4s ease-in-out infinite;
+  --extra-animation: hashtag-shine 3.4s ease-in-out infinite;
 }
 
 .site-closed {
