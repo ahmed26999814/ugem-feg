@@ -61,36 +61,25 @@ export async function GET() {
       );
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=home_collage_urls&limit=1`, {
-      headers: buildSupabaseHeaders(key),
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/site_stats?select=ugem_media_images,ugem_media_videos&limit=1`,
+      { headers: buildSupabaseHeaders(key), cache: "no-store" }
+    );
 
     if (res.ok) {
-      const rows = (await res.json()) as Array<{ home_collage_urls?: string }>;
-      const urls = parseUrls(rows?.[0]?.home_collage_urls);
-      return NextResponse.json({ urls });
+      const rows = (await res.json()) as Array<{ ugem_media_images?: string; ugem_media_videos?: string }>;
+      const images = parseUrls(rows?.[0]?.ugem_media_images);
+      const videos = parseUrls(rows?.[0]?.ugem_media_videos);
+      return NextResponse.json({ images, videos });
     }
 
     const text = await res.text();
-    if (isMissingColumn(text, "home_collage_urls")) {
-      const fallbackRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/site_stats?select=home_collage_url&limit=1`,
-        { headers: buildSupabaseHeaders(key), cache: "no-store" }
-      );
-      if (!fallbackRes.ok) {
-        const fallbackText = await fallbackRes.text();
-        if (isMissingColumn(fallbackText, "home_collage_url")) {
-          return NextResponse.json({ urls: [], missingColumn: true });
-        }
-        return NextResponse.json({ error: fallbackText || "فشل تحميل صور الصفحة الرئيسية" }, { status: 500 });
-      }
-      const rows = (await fallbackRes.json()) as Array<{ home_collage_url?: string }>;
-      const urls = parseUrls(rows?.[0]?.home_collage_url);
-      return NextResponse.json({ urls, missingColumn: true });
+    const missingImages = isMissingColumn(text, "ugem_media_images");
+    const missingVideos = isMissingColumn(text, "ugem_media_videos");
+    if (missingImages || missingVideos) {
+      return NextResponse.json({ images: [], videos: [], missingColumn: true });
     }
-
-    return NextResponse.json({ error: text || "فشل تحميل صور الصفحة الرئيسية" }, { status: 500 });
+    return NextResponse.json({ error: text || "فشل تحميل صور وفيديوهات الاتحاد" }, { status: 500 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -101,43 +90,19 @@ export async function GET() {
 
 export async function PATCH(req: Request) {
   try {
-    const data = (await req.json()) as { username?: string; password?: string; url?: string; urls?: string[] };
+    const data = (await req.json()) as {
+      username?: string;
+      password?: string;
+      images?: string[];
+      videos?: string[];
+    };
     const username = data.username ?? "";
     const password = data.password ?? "";
-    const urls = Array.isArray(data.urls) ? data.urls.filter(Boolean) : [];
-    const fallbackUrl = typeof data.url === "string" ? data.url.trim() : "";
-    const finalUrls = urls.length ? urls : fallbackUrl ? [fallbackUrl] : [];
+    const images = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
+    const videos = Array.isArray(data.videos) ? data.videos.filter(Boolean) : [];
 
     if (!isValidAdmin(username, password)) {
       return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
-    }
-    if (!finalUrls.length) {
-      // allow clearing all images
-      const key = getServiceKey();
-      if (!key) {
-        return NextResponse.json(
-          { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
-          { status: 500 }
-        );
-      }
-
-      const payload = { home_collage_urls: "[]" };
-      const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
-        method: "PATCH",
-        headers: buildSupabaseHeaders(key, true),
-        body: JSON.stringify(payload),
-      });
-      if (!patchRes.ok) {
-        const text = await patchRes.text();
-        if (isMissingColumn(text, "home_collage_urls")) {
-          return NextResponse.json(
-            { error: "أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة." },
-            { status: 400 }
-          );
-        }
-        return NextResponse.json({ error: text || "فشل حفظ الصور" }, { status: 500 });
-      }
-      return NextResponse.json({ ok: true, urls: [] });
     }
 
     const key = getServiceKey();
@@ -148,7 +113,11 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const payload = { home_collage_urls: JSON.stringify(finalUrls) };
+    const payload = {
+      ugem_media_images: JSON.stringify(images),
+      ugem_media_videos: JSON.stringify(videos),
+    };
+
     const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
       method: "PATCH",
       headers: buildSupabaseHeaders(key, true),
@@ -157,9 +126,9 @@ export async function PATCH(req: Request) {
 
     if (!patchRes.ok) {
       const text = await patchRes.text();
-      if (isMissingColumn(text, "home_collage_urls")) {
+      if (isMissingColumn(text, "ugem_media_images") || isMissingColumn(text, "ugem_media_videos")) {
         return NextResponse.json(
-          { error: "أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة." },
+          { error: "أضف عمودين ugem_media_images و ugem_media_videos (text) داخل جدول site_stats." },
           { status: 400 }
         );
       }
@@ -167,15 +136,15 @@ export async function PATCH(req: Request) {
       const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
         method: "POST",
         headers: buildSupabaseHeaders(key, true),
-        body: JSON.stringify([{ visits: 0, home_collage_urls: JSON.stringify(finalUrls) }]),
+        body: JSON.stringify([{ visits: 0, ...payload }]),
       });
       if (!insertRes.ok) {
         const insertText = await insertRes.text();
-        return NextResponse.json({ error: insertText || "فشل حفظ الصور" }, { status: 500 });
+        return NextResponse.json({ error: insertText || "فشل حفظ الوسائط" }, { status: 500 });
       }
     }
 
-    return NextResponse.json({ ok: true, urls: finalUrls });
+    return NextResponse.json({ ok: true, images, videos });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },

@@ -1732,6 +1732,26 @@ select {
   filter: saturate(1.05) contrast(1.02);
 }
 
+.ugem-media-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.ugem-media-item {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 10px 22px rgba(2, 6, 23, 0.16);
+  background: #0f172a;
+}
+
+.ugem-media-video {
+  aspect-ratio: 16 / 9;
+}
+
 @media (min-width: 900px) {
   .cards-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

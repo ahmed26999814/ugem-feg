@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import * as Tabs from "@radix-ui/react-tabs";
 import {
@@ -67,6 +67,8 @@ function toMember(item: string, fallbackRole: string): TeamMember {
 export default function UgemPage() {
   const [teamView, setTeamView] = useState<TeamView | null>(null);
   const [selectedMember, setSelectedMember] = useState<number | null>(null);
+  const [mediaImages, setMediaImages] = useState<string[]>([]);
+  const [mediaVideos, setMediaVideos] = useState<string[]>([]);
 
   const teamMembersMap = useMemo<Record<TeamView, TeamMember[]>>(
     () => ({
@@ -85,6 +87,16 @@ export default function UgemPage() {
 
   const activeMembers = teamView ? teamMembersMap[teamView] : [];
   const activeMember = selectedMember === null ? null : activeMembers[selectedMember] ?? null;
+
+  useEffect(() => {
+    fetch("/api/ugem-media")
+      .then((res) => res.json() as Promise<{ images?: string[]; videos?: string[] }>)
+      .then((data) => {
+        if (Array.isArray(data.images)) setMediaImages(data.images.filter(Boolean));
+        if (Array.isArray(data.videos)) setMediaVideos(data.videos.filter(Boolean));
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="page-shell">
@@ -311,6 +323,37 @@ export default function UgemPage() {
             </motion.article>
           </Tabs.Content>
         </Tabs.Root>
+
+        {(mediaImages.length || mediaVideos.length) ? (
+          <section className="section-card mt-4">
+            <h2 className="text-xl font-black">صور وفيديوهات الاتحاد</h2>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              آخر الصور والفيديوهات الخاصة بأنشطة الاتحاد.
+            </p>
+
+            {mediaImages.length ? (
+              <div className="ugem-media-grid mt-3">
+                {mediaImages.map((src) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt="صورة من أنشطة الاتحاد"
+                    className="ugem-media-item"
+                    loading="lazy"
+                  />
+                ))}
+              </div>
+            ) : null}
+
+            {mediaVideos.length ? (
+              <div className="ugem-media-grid mt-3">
+                {mediaVideos.map((src) => (
+                  <video key={src} src={src} controls className="ugem-media-item ugem-media-video" />
+                ))}
+              </div>
+            ) : null}
+          </section>
+        ) : null}
       </div>
     </div>
   );
