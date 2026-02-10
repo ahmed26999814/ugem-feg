@@ -65,8 +65,10 @@ export default function AdminAnnoncesPage() {
   const [loading, setLoading] = useState(false);
 
   const [items, setItems] = useState<Notice[]>([]);
-  const [showCounter, setShowCounter] = useState<boolean | null>(null);
+  const [counterValue, setCounterValue] = useState<boolean | null>(null);
+  const [counterSaved, setCounterSaved] = useState<boolean | null>(null);
   const [counterLoading, setCounterLoading] = useState(false);
+  const [counterSaving, setCounterSaving] = useState(false);
   const [counterHint, setCounterHint] = useState<string | null>(null);
 
   const loadItems = async () => {
@@ -89,7 +91,10 @@ export default function AdminAnnoncesPage() {
       fetch("/api/visitors")
         .then((res) => res.json() as Promise<{ show?: boolean }>)
         .then((data) => {
-          if (typeof data.show === "boolean") setShowCounter(data.show);
+          if (typeof data.show === "boolean") {
+            setCounterValue(data.show);
+            setCounterSaved(data.show);
+          }
           if ((data as { missingShowColumn?: boolean }).missingShowColumn) {
             setCounterHint("أضف عمود show_counter (boolean) داخل جدول site_stats لتفعيل الإظهار/الإخفاء.");
           } else {
@@ -97,7 +102,8 @@ export default function AdminAnnoncesPage() {
           }
         })
         .catch(() => {
-          setShowCounter(true);
+          setCounterValue(true);
+          setCounterSaved(true);
         });
     }
   }, [authed]);
@@ -216,28 +222,76 @@ export default function AdminAnnoncesPage() {
     await loadItems();
   };
 
-  const toggleCounter = async () => {
-    if (showCounter === null) return;
-    setCounterLoading(true);
+  const saveCounter = async () => {
+    if (counterValue === null) return;
+    setCounterSaving(true);
     const res = await fetch("/api/visitors", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, show: !showCounter }),
+      body: JSON.stringify({ username, password, show: counterValue }),
     });
     const data = await res.json();
-    setCounterLoading(false);
+    setCounterSaving(false);
     if (!res.ok) {
       setMsg(data?.error || "فشل تحديث عداد الزوار.");
       return;
     }
-    setShowCounter(Boolean(data?.show));
+    setCounterSaved(Boolean(data?.show));
+    setCounterValue(Boolean(data?.show));
     setMsg(Boolean(data?.show) ? "تم إظهار عداد الزوار." : "تم إخفاء عداد الزوار.");
   };
 
   return (
     <div className="page-shell">
       <div className="container">
-        <section className="section-card">
+        {authed ? (
+          <section className="section-card">
+            <h2 className="text-xl font-black">عداد الزوار</h2>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              تحكم بإظهار أو إخفاء عداد الزوار في الموقع.
+            </p>
+            {counterHint ? (
+              <p className="mt-2 text-xs font-bold text-amber-600 dark:text-amber-300">{counterHint}</p>
+            ) : null}
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setCounterValue(true)}
+                className={`rounded-full px-4 py-2 text-xs font-black transition ${
+                  counterValue
+                    ? "bg-emerald-600 text-white hover:bg-emerald-500"
+                    : "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                إظهار
+              </button>
+              <button
+                type="button"
+                onClick={() => setCounterValue(false)}
+                className={`rounded-full px-4 py-2 text-xs font-black transition ${
+                  counterValue === false
+                    ? "bg-slate-700 text-white hover:bg-slate-600"
+                    : "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                إخفاء
+              </button>
+              <button
+                type="button"
+                onClick={saveCounter}
+                disabled={counterSaving || counterValue === counterSaved || counterValue === null}
+                className="rounded-full bg-yellow-500 px-4 py-2 text-xs font-black text-slate-900 hover:bg-yellow-400 disabled:opacity-60"
+              >
+                {counterSaving ? "جارٍ الحفظ..." : "حفظ التغيير"}
+              </button>
+              <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
+                الحالة: {counterValue ? "ظاهر" : "مخفي"}
+              </span>
+            </div>
+          </section>
+        ) : null}
+
+        <section className="section-card mt-4">
           <h1 className="text-3xl font-black">Admin - الإعلانات</h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             هذه الصفحة مخصصة للإدارة فقط عبر المسار /Admin (أو /admin).
@@ -393,39 +447,6 @@ export default function AdminAnnoncesPage() {
 
           {msg && <p className="mt-3 text-sm font-bold text-slate-700 dark:text-slate-200">{msg}</p>}
         </section>
-
-        {authed ? (
-          <section className="section-card mt-4">
-            <h2 className="text-xl font-black">عداد الزوار</h2>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-              تحكم بإظهار أو إخفاء عداد الزوار في الموقع.
-            </p>
-            {counterHint ? (
-              <p className="mt-2 text-xs font-bold text-amber-600 dark:text-amber-300">{counterHint}</p>
-            ) : null}
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={toggleCounter}
-                disabled={counterLoading || showCounter === null}
-                className={`rounded-full px-4 py-2 text-xs font-black transition ${
-                  showCounter
-                    ? "bg-emerald-600 text-white hover:bg-emerald-500"
-                    : "bg-slate-700 text-white hover:bg-slate-600"
-                } disabled:opacity-60`}
-              >
-                {counterLoading
-                  ? "جارٍ التحديث..."
-                  : showCounter
-                    ? "إخفاء العداد"
-                    : "إظهار العداد"}
-              </button>
-              <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
-                الحالة: {showCounter ? "ظاهر" : "مخفي"}
-              </span>
-            </div>
-          </section>
-        ) : null}
       </div>
     </div>
   );
