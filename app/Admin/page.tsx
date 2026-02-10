@@ -60,8 +60,8 @@ export default function AdminAnnoncesPage() {
   const [source, setSource] = useState("الإدارة/الاتحاد");
   const [mode, setMode] = useState<"text" | "image">("text");
   const [imageUrl, setImageUrl] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -186,14 +186,16 @@ export default function AdminAnnoncesPage() {
   }, [ugemVideoFiles]);
 
   useEffect(() => {
-    if (!imageFile) {
-      setImagePreview(null);
+    if (!imageFiles.length) {
+      setImagePreviews([]);
       return;
     }
-    const url = URL.createObjectURL(imageFile);
-    setImagePreview(url);
-    return () => URL.revokeObjectURL(url);
-  }, [imageFile]);
+    const urls = imageFiles.map((file) => URL.createObjectURL(file));
+    setImagePreviews(urls);
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imageFiles]);
 
   const login = () => {
     if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "44881891") {
@@ -218,21 +220,21 @@ export default function AdminAnnoncesPage() {
       setMsg("المحتوى مطلوب للإعلان النصي.");
       return;
     }
-    if (mode === "image" && !imageFile && !trimmedImage) {
-      setMsg("اختر صورة للرفع أو ضع رابطها.");
+    if (mode === "image" && !imageFiles.length && !trimmedImage) {
+      setMsg("اختر صورة/صور للرفع أو ضع روابطها.");
       return;
     }
 
     setLoading(true);
     setMsg(null);
 
-    let finalImage = "";
     if (mode === "image") {
-      if (imageFile) {
+      const uploadedUrls: string[] = [];
+      for (const file of imageFiles) {
         const form = new FormData();
         form.append("username", username);
         form.append("password", password);
-        form.append("file", imageFile);
+        form.append("file", file);
         const uploadRes = await fetch("/api/annonces-upload", {
           method: "POST",
           body: form,
@@ -243,10 +245,54 @@ export default function AdminAnnoncesPage() {
           setMsg(uploadData?.error || "فشل رفع الصورة.");
           return;
         }
-        finalImage = uploadData?.url || "";
-      } else {
-        finalImage = trimmedImage;
+        if (typeof uploadData?.url === "string") {
+          uploadedUrls.push(uploadData.url);
+        }
       }
+
+      const urlList = trimmedImage
+        ? trimmedImage.split(/[\s,]+/).map((u) => u.trim()).filter(Boolean)
+        : [];
+      const finalUrls = [...uploadedUrls, ...urlList].filter(Boolean);
+
+      if (!finalUrls.length) {
+        setLoading(false);
+        setMsg("لم يتم العثور على صور للإضافة.");
+        return;
+      }
+
+      let created = 0;
+      for (const img of finalUrls) {
+        const res = await fetch("/api/annonces-v2", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username,
+            password,
+            title: trimmedTitle,
+            body: trimmedBody,
+            source,
+            imageUrl: img,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setLoading(false);
+          setMsg(data?.error || "فشل الإضافة.");
+          return;
+        }
+        created += 1;
+      }
+
+      setLoading(false);
+      setTitle("");
+      setBody("");
+      setSource("الإدارة/الاتحاد");
+      setImageUrl("");
+      setImageFiles([]);
+      setMsg(`تمت إضافة ${created} إعلاناً.`);
+      await loadItems();
+      return;
     }
 
     const res = await fetch("/api/annonces-v2", {
@@ -258,7 +304,7 @@ export default function AdminAnnoncesPage() {
         title: trimmedTitle,
         body: trimmedBody,
         source,
-        imageUrl: finalImage,
+        imageUrl: "",
       }),
     });
 
@@ -274,7 +320,7 @@ export default function AdminAnnoncesPage() {
     setBody("");
     setSource("الإدارة/الاتحاد");
     setImageUrl("");
-    setImageFile(null);
+    setImageFiles([]);
     setMsg("تمت إضافة الإعلان.");
     await loadItems();
   };
@@ -762,7 +808,7 @@ export default function AdminAnnoncesPage() {
                   onClick={() => {
                     setMode("text");
                     setImageUrl("");
-                    setImageFile(null);
+                    setImageFiles([]);
                   }}
                   className={`rounded-xl border px-3 py-2 text-xs font-bold ${
                     mode === "text"
@@ -790,30 +836,36 @@ export default function AdminAnnoncesPage() {
                 placeholder="عنوان الإعلان"
                 className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
               />
-              {mode === "image" ? (
-                <>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0] ?? null;
-                      setImageFile(file);
-                    }}
-                    className="rounded-xl border border-dashed border-emerald-300 bg-white px-3 py-2 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white dark:border-emerald-500/40 dark:bg-slate-800"
-                  />
-                  {imagePreview ? (
-                    <img
-                      src={imagePreview}
-                      alt="معاينة"
-                      className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                {mode === "image" ? (
+                  <>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files ?? []);
+                        setImageFiles(files);
+                      }}
+                      className="rounded-xl border border-dashed border-emerald-300 bg-white px-3 py-2 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white dark:border-emerald-500/40 dark:bg-slate-800"
                     />
-                  ) : null}
-                  <input
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="أو ضع رابط الصورة (اختياري)"
-                    className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
-                  />
+                    {imagePreviews.length ? (
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {imagePreviews.map((src) => (
+                          <img
+                            key={src}
+                            src={src}
+                            alt="معاينة"
+                            className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                          />
+                        ))}
+                      </div>
+                    ) : null}
+                    <input
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      placeholder="أو ضع روابط الصور (اختياري) كل رابط في سطر"
+                      className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
+                    />
                   <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
