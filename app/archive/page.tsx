@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -210,7 +210,7 @@ export default function ArchivePage() {
                     <X size={16} />
                   </Dialog.Close>
                 </div>
-                <div className="mt-3 grid grid-cols-3 gap-2">
+                <div className="mt-3 grid grid-cols-2 gap-2 max-[420px]:grid-cols-1 sm:grid-cols-3">
                   {LEVELS.map((item) => (
                     <motion.button
                       key={item}

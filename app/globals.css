@@ -20,12 +20,19 @@ body {
   padding: 0;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 html[dir="rtl"] body {
   direction: rtl;
 }
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom);
   overflow-x: hidden;
   background: radial-gradient(circle at 18% 0%, #f4f8ec 0%, #f8faf6 42%, #f7f8fb 100%);
   color: #0f172a;
@@ -48,6 +55,13 @@ video {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 .coming-soon {
@@ -388,6 +402,10 @@ a {
   display: inline-block;
   position: relative;
   min-height: 1.2em;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-shadow: 0 3px 10px rgba(250, 204, 21, 0.18);
   animation: brand-glow 5s ease-in-out infinite;
 }
@@ -482,7 +500,8 @@ a {
 }
 
 .app-main {
-  padding-top: 146px;
+  padding-top: calc(146px + env(safe-area-inset-top));
+  padding-bottom: 24px;
 }
 
 .container {
@@ -1029,6 +1048,7 @@ a {
   outline: 0;
   background: transparent;
   width: 100%;
+  min-width: 0;
   font-size: 14px;
   color: #0f172a;
 }
@@ -1766,7 +1786,7 @@ a {
 
 @media (max-width: 768px) {
   .app-main {
-    padding-top: 176px;
+    padding-top: calc(176px + env(safe-area-inset-top));
   }
 
   .container {
@@ -2062,4 +2082,44 @@ a {
 
 .dark .app-phone-panel::before {
   background: rgba(148, 163, 184, 0.22);
+}
+
+@media (max-width: 540px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-search {
+    flex-wrap: wrap;
+    gap: 8px;
+    border-radius: 18px;
+  }
+
+  .hero-search-input {
+    flex: 1 1 160px;
+  }
+
+  .hero-search-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-card {
+    min-height: 150px;
+  }
+
+  .install-app-btn {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(280px, calc(100% - 24px));
+  }
+
+  .ui-field,
+  .float-input,
+  .hero-search-input {
+    font-size: 16px;
+  }
 }

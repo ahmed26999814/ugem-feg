@@ -64,7 +64,7 @@ export default function ReviewsPage() {
             <p className="mb-2 text-sm font-bold">
               {isFr ? "1. Choisissez le niveau" : "1. اختر السنة الدراسية"}
             </p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 max-[420px]:grid-cols-1 sm:grid-cols-3">
               {LEVELS.map((item) => (
                 <button
                   key={item}

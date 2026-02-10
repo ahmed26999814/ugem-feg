@@ -54,7 +54,7 @@ export default function InstallAppButton() {
     <button
       type="button"
       onClick={onInstall}
-      className="fixed bottom-4 left-4 z-[70] rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-lg hover:bg-emerald-500"
+      className="install-app-btn fixed bottom-4 left-4 z-[70] rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-lg hover:bg-emerald-500"
     >
       تثبيت التطبيق
     </button>
