@@ -32,8 +32,8 @@ function isMissingColumn(text: string) {
   return text.includes("show_counter") || text.includes("PGRST204");
 }
 
-async function getRow(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits,show_counter&limit=1`, {
+async function getCount(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits&limit=1`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
@@ -41,41 +41,64 @@ async function getRow(key: string) {
     const text = await res.text();
     throw new Error(text || "فشل تحميل عدد الزوار");
   }
-  const rows = (await res.json()) as Array<{ visits?: number; show_counter?: boolean }>;
-  if (!rows.length) return null;
-  return {
-    visits: rows[0].visits ?? 0,
-    show: typeof rows[0].show_counter === "boolean" ? rows[0].show_counter : true,
-  };
+  const rows = (await res.json()) as Array<{ visits?: number }>;
+  return rows?.[0]?.visits ?? 0;
 }
 
-async function saveRow(payload: { visits?: number; show_counter?: boolean }, key: string) {
+async function setCount(nextValue: number, key: string) {
+  const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+    method: "PATCH",
+    headers: buildSupabaseHeaders(key, true),
+    body: JSON.stringify({ visits: nextValue }),
+  });
+  if (patchRes.ok) return;
+
+  const text = await patchRes.text();
+  if (patchRes.status === 404) {
+    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+      method: "POST",
+      headers: buildSupabaseHeaders(key, true),
+      body: JSON.stringify([{ visits: nextValue }]),
+    });
+    if (!insertRes.ok) {
+      const insertText = await insertRes.text();
+      throw new Error(insertText || "فشل حفظ عدد الزوار");
+    }
+    return;
+  }
+  throw new Error(text || "فشل حفظ عدد الزوار");
+}
+
+async function getShowFlag(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=show_counter&limit=1`, {
+    headers: buildSupabaseHeaders(key),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    if (isMissingColumn(text)) {
+      return { show: true, missing: true };
+    }
+    throw new Error(text || "فشل تحميل حالة العداد");
+  }
+  const rows = (await res.json()) as Array<{ show_counter?: boolean }>;
+  const show = typeof rows?.[0]?.show_counter === "boolean" ? rows[0].show_counter : true;
+  return { show, missing: false };
+}
+
+async function setShowFlag(show: boolean, key: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ show_counter: show }),
   });
   if (res.ok) return;
 
   const text = await res.text();
-  if (res.status === 404) {
-    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
-      method: "POST",
-      headers: buildSupabaseHeaders(key, true),
-      body: JSON.stringify([payload]),
-    });
-    if (!insertRes.ok) {
-      const insertText = await insertRes.text();
-      throw new Error(insertText || "فشل حفظ بيانات العداد");
-    }
-    return;
-  }
-
   if (isMissingColumn(text)) {
     throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار/الإخفاء.");
   }
-
-  throw new Error(text || "فشل حفظ بيانات العداد");
+  throw new Error(text || "فشل حفظ حالة العداد");
 }
 
 export async function GET() {
@@ -88,10 +111,9 @@ export async function GET() {
       );
     }
 
-    const row = await getRow(key);
-    const count = row?.visits ?? 0;
-    const show = row?.show ?? true;
-    return NextResponse.json({ count, show });
+    const count = await getCount(key);
+    const showState = await getShowFlag(key);
+    return NextResponse.json({ count, show: showState.show, missingShowColumn: showState.missing });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -110,13 +132,12 @@ export async function POST() {
       );
     }
 
-    const row = await getRow(key);
-    const current = row?.visits ?? 0;
-    const show = row?.show ?? true;
+    const current = await getCount(key);
+    const showState = await getShowFlag(key);
     const nextValue = current + 1;
-    await saveRow({ visits: nextValue, show_counter: show }, key);
+    await setCount(nextValue, key);
 
-    return NextResponse.json({ count: nextValue, show });
+    return NextResponse.json({ count: nextValue, show: showState.show, missingShowColumn: showState.missing });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -147,9 +168,8 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const row = await getRow(key);
-    const current = row?.visits ?? 0;
-    await saveRow({ visits: current, show_counter: Boolean(data.show) }, key);
+    const current = await getCount(key);
+    await setShowFlag(Boolean(data.show), key);
     return NextResponse.json({ ok: true, show: Boolean(data.show), count: current });
   } catch (error) {
     return NextResponse.json(
