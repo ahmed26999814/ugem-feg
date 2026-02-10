@@ -45,7 +45,7 @@ export default function ReviewsPage() {
               <BookOpenCheck size={18} />
             </span>
             <h1 className="mt-3 text-2xl font-black md:text-3xl">
-              {isFr ? "Syntheses & Revisions" : "الملخصات والمراجعات"}
+              {isFr ? "Revisions & Syntheses" : "المراجعات والملخصات"}
             </h1>
             <p className="ui-muted mt-3">
               {isFr
