@@ -1523,6 +1523,15 @@ select {
   font-weight: 700;
 }
 
+.footer-dedication {
+  margin-top: 10px;
+  max-width: 520px;
+  font-size: 0.84rem;
+  line-height: 1.8;
+  color: #fde68a;
+  font-weight: 700;
+}
+
 .footer-dev-btn {
   margin-top: 8px;
   position: relative;
