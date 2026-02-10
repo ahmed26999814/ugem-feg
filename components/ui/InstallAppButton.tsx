@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { DEV_WHATSAPP } from "@/lib/prefs";
+import { Download } from "lucide-react";
 
 type DeferredInstallPrompt = Event & {
   prompt: () => Promise<void>;
@@ -40,7 +40,7 @@ export default function InstallAppButton() {
   }, [isComingSoon]);
 
   const canInstall = useMemo(() => Boolean(promptEvent) || iosHint, [promptEvent, iosHint]);
-  if (isComingSoon) return null;
+  if (isComingSoon || !canInstall) return null;
 
   const onInstall = async () => {
     if (promptEvent) {
@@ -52,18 +52,15 @@ export default function InstallAppButton() {
     alert("على iPhone: افتح من Safari ثم مشاركة > Add to Home Screen");
   };
 
-  const devWhatsapp = `https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`;
-
   return (
-    <div className="install-app-panel">
-      {canInstall ? (
-        <button type="button" onClick={onInstall} className="install-app-btn">
-          تثبيت التطبيق
-        </button>
-      ) : null}
-      <a href={devWhatsapp} target="_blank" rel="noreferrer" className="install-dev-btn">
-        إعداد وتطوير
-      </a>
-    </div>
+    <button
+      type="button"
+      onClick={onInstall}
+      className="footer-chip footer-install-chip"
+      aria-label="تثبيت التطبيق"
+      title="تثبيت التطبيق"
+    >
+      <Download size={16} />
+    </button>
   );
 }

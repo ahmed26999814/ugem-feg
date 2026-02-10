@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Facebook, Laptop2, UserRound, Wrench } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
+import InstallAppButton from "@/components/ui/InstallAppButton";
 
 export default function Footer() {
   const [showDevLab, setShowDevLab] = useState(false);
@@ -47,6 +48,7 @@ export default function Footer() {
           <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip" aria-label="فيسبوك الاتحاد" title="فيسبوك الاتحاد">
             <Facebook size={17} />
           </a>
+          <InstallAppButton />
           <motion.button
             type="button"
             className="footer-dev-btn"
