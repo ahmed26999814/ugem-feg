@@ -33,9 +33,6 @@ export default function Admin2Page() {
   return (
     <section className="admin2-shell">
       <form className="admin2-card" onSubmit={onSubmit}>
-        <div className="admin2-logo-wrap">
-          <img src="/ugem-logo.jpg" alt="شعار الاتحاد" className="admin2-logo" />
-        </div>
         <div className="admin2-badge">Admin2</div>
         <h1 className="admin2-title">الدخول إلى محتوى الموقع</h1>
         <p className="admin2-desc">أدخل الكود للوصول إلى كل أقسام الموقع.</p>
