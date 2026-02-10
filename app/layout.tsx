@@ -1,6 +1,7 @@
 ﻿import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -52,6 +53,7 @@ gtag('config', 'G-6LFTED24TW');`}
           <PWARegister />
           <Navbar />
           <main className="app-main">{children}</main>
+          <Analytics />
         </Providers>
       </body>
     </html>
