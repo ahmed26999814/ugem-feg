@@ -281,24 +281,6 @@ select {
   padding-bottom: 4px;
 }
 
-.brand-motion.brand-motion-nav::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 0;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(120deg, #f4c430, #2fa84f, #d61f26);
-  background-size: 200% 100%;
-  opacity: 0.65;
-  animation: brand-nav-underline 4s ease-in-out infinite;
-}
-
-.dark .brand-motion.brand-motion-nav::before {
-  opacity: 0.7;
-}
-
 .brand-motion.is-typing::after {
   content: "|";
   position: absolute;
@@ -331,15 +313,6 @@ select {
   }
 }
 
-@keyframes brand-nav-underline {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
 
 @keyframes coming-typing {
   to {
@@ -1983,9 +1956,65 @@ select {
   background: rgba(148, 163, 184, 0.22);
 }
 
+.install-app-panel {
+  position: fixed;
+  right: 12px;
+  bottom: 18px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateX(45%);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.install-app-panel:hover,
+.install-app-panel:focus-within {
+  transform: translateX(0);
+}
+
+.install-app-btn,
+.install-dev-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-decoration: none;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.install-app-btn {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: #06261c;
+}
+
+.install-dev-btn {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.95));
+  color: #0f172a;
+}
+
+.install-app-btn:hover,
+.install-dev-btn:hover {
+  transform: translateX(-2px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.22);
+}
+
+.dark .install-dev-btn {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
 @media (max-width: 540px) {
   .cards-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .hero-search {
@@ -2006,15 +2035,30 @@ select {
   }
 
   .home-card {
-    min-height: 150px;
+    min-height: 132px;
   }
 
-  .install-app-btn {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: min(280px, calc(100% - 24px));
+  .home-card-title {
+    font-size: 0.9rem;
   }
+
+  .home-card-subtitle {
+    font-size: 0.68rem;
+  }
+
+  .install-app-panel {
+    right: 6px;
+    bottom: 14px;
+    transform: translateX(35%);
+  }
+
+  .install-app-btn,
+  .install-dev-btn {
+    min-width: 130px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
 
   .ui-field,
   .float-input,
