@@ -95,11 +95,7 @@ export default function AdminAnnoncesPage() {
             setCounterValue(data.show);
             setCounterSaved(data.show);
           }
-          if ((data as { missingShowColumn?: boolean }).missingShowColumn) {
-            setCounterHint("أضف عمود show_counter (boolean) داخل جدول site_stats لتفعيل الإظهار/الإخفاء.");
-          } else {
-            setCounterHint(null);
-          }
+          setCounterHint(null);
         })
         .catch(() => {
           setCounterValue(true);

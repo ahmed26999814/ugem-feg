@@ -32,21 +32,8 @@ function isMissingColumn(text: string) {
   return text.includes("show_counter") || text.includes("PGRST204");
 }
 
-async function getShowRowFallback(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.2&select=id,visits`, {
-    headers: buildSupabaseHeaders(key),
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    return { show: true, missing: true };
-  }
-  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
-  if (!rows.length) return { show: true, missing: true };
-  return { show: (rows[0].visits ?? 1) === 1, missing: true };
-}
-
-async function getCountRow(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=id,visits`, {
+async function getRow(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits,show_counter&limit=1`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
@@ -54,74 +41,41 @@ async function getCountRow(key: string) {
     const text = await res.text();
     throw new Error(text || "فشل تحميل عدد الزوار");
   }
-  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
+  const rows = (await res.json()) as Array<{ visits?: number; show_counter?: boolean }>;
   if (!rows.length) return null;
-  return rows[0].visits ?? 0;
+  return {
+    visits: rows[0].visits ?? 0,
+    show: typeof rows[0].show_counter === "boolean" ? rows[0].show_counter : true,
+  };
 }
 
-async function upsertCount(nextValue: number, key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
-    method: "POST",
-    headers: {
-      ...buildSupabaseHeaders(key, true),
-      Prefer: "resolution=merge-duplicates,return=representation",
-    },
-    body: JSON.stringify([{ id: 1, visits: nextValue }]),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || "فشل حفظ عدد الزوار");
-  }
-
-  const rows = (await res.json()) as Array<{ visits: number }>;
-  return rows?.[0]?.visits ?? nextValue;
-}
-
-async function getShowFlag(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=show_counter`, {
-    headers: buildSupabaseHeaders(key),
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    if (isMissingColumn(text)) {
-      return getShowRowFallback(key);
-    }
-    throw new Error(text || "فشل تحميل حالة العداد");
-  }
-  const rows = (await res.json()) as Array<{ show_counter?: boolean }>;
-  const show = typeof rows?.[0]?.show_counter === "boolean" ? rows[0].show_counter : true;
-  return { show, missing: false };
-}
-
-async function setShowFlag(show: boolean, key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1`, {
+async function saveRow(payload: { visits?: number; show_counter?: boolean }, key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
-    body: JSON.stringify({ show_counter: show }),
+    body: JSON.stringify(payload),
   });
+  if (res.ok) return;
 
-  if (!res.ok) {
-    const text = await res.text();
-    if (isMissingColumn(text)) {
-      const fallback = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
-        method: "POST",
-        headers: {
-          ...buildSupabaseHeaders(key, true),
-          Prefer: "resolution=merge-duplicates,return=representation",
-        },
-        body: JSON.stringify([{ id: 2, visits: show ? 1 : 0 }]),
-      });
-      if (!fallback.ok) {
-        throw new Error("فشل حفظ حالة العداد. تأكد من جدول site_stats.");
-      }
-      return show;
+  const text = await res.text();
+  if (res.status === 404) {
+    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+      method: "POST",
+      headers: buildSupabaseHeaders(key, true),
+      body: JSON.stringify([payload]),
+    });
+    if (!insertRes.ok) {
+      const insertText = await insertRes.text();
+      throw new Error(insertText || "فشل حفظ بيانات العداد");
     }
-    throw new Error(text || "فشل حفظ حالة العداد");
+    return;
   }
 
-  return show;
+  if (isMissingColumn(text)) {
+    throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار/الإخفاء.");
+  }
+
+  throw new Error(text || "فشل حفظ بيانات العداد");
 }
 
 export async function GET() {
@@ -134,9 +88,10 @@ export async function GET() {
       );
     }
 
-    const count = await getCountRow(key);
-    const showState = await getShowFlag(key);
-    return NextResponse.json({ count: count ?? 0, show: showState.show, missingShowColumn: showState.missing });
+    const row = await getRow(key);
+    const count = row?.visits ?? 0;
+    const show = row?.show ?? true;
+    return NextResponse.json({ count, show });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -155,12 +110,13 @@ export async function POST() {
       );
     }
 
-    const current = await getCountRow(key);
-    const showState = await getShowFlag(key);
-    const nextValue = (current ?? 0) + 1;
-    const saved = await upsertCount(nextValue, key);
+    const row = await getRow(key);
+    const current = row?.visits ?? 0;
+    const show = row?.show ?? true;
+    const nextValue = current + 1;
+    await saveRow({ visits: nextValue, show_counter: show }, key);
 
-    return NextResponse.json({ count: saved, show: showState.show, missingShowColumn: showState.missing });
+    return NextResponse.json({ count: nextValue, show });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -191,9 +147,10 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const current = await getCountRow(key);
-    const savedShow = await setShowFlag(Boolean(data.show), key);
-    return NextResponse.json({ ok: true, show: savedShow, count: current ?? 0 });
+    const row = await getRow(key);
+    const current = row?.visits ?? 0;
+    await saveRow({ visits: current, show_counter: Boolean(data.show) }, key);
+    return NextResponse.json({ ok: true, show: Boolean(data.show), count: current });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
