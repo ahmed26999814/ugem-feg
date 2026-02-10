@@ -10,22 +10,18 @@ type ReviewItem = { title: string; url: string };
 
 const DATA: Record<Level, ReviewItem[]> = {
   L1: [
-    { title: "Economie Gestion L1", url: "https://t.me/fegegl1" },
-    { title: "BA L1", url: "https://t.me/+SPKzi3K9yjoyZmY8" },
-    { title: "GRH L1", url: "https://t.me/ugemGRHL1" },
-    { title: "FC L1", url: "https://t.me/+MCOboRlMZC8zNTg8" },
+    { title: "Economie Gestion L1", url: "https://t.me/+0SIEJekiSk4wMzM0" },
+    { title: "GRH L1", url: "https://t.me/+Lb-WR7hEKh44ODU0" },
+    { title: "FC L1", url: "https://t.me/+DvOr7i8iENs2NTY0" },
+    { title: "BA L1", url: "https://t.me/+IoS7OowcqUA2NDc0" },
   ],
   L2: [
-    { title: "Economie Gestion L2", url: "https://t.me/ugemEGL2" },
-    { title: "BA L2", url: "https://t.me/ugemfedBAl2" },
-    { title: "GRH L2", url: "https://t.me/ugemGRHL2" },
-    { title: "FC L2", url: "https://t.me/ugemfcl2" },
+    { title: "Economie Gestion L2", url: "https://t.me/+_m6KND3N-Io1YzE0" },
+    { title: "GRH L2", url: "https://t.me/+eKmZrlazQy5lZGY0" },
+    { title: "FC L2", url: "https://t.me/+kO_ZG4Oi85czOGI0" },
+    { title: "BA L2", url: "https://t.me/+ErR7e63WwtY5ZThk" },
   ],
-  L3: [
-    { title: "FC L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
-    { title: "BA L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
-    { title: "GRH L3", url: "https://t.me/+wA5WWF_fBWBiZWQ8" },
-  ],
+  L3: [{ title: "FC BA GRH L3", url: "https://t.me/+jipuPnq_EaNlNmNk" }],
 };
 
 const LEVELS: Level[] = ["L1", "L2", "L3"];
@@ -49,12 +45,17 @@ export default function ReviewsPage() {
               <BookOpenCheck size={18} />
             </span>
             <h1 className="mt-3 text-2xl font-black md:text-3xl">
-              {isFr ? "Revisions" : "المراجعات"}
+              {isFr ? "Syntheses & Revisions" : "الملخصات والمراجعات"}
             </h1>
             <p className="ui-muted mt-3">
               {isFr
                 ? "Acces organise par niveau pour retrouver rapidement les revisions."
                 : "وصول مرتب حسب السنوات حتى تصل للمراجعات بسرعة."}
+            </p>
+            <p className="ui-muted mt-2">
+              {isFr
+                ? "Nous travaillons a fournir les revisions au plus vite. Merci pour votre comprehension."
+                : "نعمل على توفير المراجعات في أقرب وقت شكرا على تفهمكم"}
             </p>
           </div>
         </motion.section>
