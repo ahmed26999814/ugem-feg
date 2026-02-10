@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -32,19 +33,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-        <script
-          async
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-6LFTED24TW"
+          strategy="afterInteractive"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-
-gtag('config', 'G-6LFTED24TW');`,
-          }}
-        />
+gtag('config', 'G-6LFTED24TW');`}
+        </Script>
       </head>
       <body>
         <Providers>
