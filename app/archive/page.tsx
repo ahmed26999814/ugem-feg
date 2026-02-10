@@ -105,6 +105,9 @@ export default function ArchivePage() {
             <p className="ui-muted mt-2">
               نظام وصول ذكي للارشيف الدراسي بخطوات بسيطة: السنة ثم التخصص ثم فتح الارشيف.
             </p>
+            <p className="text-soft-bg mt-3 text-xs font-bold">
+              نعمل بشكل مستمر على إضافة الأرشيف.
+            </p>
           </div>
         </motion.section>
 

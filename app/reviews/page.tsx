@@ -54,8 +54,13 @@ export default function ReviewsPage() {
             </p>
             <p className="ui-muted mt-2">
               {isFr
-                ? "Nous travaillons a fournir les revisions au plus vite. Merci pour votre comprehension."
-                : "نعمل على توفير المراجعات في أقرب وقت شكرا على تفهمكم"}
+                ? "Nous travaillons en continu pour ajouter de nouvelles revisions. Merci pour votre comprehension."
+                : "نعمل بشكل مستمر على إضافة المراجعات الجديدة. شكرا على تفهمكم."}
+            </p>
+            <p className="text-soft-bg mt-3 text-xs font-bold">
+              {isFr
+                ? "Les nouvelles revisions seront ajoutees progressivement."
+                : "تتم إضافة المراجعات الجديدة بشكل تدريجي."}
             </p>
           </div>
         </motion.section>
