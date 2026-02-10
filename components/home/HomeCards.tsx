@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 import {
   House,
@@ -40,7 +40,7 @@ export default function HomeCards() {
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
 
-  const variants = useMemo(
+  const variants = useMemo<Variants>(
     () => ({
       hidden: {},
       show: {
@@ -50,7 +50,7 @@ export default function HomeCards() {
     []
   );
 
-  const item = useMemo(
+  const item = useMemo<Variants>(
     () => ({
       hidden: { opacity: 0, y: 18, scale: 0.94 },
       show: {
