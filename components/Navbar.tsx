@@ -32,10 +32,10 @@ export default function Navbar() {
 
   useEffect(() => setMounted(true), []);
   const isDark = mounted && theme === "dark";
-  const brandTitle =
-    lang === "fr"
-      ? "UGEM - Faculte d'Economie et de Gestion"
-      : "الاتحاد العام للطلاب الموريتانيين - قسم كلية الاقتصاد والتسيير";
+  const brandTitle =
+    lang === "fr"
+      ? "UGEM - Faculte d'Economie et de Gestion"
+      : "الاتحاد العام - قسم الاقتصاد والتسيير";
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -80,7 +80,7 @@ export default function Navbar() {
               />
               <span
                 className={cn(
-                  "brand-motion min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5",
+                  "brand-motion brand-motion-nav min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5",
                   isTyping && "is-typing"
                 )}
               >

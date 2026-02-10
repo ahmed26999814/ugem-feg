@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { Search, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,10 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", onMove);
   }, [reduce]);
 
-  const title = t("hero.title");
+  const words = useMemo(
+    () => t("hero.title").split(" "),
+    [t]
+  );
 
   const goFromSearch = () => {
     const value = query.trim().toLowerCase();
@@ -117,14 +120,17 @@ export default function Hero() {
         </motion.div>
 
         <motion.h1 className="hero-title" variants={item}>
-          <motion.span
-            className="hero-title-animated"
-            initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
-          >
-            {title}
-          </motion.span>
+          {words.map((w, i) => (
+            <motion.span
+              key={`${w}-${i}`}
+              className="hero-word"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.18 + i * 0.04, duration: 0.35 }}
+            >
+              {w}
+            </motion.span>
+          ))}
         </motion.h1>
 
         <motion.p className="hero-gold" variants={item}>{t("hero.fac")}</motion.p>
