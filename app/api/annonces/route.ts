@@ -6,6 +6,7 @@ type Payload = {
   title?: string;
   body?: string;
   source?: string;
+  imageUrl?: string;
   id?: string;
 };
 
@@ -38,7 +39,7 @@ function buildSupabaseHeaders(key: string, withJson = false) {
   return headers;
 }
 
-async function insertNotice(title: string, body: string, source: string, key: string) {
+async function insertNotice(title: string, body: string, source: string, imageUrl: string, key: string) {
   let inferredType = "news";
   try {
     const probe = await fetch(
@@ -57,8 +58,14 @@ async function insertNotice(title: string, body: string, source: string, key: st
     // Keep safe fallback when probe fails.
   }
 
-  const content = source ? `${body}\n\nالمصدر: ${source}` : body;
-  const payload = [{ title, content, type: inferredType, is_active: true, link: "" }];
+  const content = body
+    ? source
+      ? `${body}\n\nالمصدر: ${source}`
+      : body
+    : source
+      ? `المصدر: ${source}`
+      : "";
+  const payload = [{ title, content, type: inferredType, is_active: true, link: imageUrl || "" }];
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
     method: "POST",
@@ -86,13 +93,14 @@ export async function POST(req: Request) {
     const title = (data.title ?? "").trim();
     const body = (data.body ?? "").trim();
     const source = (data.source ?? "").trim() || "الإدارة/الاتحاد";
+    const imageUrl = (data.imageUrl ?? "").trim();
 
     if (!isValidAdmin(username, password)) {
       return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
     }
 
-    if (!title || !body) {
-      return NextResponse.json({ error: "العنوان والمحتوى مطلوبان" }, { status: 400 });
+    if (!title || (!body && !imageUrl)) {
+      return NextResponse.json({ error: "العنوان والمحتوى أو صورة الإعلان مطلوبان" }, { status: 400 });
     }
 
     const serviceKey = getServiceKey();
@@ -103,7 +111,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const insertedResult = await insertNotice(title, body, source, serviceKey);
+    const insertedResult = await insertNotice(title, body, source, imageUrl, serviceKey);
     if (!insertedResult.ok) {
       return NextResponse.json({ error: insertedResult.error }, { status: 500 });
     }

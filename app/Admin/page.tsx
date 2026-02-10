@@ -7,6 +7,7 @@ type Notice = {
   id: string;
   title: string;
   body: string;
+  link?: string;
   source?: string;
   created_at?: string;
 };
@@ -31,9 +32,16 @@ function normalizeRow(row: Row, index: number): Notice {
     id,
     title: toText(row.title) || toText(row.titre) || toText(row.name) || "إعلان",
     body: toText(row.body) || toText(row.content) || toText(row.text) || "",
+    link: toText(row.link) || toText(row.url) || toText(row.href) || undefined,
     source: toText(row.source) || undefined,
     created_at: toText(row.created_at) || undefined,
   };
+}
+
+function isImageUrl(url?: string) {
+  if (!url) return false;
+  if (url.startsWith("data:image/")) return true;
+  return /\.(png|jpe?g|webp|gif|bmp|svg)(\?.*)?$/i.test(url);
 }
 
 const SUPABASE_URL =
@@ -49,6 +57,8 @@ export default function AdminAnnoncesPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [source, setSource] = useState("الإدارة/الاتحاد");
+  const [mode, setMode] = useState<"text" | "image">("text");
+  const [imageUrl, setImageUrl] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -83,8 +93,21 @@ export default function AdminAnnoncesPage() {
   };
 
   const createNotice = async () => {
-    if (!title.trim() || !body.trim()) {
-      setMsg("العنوان والمحتوى مطلوبان.");
+    const trimmedTitle = title.trim();
+    const trimmedBody = body.trim();
+    const trimmedImage = imageUrl.trim();
+    const finalImage = mode === "image" ? trimmedImage : "";
+
+    if (!trimmedTitle) {
+      setMsg("العنوان مطلوب.");
+      return;
+    }
+    if (mode === "text" && !trimmedBody) {
+      setMsg("المحتوى مطلوب للإعلان النصي.");
+      return;
+    }
+    if (mode === "image" && !trimmedImage) {
+      setMsg("رابط الصورة مطلوب لإعلان الصورة.");
       return;
     }
 
@@ -94,7 +117,14 @@ export default function AdminAnnoncesPage() {
     const res = await fetch("/api/annonces-v2", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, title, body, source }),
+      body: JSON.stringify({
+        username,
+        password,
+        title: trimmedTitle,
+        body: trimmedBody,
+        source,
+        imageUrl: finalImage,
+      }),
     });
 
     const data = await res.json();
@@ -108,6 +138,7 @@ export default function AdminAnnoncesPage() {
     setTitle("");
     setBody("");
     setSource("الإدارة/الاتحاد");
+    setImageUrl("");
     setMsg("تمت إضافة الإعلان.");
     await loadItems();
   };
@@ -167,19 +198,64 @@ export default function AdminAnnoncesPage() {
           ) : (
             <>
               <div className="mt-4 grid gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode("text");
+                      setImageUrl("");
+                    }}
+                    className={`rounded-xl border px-3 py-2 text-xs font-bold ${
+                      mode === "text"
+                        ? "border-emerald-500 bg-emerald-500 text-white"
+                        : "border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    }`}
+                  >
+                    إعلان نصي
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode("image")}
+                    className={`rounded-xl border px-3 py-2 text-xs font-bold ${
+                      mode === "image"
+                        ? "border-emerald-500 bg-emerald-500 text-white"
+                        : "border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    }`}
+                  >
+                    إعلان بصورة
+                  </button>
+                </div>
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="عنوان الإعلان"
                   className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
                 />
-                <textarea
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  placeholder="محتوى الإعلان"
-                  rows={4}
-                  className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
-                />
+                {mode === "image" ? (
+                  <>
+                    <input
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      placeholder="رابط الصورة (https://...)"
+                      className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
+                    />
+                    <textarea
+                      value={body}
+                      onChange={(e) => setBody(e.target.value)}
+                      placeholder="وصف مختصر (اختياري)"
+                      rows={3}
+                      className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
+                    />
+                  </>
+                ) : (
+                  <textarea
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    placeholder="محتوى الإعلان"
+                    rows={4}
+                    className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
+                  />
+                )}
                 <input
                   value={source}
                   onChange={(e) => setSource(e.target.value)}
@@ -202,7 +278,16 @@ export default function AdminAnnoncesPage() {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <h3 className="font-black">{item.title}</h3>
-                        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{item.body}</p>
+                        {isImageUrl(item.link) ? (
+                          <img
+                            src={item.link}
+                            alt={item.title}
+                            className="mt-2 w-full max-w-sm rounded-lg border border-slate-200 object-cover shadow-sm dark:border-slate-700"
+                          />
+                        ) : null}
+                        {item.body ? (
+                          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{item.body}</p>
+                        ) : null}
                       </div>
                       <button
                         onClick={() => removeNotice(item.id)}

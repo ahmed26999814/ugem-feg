@@ -42,6 +42,12 @@ function normalizeRow(row: Row, index: number): Notice {
   };
 }
 
+function isImageUrl(url?: string) {
+  if (!url) return false;
+  if (url.startsWith("data:image/")) return true;
+  return /\.(png|jpe?g|webp|gif|bmp|svg)(\?.*)?$/i.test(url);
+}
+
 export default function AnnoncesPage() {
   const reduceMotion = useReducedMotion();
   const [notices, setNotices] = useState<Notice[]>([]);
@@ -137,7 +143,9 @@ export default function AnnoncesPage() {
             ))}
 
           {!loading &&
-            notices.map((item) => (
+            notices.map((item) => {
+              const showImage = isImageUrl(item.link);
+              return (
               <motion.article
                 key={item.id}
                 className="section-card animated-border-card cursor-pointer"
@@ -154,7 +162,17 @@ export default function AnnoncesPage() {
                       رسمي
                     </span>
                   </div>
-                  <p className="mt-2 line-clamp-3 text-sm">{item.body || "-"}</p>
+                  {showImage ? (
+                    <img
+                      src={item.link}
+                      alt={item.title}
+                      className="mt-3 h-44 w-full rounded-xl border border-slate-200 object-cover shadow-sm dark:border-slate-700"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  {item.body ? (
+                    <p className="mt-2 line-clamp-3 text-sm">{item.body}</p>
+                  ) : null}
                   {(item.source || item.createdAt) && (
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
                       {item.source ? <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-slate-800">المصدر: {item.source}</span> : null}
@@ -168,7 +186,8 @@ export default function AnnoncesPage() {
                   )}
                 </div>
               </motion.article>
-            ))}
+              );
+            })}
         </motion.section>
 
         <Dialog.Root open={Boolean(selected)} onOpenChange={(open) => !open && setSelected(null)}>
@@ -197,11 +216,22 @@ export default function AnnoncesPage() {
                   initial="hidden"
                   animate="show"
                 >
-                  <motion.p variants={cardIn} className="text-sm leading-8">
-                    {selected?.body}
-                  </motion.p>
+                  {selected?.link && isImageUrl(selected.link) ? (
+                    <motion.img
+                      variants={cardIn}
+                      src={selected.link}
+                      alt={selected.title}
+                      className="w-full rounded-2xl border border-slate-200 object-cover shadow-md dark:border-slate-700"
+                    />
+                  ) : null}
 
-                  {selected?.link ? (
+                  {selected?.body ? (
+                    <motion.p variants={cardIn} className="text-sm leading-8">
+                      {selected.body}
+                    </motion.p>
+                  ) : null}
+
+                  {selected?.link && !isImageUrl(selected.link) ? (
                     <motion.a
                       variants={cardIn}
                       href={selected.link}
@@ -210,6 +240,17 @@ export default function AnnoncesPage() {
                       className="ui-action cta-shine inline-flex bg-yellow-500 text-sm font-black text-slate-900"
                     >
                       فتح الرابط
+                    </motion.a>
+                  ) : null}
+                  {selected?.link && isImageUrl(selected.link) ? (
+                    <motion.a
+                      variants={cardIn}
+                      href={selected.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ui-action cta-shine inline-flex bg-yellow-500 text-sm font-black text-slate-900"
+                    >
+                      فتح الصورة
                     </motion.a>
                   ) : null}
                 </motion.div>
