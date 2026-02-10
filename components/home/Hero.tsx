@@ -105,8 +105,9 @@ export default function Hero() {
             placeholder={t("hero.search")}
             className="hero-search-input"
           />
-          <button type="button" className="hero-search-btn" onClick={goFromSearch}>
-            {lang === "fr" ? "Aller" : "اذهب"}
+          <button type="button" className="hero-search-btn cta-shine" onClick={goFromSearch}>
+            <Search size={14} className="hero-search-btn-icon" />
+            <span>{lang === "fr" ? "Aller" : "اذهب"}</span>
           </button>
         </motion.div>
 
