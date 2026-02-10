@@ -1532,26 +1532,42 @@ select {
   font-weight: 700;
 }
 
-.footer-visit {
+.visitor-pill {
   margin-top: 12px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   border-radius: 999px;
-  border: 1px solid rgba(251, 191, 36, 0.45);
-  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(244, 196, 48, 0.55);
+  background: linear-gradient(135deg, rgba(244, 196, 48, 0.18), rgba(47, 168, 79, 0.14));
   padding: 6px 12px;
   font-size: 0.78rem;
   font-weight: 800;
   color: #fde68a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
 }
 
-.footer-visit-count {
+.visitor-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+  color: #fef3c7;
+}
+
+.visitor-label {
+  letter-spacing: 0.01em;
+}
+
+.visitor-count {
   min-width: 34px;
   text-align: center;
   border-radius: 999px;
   padding: 2px 8px;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(15, 23, 42, 0.55);
   color: #fef3c7;
   font-weight: 900;
 }

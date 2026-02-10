@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Users } from "lucide-react";
 
-type VisitorResponse = { count?: number; error?: string };
+type VisitorResponse = { count?: number; show?: boolean; error?: string };
 
 export default function VisitorCounter() {
   const [count, setCount] = useState<number | null>(null);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     const key = "ugem_visit_session";
@@ -18,6 +20,9 @@ export default function VisitorCounter() {
         if (typeof data.count === "number") {
           setCount(data.count);
         }
+        if (typeof data.show === "boolean") {
+          setShow(data.show);
+        }
       })
       .finally(() => {
         if (!seen) {
@@ -26,10 +31,15 @@ export default function VisitorCounter() {
       });
   }, []);
 
+  if (!show) return null;
+
   return (
-    <div className="footer-visit" aria-live="polite">
-      <span className="footer-visit-label">عدد الزوار</span>
-      <span className="footer-visit-count">{count ?? "—"}</span>
+    <div className="visitor-pill" aria-live="polite">
+      <span className="visitor-icon" aria-hidden="true">
+        <Users size={14} />
+      </span>
+      <span className="visitor-label">الزوار</span>
+      <span className="visitor-count">{count ?? "—"}</span>
     </div>
   );
 }

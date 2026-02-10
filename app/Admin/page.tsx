@@ -65,6 +65,8 @@ export default function AdminAnnoncesPage() {
   const [loading, setLoading] = useState(false);
 
   const [items, setItems] = useState<Notice[]>([]);
+  const [showCounter, setShowCounter] = useState<boolean | null>(null);
+  const [counterLoading, setCounterLoading] = useState(false);
 
   const loadItems = async () => {
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
@@ -81,7 +83,17 @@ export default function AdminAnnoncesPage() {
   };
 
   useEffect(() => {
-    if (authed) loadItems();
+    if (authed) {
+      loadItems();
+      fetch("/api/visitors")
+        .then((res) => res.json() as Promise<{ show?: boolean }>)
+        .then((data) => {
+          if (typeof data.show === "boolean") setShowCounter(data.show);
+        })
+        .catch(() => {
+          setShowCounter(true);
+        });
+    }
   }, [authed]);
 
   useEffect(() => {
@@ -196,6 +208,24 @@ export default function AdminAnnoncesPage() {
 
     setMsg("تم حذف الإعلان.");
     await loadItems();
+  };
+
+  const toggleCounter = async () => {
+    if (showCounter === null) return;
+    setCounterLoading(true);
+    const res = await fetch("/api/visitors", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, show: !showCounter }),
+    });
+    const data = await res.json();
+    setCounterLoading(false);
+    if (!res.ok) {
+      setMsg(data?.error || "فشل تحديث عداد الزوار.");
+      return;
+    }
+    setShowCounter(Boolean(data?.show));
+    setMsg(Boolean(data?.show) ? "تم إظهار عداد الزوار." : "تم إخفاء عداد الزوار.");
   };
 
   return (
@@ -322,6 +352,28 @@ export default function AdminAnnoncesPage() {
                   <PlusCircle size={15} />
                   {loading ? "جارٍ المعالجة..." : "إضافة إعلان"}
                 </button>
+              </div>
+
+              <div className="mt-4 rounded-xl border border-yellow-200/70 bg-yellow-50/80 p-3 text-sm font-bold text-slate-800 dark:border-yellow-500/30 dark:bg-yellow-500/10 dark:text-yellow-100">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span>عداد الزوار</span>
+                  <button
+                    type="button"
+                    onClick={toggleCounter}
+                    disabled={counterLoading || showCounter === null}
+                    className={`rounded-full px-4 py-2 text-xs font-black transition ${
+                      showCounter
+                        ? "bg-emerald-600 text-white hover:bg-emerald-500"
+                        : "bg-slate-700 text-white hover:bg-slate-600"
+                    } disabled:opacity-60`}
+                  >
+                    {counterLoading
+                      ? "جارٍ التحديث..."
+                      : showCounter
+                        ? "إخفاء العداد"
+                        : "إظهار العداد"}
+                  </button>
+                </div>
               </div>
 
               <div className="mt-6 grid gap-2">
