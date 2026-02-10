@@ -35,7 +35,7 @@ export default function Navbar() {
   const brandTitle =
     lang === "fr"
       ? "UGEM - Faculte d'Economie et de Gestion"
-      : "الاتحاد العام - قسم الاقتصاد والتسيير";
+      : "الاتحاد العام - قسم كلية الاقتصاد والتسيير";
 
   useEffect(() => {
     if (typeof window === "undefined") return;
