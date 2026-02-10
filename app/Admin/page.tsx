@@ -70,9 +70,9 @@ export default function AdminAnnoncesPage() {
   const [counterLoading, setCounterLoading] = useState(false);
   const [counterSaving, setCounterSaving] = useState(false);
   const [counterHint, setCounterHint] = useState<string | null>(null);
-  const [homeImageFile, setHomeImageFile] = useState<File | null>(null);
-  const [homeImagePreview, setHomeImagePreview] = useState<string | null>(null);
-  const [homeImageUrl, setHomeImageUrl] = useState<string | null>(null);
+  const [homeImageFiles, setHomeImageFiles] = useState<File[]>([]);
+  const [homeImagePreviews, setHomeImagePreviews] = useState<string[]>([]);
+  const [homeImageUrls, setHomeImageUrls] = useState<string[]>([]);
   const [homeImageSaving, setHomeImageSaving] = useState(false);
   const [homeImageHint, setHomeImageHint] = useState<string | null>(null);
 
@@ -112,13 +112,13 @@ export default function AdminAnnoncesPage() {
         });
 
       fetch("/api/site-assets")
-        .then((res) => res.json() as Promise<{ url?: string; missingColumn?: boolean }>)
+        .then((res) => res.json() as Promise<{ urls?: string[]; missingColumn?: boolean }>)
         .then((data) => {
-          if (typeof data.url === "string" && data.url.trim()) {
-            setHomeImageUrl(data.url);
+          if (Array.isArray(data.urls)) {
+            setHomeImageUrls(data.urls.filter(Boolean));
           }
           if (data.missingColumn) {
-            setHomeImageHint("أضف عمود home_collage_url (text) داخل جدول site_stats لتفعيل الصورة.");
+            setHomeImageHint("أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة.");
           } else {
             setHomeImageHint(null);
           }
@@ -128,14 +128,16 @@ export default function AdminAnnoncesPage() {
   }, [authed]);
 
   useEffect(() => {
-    if (!homeImageFile) {
-      setHomeImagePreview(null);
+    if (!homeImageFiles.length) {
+      setHomeImagePreviews([]);
       return;
     }
-    const url = URL.createObjectURL(homeImageFile);
-    setHomeImagePreview(url);
-    return () => URL.revokeObjectURL(url);
-  }, [homeImageFile]);
+    const urls = homeImageFiles.map((file) => URL.createObjectURL(file));
+    setHomeImagePreviews(urls);
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [homeImageFiles]);
 
   useEffect(() => {
     if (!imageFile) {
@@ -271,45 +273,51 @@ export default function AdminAnnoncesPage() {
   };
 
   const saveHomeImage = async () => {
-    if (!homeImageFile) {
+    if (!homeImageFiles.length) {
       setMsg("اختر صورة من المعرض أولاً.");
       return;
     }
     setHomeImageSaving(true);
     setMsg(null);
 
-    const form = new FormData();
-    form.append("username", username);
-    form.append("password", password);
-    form.append("file", homeImageFile);
+    const uploaded: string[] = [];
+    for (const file of homeImageFiles) {
+      const form = new FormData();
+      form.append("username", username);
+      form.append("password", password);
+      form.append("file", file);
 
-    const uploadRes = await fetch("/api/site-assets-upload", {
-      method: "POST",
-      body: form,
-    });
-    const uploadData = await uploadRes.json();
-    if (!uploadRes.ok) {
-      setHomeImageSaving(false);
-      setMsg(uploadData?.error || "فشل رفع الصورة.");
-      return;
+      const uploadRes = await fetch("/api/site-assets-upload", {
+        method: "POST",
+        body: form,
+      });
+      const uploadData = await uploadRes.json();
+      if (!uploadRes.ok) {
+        setHomeImageSaving(false);
+        setMsg(uploadData?.error || "فشل رفع الصورة.");
+        return;
+      }
+      if (typeof uploadData?.url === "string") {
+        uploaded.push(uploadData.url);
+      }
     }
 
-    const imageUrl = uploadData?.url as string;
+    const nextUrls = [...homeImageUrls, ...uploaded].filter(Boolean);
     const saveRes = await fetch("/api/site-assets", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, url: imageUrl }),
+      body: JSON.stringify({ username, password, urls: nextUrls }),
     });
     const saveData = await saveRes.json();
     setHomeImageSaving(false);
     if (!saveRes.ok) {
-      setMsg(saveData?.error || "فشل حفظ صورة الصفحة الرئيسية.");
+      setMsg(saveData?.error || "فشل حفظ صور الصفحة الرئيسية.");
       return;
     }
 
-    setHomeImageUrl(imageUrl);
-    setHomeImageFile(null);
-    setMsg("تم تحديث صورة الصفحة الرئيسية.");
+    setHomeImageUrls(nextUrls);
+    setHomeImageFiles([]);
+    setMsg("تم تحديث صور الصفحة الرئيسية.");
   };
 
   return (
@@ -375,24 +383,35 @@ export default function AdminAnnoncesPage() {
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files?.[0] ?? null;
-                  setHomeImageFile(file);
+                  const files = Array.from(e.target.files ?? []);
+                  setHomeImageFiles(files);
                 }}
                 className="rounded-xl border border-dashed border-emerald-300 bg-white px-3 py-2 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white dark:border-emerald-500/40 dark:bg-slate-800"
               />
-              {homeImagePreview ? (
-                <img
-                  src={homeImagePreview}
-                  alt="معاينة صورة الصفحة الرئيسية"
-                  className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
-                />
-              ) : homeImageUrl ? (
-                <img
-                  src={homeImageUrl}
-                  alt="الصورة الحالية"
-                  className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
-                />
+              {homeImagePreviews.length ? (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {homeImagePreviews.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt="معاينة صورة الصفحة الرئيسية"
+                      className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                    />
+                  ))}
+                </div>
+              ) : homeImageUrls.length ? (
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {homeImageUrls.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt="الصورة الحالية"
+                      className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                    />
+                  ))}
+                </div>
               ) : null}
               <button
                 type="button"

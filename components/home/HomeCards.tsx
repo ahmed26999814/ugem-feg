@@ -39,7 +39,7 @@ export default function HomeCards() {
   const { t, lang } = useLang();
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
-  const [extraImage, setExtraImage] = useState<string | null>(null);
+  const [extraImages, setExtraImages] = useState<string[]>([]);
 
   const variants = useMemo<Variants>(
     () => ({
@@ -66,10 +66,14 @@ export default function HomeCards() {
 
   useEffect(() => {
     fetch("/api/site-assets")
-      .then((res) => res.json() as Promise<{ url?: string }>)
+      .then((res) => res.json() as Promise<{ urls?: string[]; url?: string }>)
       .then((data) => {
+        if (Array.isArray(data.urls) && data.urls.length) {
+          setExtraImages(data.urls.filter(Boolean));
+          return;
+        }
         if (typeof data.url === "string" && data.url.trim()) {
-          setExtraImage(data.url);
+          setExtraImages([data.url]);
         }
       })
       .catch(() => {});
@@ -153,16 +157,18 @@ export default function HomeCards() {
           loading="lazy"
         />
       </div>
-      {extraImage ? (
-        <div className="home-collage home-collage-extra">
-          <img
-            src={extraImage}
-            alt="صورة جديدة من الإدارة"
-            className="home-collage-img"
-            loading="lazy"
-          />
-        </div>
-      ) : null}
+      {extraImages.length
+        ? extraImages.map((img) => (
+            <div key={img} className="home-collage home-collage-extra">
+              <img
+                src={img}
+                alt="صورة جديدة من الإدارة"
+                className="home-collage-img"
+                loading="lazy"
+              />
+            </div>
+          ))
+        : null}
     </section>
   );
 }
