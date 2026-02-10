@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 import {
@@ -39,6 +39,7 @@ export default function HomeCards() {
   const { t, lang } = useLang();
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
+  const [extraImage, setExtraImage] = useState<string | null>(null);
 
   const variants = useMemo<Variants>(
     () => ({
@@ -62,6 +63,17 @@ export default function HomeCards() {
     }),
     []
   );
+
+  useEffect(() => {
+    fetch("/api/site-assets")
+      .then((res) => res.json() as Promise<{ url?: string }>)
+      .then((data) => {
+        if (typeof data.url === "string" && data.url.trim()) {
+          setExtraImage(data.url);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section className="cards-shell">
@@ -141,6 +153,16 @@ export default function HomeCards() {
           loading="lazy"
         />
       </div>
+      {extraImage ? (
+        <div className="home-collage home-collage-extra">
+          <img
+            src={extraImage}
+            alt="صورة جديدة من الإدارة"
+            className="home-collage-img"
+            loading="lazy"
+          />
+        </div>
+      ) : null}
     </section>
   );
 }

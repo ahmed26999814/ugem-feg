@@ -70,6 +70,11 @@ export default function AdminAnnoncesPage() {
   const [counterLoading, setCounterLoading] = useState(false);
   const [counterSaving, setCounterSaving] = useState(false);
   const [counterHint, setCounterHint] = useState<string | null>(null);
+  const [homeImageFile, setHomeImageFile] = useState<File | null>(null);
+  const [homeImagePreview, setHomeImagePreview] = useState<string | null>(null);
+  const [homeImageUrl, setHomeImageUrl] = useState<string | null>(null);
+  const [homeImageSaving, setHomeImageSaving] = useState(false);
+  const [homeImageHint, setHomeImageHint] = useState<string | null>(null);
 
   const loadItems = async () => {
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
@@ -105,8 +110,32 @@ export default function AdminAnnoncesPage() {
           setCounterValue(true);
           setCounterSaved(true);
         });
+
+      fetch("/api/site-assets")
+        .then((res) => res.json() as Promise<{ url?: string; missingColumn?: boolean }>)
+        .then((data) => {
+          if (typeof data.url === "string" && data.url.trim()) {
+            setHomeImageUrl(data.url);
+          }
+          if (data.missingColumn) {
+            setHomeImageHint("أضف عمود home_collage_url (text) داخل جدول site_stats لتفعيل الصورة.");
+          } else {
+            setHomeImageHint(null);
+          }
+        })
+        .catch(() => {});
     }
   }, [authed]);
+
+  useEffect(() => {
+    if (!homeImageFile) {
+      setHomeImagePreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(homeImageFile);
+    setHomeImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [homeImageFile]);
 
   useEffect(() => {
     if (!imageFile) {
@@ -241,6 +270,48 @@ export default function AdminAnnoncesPage() {
     setMsg(Boolean(data?.show) ? "تم إظهار عداد الزوار." : "تم إخفاء عداد الزوار.");
   };
 
+  const saveHomeImage = async () => {
+    if (!homeImageFile) {
+      setMsg("اختر صورة من المعرض أولاً.");
+      return;
+    }
+    setHomeImageSaving(true);
+    setMsg(null);
+
+    const form = new FormData();
+    form.append("username", username);
+    form.append("password", password);
+    form.append("file", homeImageFile);
+
+    const uploadRes = await fetch("/api/site-assets-upload", {
+      method: "POST",
+      body: form,
+    });
+    const uploadData = await uploadRes.json();
+    if (!uploadRes.ok) {
+      setHomeImageSaving(false);
+      setMsg(uploadData?.error || "فشل رفع الصورة.");
+      return;
+    }
+
+    const imageUrl = uploadData?.url as string;
+    const saveRes = await fetch("/api/site-assets", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, url: imageUrl }),
+    });
+    const saveData = await saveRes.json();
+    setHomeImageSaving(false);
+    if (!saveRes.ok) {
+      setMsg(saveData?.error || "فشل حفظ صورة الصفحة الرئيسية.");
+      return;
+    }
+
+    setHomeImageUrl(imageUrl);
+    setHomeImageFile(null);
+    setMsg("تم تحديث صورة الصفحة الرئيسية.");
+  };
+
   return (
     <div className="page-shell">
       <div className="container">
@@ -287,6 +358,50 @@ export default function AdminAnnoncesPage() {
               <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
                 الحالة: {counterValue ? "ظاهر" : "مخفي"}
               </span>
+            </div>
+          </section>
+        ) : null}
+
+        {authed ? (
+          <section className="section-card mt-4">
+            <h2 className="text-xl font-black">صورة الصفحة الرئيسية</h2>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              ارفع صورة من المعرض لتظهر أسفل صور الصفحة الرئيسية مباشرة.
+            </p>
+            {homeImageHint ? (
+              <p className="mt-2 text-xs font-bold text-amber-600 dark:text-amber-300">{homeImageHint}</p>
+            ) : null}
+            <div className="mt-3 grid gap-2">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setHomeImageFile(file);
+                }}
+                className="rounded-xl border border-dashed border-emerald-300 bg-white px-3 py-2 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white dark:border-emerald-500/40 dark:bg-slate-800"
+              />
+              {homeImagePreview ? (
+                <img
+                  src={homeImagePreview}
+                  alt="معاينة صورة الصفحة الرئيسية"
+                  className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                />
+              ) : homeImageUrl ? (
+                <img
+                  src={homeImageUrl}
+                  alt="الصورة الحالية"
+                  className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
+                />
+              ) : null}
+              <button
+                type="button"
+                onClick={saveHomeImage}
+                disabled={homeImageSaving}
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-500 disabled:opacity-60"
+              >
+                {homeImageSaving ? "جارٍ الحفظ..." : "حفظ الصورة"}
+              </button>
             </div>
           </section>
         ) : null}

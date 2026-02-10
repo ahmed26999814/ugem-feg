@@ -1721,6 +1721,10 @@ select {
   background: rgba(15, 23, 42, 0.2);
 }
 
+.home-collage-extra {
+  margin-top: 12px;
+}
+
 .home-collage-img {
   display: block;
   width: 100%;
