@@ -1,5 +1,5 @@
-const CACHE_NAME = "ugem-feg-v11";
-const APP_SHELL = ["/coming-soon", "/admin2", "/ugem-logo.jpg", "/MMM.jpg"];
+const CACHE_NAME = "ugem-feg-v12";
+const APP_SHELL = ["/", "/ugem-logo.jpg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -30,6 +30,23 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/")) return;
 
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() =>
+          caches.match(req).then((cached) => cached || caches.match("/"))
+        )
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(req).then((cached) => {
       const network = fetch(req)
@@ -40,7 +57,7 @@ self.addEventListener("fetch", (event) => {
           }
           return res;
         })
-        .catch(() => cached || caches.match("/coming-soon"));
+        .catch(() => cached);
 
       return cached || network;
     })
