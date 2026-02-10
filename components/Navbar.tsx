@@ -73,11 +73,11 @@ export default function Navbar() {
               href="/"
               className="inline-flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-yellow-300/70 bg-gradient-to-l from-yellow-100 via-emerald-50 to-red-50 px-2 py-2 dark:border-yellow-500/40 dark:from-yellow-500/10 dark:via-emerald-500/10 dark:to-red-500/10 sm:px-3"
             >
-              <img
-                src="/ugem-logo.jpg"
-                alt="UGEM"
-                className="h-9 w-9 shrink-0 rounded-full border border-white object-cover shadow-sm sm:h-10 sm:w-10"
-              />
+              <img
+                src="/ugem-logo.jpg"
+                alt="UGEM"
+                className="h-7 w-7 shrink-0 rounded-full border border-white object-cover shadow-sm sm:h-8 sm:w-8"
+              />
               <span
                 className={cn(
                   "brand-motion min-w-0 text-[11px] font-black leading-4 text-slate-900 dark:text-slate-100 sm:text-sm sm:leading-5",
