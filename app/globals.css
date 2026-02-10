@@ -1421,8 +1421,14 @@ select {
   width: min(980px, calc(100% - 24px));
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+@media (min-width: 900px) {
+  .app-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .app-card {
@@ -1431,10 +1437,10 @@ select {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 16px 18px;
   border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 45%, #fefce8 100%);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: linear-gradient(135deg, #fef9c3 0%, #ffffff 45%, #ecfccb 100%);
   color: #0f172a;
   box-shadow: 0 14px 26px rgba(15, 23, 42, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -1444,14 +1450,14 @@ select {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 45%);
+  background: radial-gradient(circle at 18% 20%, rgba(250, 204, 21, 0.25), transparent 46%);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .app-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: rgba(16, 185, 129, 0.45);
   box-shadow: 0 20px 36px rgba(15, 23, 42, 0.14);
 }
 
@@ -1460,16 +1466,40 @@ select {
 }
 
 .app-card-icon {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
-  background: linear-gradient(145deg, #16a34a, #f59e0b);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   box-shadow: 0 10px 18px rgba(15, 23, 42, 0.2);
   flex: 0 0 auto;
+  background: linear-gradient(145deg, #16a34a, #f59e0b);
+}
+
+.app-card-icon.is-eg {
+  background: linear-gradient(145deg, #16a34a, #84cc16);
+}
+
+.app-card-icon.is-grh {
+  background: linear-gradient(145deg, #0f766e, #22c55e);
+}
+
+.app-card-icon.is-fc {
+  background: linear-gradient(145deg, #15803d, #facc15);
+}
+
+.app-card-icon.is-ba {
+  background: linear-gradient(145deg, #047857, #eab308);
+}
+
+.app-card-icon.is-mix {
+  background: linear-gradient(145deg, #22c55e, #f59e0b);
+}
+
+.app-card-icon.is-other {
+  background: linear-gradient(145deg, #0ea5e9, #22c55e);
 }
 
 .app-card-body {
@@ -1501,18 +1531,18 @@ select {
 }
 
 .dark .app-card {
-  border-color: rgba(148, 163, 184, 0.25);
-  background: linear-gradient(135deg, #0f172a 0%, #0b1220 50%, #111827 100%);
+  border-color: rgba(34, 197, 94, 0.2);
+  background: linear-gradient(135deg, #0b1220 0%, #0f172a 50%, #111827 100%);
   color: #f8fafc;
   box-shadow: 0 14px 26px rgba(0, 0, 0, 0.4);
 }
 
 .dark .app-card::after {
-  background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.25), transparent 50%);
+  background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.28), transparent 50%);
 }
 
 .dark .app-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
+  border-color: rgba(16, 185, 129, 0.45);
   box-shadow: 0 20px 36px rgba(0, 0, 0, 0.5);
 }
 
@@ -1525,7 +1555,6 @@ select {
   background: rgba(148, 163, 184, 0.15);
   border-color: rgba(148, 163, 184, 0.25);
 }
-
 .home-card {
   position: relative;
   overflow: hidden;

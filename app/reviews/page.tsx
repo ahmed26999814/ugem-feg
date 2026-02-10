@@ -2,12 +2,30 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BookOpenCheck, Sparkles } from "lucide-react";
+import { BookOpenCheck, Calculator, GraduationCap, Landmark, Layers3, LineChart, Users } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
 type Level = "L1" | "L2" | "L3";
 type ReviewItem = { title: string; url: string };
 
+const ICONS = {
+  eg: LineChart,
+  grh: Users,
+  fc: Calculator,
+  ba: Landmark,
+  mix: Layers3,
+  other: GraduationCap,
+};
+
+const getCardKind = (title: string) => {
+  const upper = title.toUpperCase();
+  if (upper.includes("FC BA") || upper.includes("FC BA GRH")) return "mix" as const;
+  if (upper.includes("GRH")) return "grh" as const;
+  if (upper.includes("FC")) return "fc" as const;
+  if (upper.includes("BA")) return "ba" as const;
+  if (upper.includes("ECONOMIE") || upper.includes("GESTION")) return "eg" as const;
+  return "other" as const;
+};
 const DATA: Record<Level, ReviewItem[]> = {
   L1: [
     { title: "Economie Gestion L1", url: "https://t.me/+0SIEJekiSk4wMzM0" },
@@ -92,24 +110,28 @@ export default function ReviewsPage() {
             </p>
             {level ? (
               <div className="app-card-grid">
-                {DATA[level].map((item) => (
-                  <a
-                    key={item.url}
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="app-card"
-                  >
-                    <span className="app-card-icon">
-                      <Sparkles size={18} />
-                    </span>
-                    <span className="app-card-body">
-                      <span className="app-card-title">{item.title}</span>
-                      <span className="app-card-subtitle">{isFr ? "Groupe Telegram" : "مجموعة تيليجرام"}</span>
-                    </span>
-                    <span className="app-card-pill">{isFr ? "Telegram" : "تيليجرام"}</span>
-                  </a>
-                ))}
+                {DATA[level].map((item) => {
+                  const kind = getCardKind(item.title);
+                  const Icon = ICONS[kind] ?? ICONS.other;
+                  return (
+                    <a
+                      key={item.url}
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="app-card"
+                    >
+                      <span className={`app-card-icon is-${kind}`}>
+                        <Icon size={18} />
+                      </span>
+                      <span className="app-card-body">
+                        <span className="app-card-title">{item.title}</span>
+                        <span className="app-card-subtitle">{isFr ? "Groupe Telegram" : "مجموعة تيليجرام"}</span>
+                      </span>
+                      <span className="app-card-pill">{isFr ? "Telegram" : "تيليجرام"}</span>
+                    </a>
+                  );
+                })}
               </div>
             ) : (
               <p className="ui-muted rounded-xl border border-dashed border-slate-300 px-3 py-2 text-sm dark:border-slate-700">
