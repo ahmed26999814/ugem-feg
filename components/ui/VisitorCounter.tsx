@@ -34,12 +34,12 @@ export default function VisitorCounter() {
   if (!show) return null;
 
   return (
-    <div className="visitor-pill" aria-live="polite">
+    <button type="button" className="visitor-pill" aria-live="polite" aria-label="عدد الزوار">
       <span className="visitor-icon" aria-hidden="true">
         <Users size={14} />
       </span>
       <span className="visitor-label">الزوار</span>
       <span className="visitor-count">{count ?? "—"}</span>
-    </div>
+    </button>
   );
 }

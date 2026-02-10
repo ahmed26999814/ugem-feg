@@ -28,8 +28,8 @@ function buildSupabaseHeaders(key: string, withJson = false) {
   return headers;
 }
 
-async function getRow(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=id,visits,show_counter`, {
+async function getCountRow(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=id,visits`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
@@ -37,22 +37,19 @@ async function getRow(key: string) {
     const text = await res.text();
     throw new Error(text || "فشل تحميل عدد الزوار");
   }
-  const rows = (await res.json()) as Array<{ id: number; visits?: number; show_counter?: boolean }>;
+  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
   if (!rows.length) return null;
-  return {
-    visits: rows[0].visits ?? 0,
-    show: typeof rows[0].show_counter === "boolean" ? rows[0].show_counter : true,
-  };
+  return rows[0].visits ?? 0;
 }
 
-async function upsertRow(nextValue: number, show: boolean, key: string) {
+async function upsertCount(nextValue: number, key: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
     method: "POST",
     headers: {
       ...buildSupabaseHeaders(key, true),
       Prefer: "resolution=merge-duplicates,return=representation",
     },
-    body: JSON.stringify([{ id: 1, visits: nextValue, show_counter: show }]),
+    body: JSON.stringify([{ id: 1, visits: nextValue }]),
   });
 
   if (!res.ok) {
@@ -60,11 +57,41 @@ async function upsertRow(nextValue: number, show: boolean, key: string) {
     throw new Error(text || "فشل حفظ عدد الزوار");
   }
 
-  const rows = (await res.json()) as Array<{ visits: number; show_counter?: boolean }>;
-  return {
-    visits: rows?.[0]?.visits ?? nextValue,
-    show: typeof rows?.[0]?.show_counter === "boolean" ? rows[0].show_counter : show,
-  };
+  const rows = (await res.json()) as Array<{ visits: number }>;
+  return rows?.[0]?.visits ?? nextValue;
+}
+
+async function getShowRow(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.2&select=id,visits`, {
+    headers: buildSupabaseHeaders(key),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "فشل تحميل حالة العداد");
+  }
+  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
+  if (!rows.length) return null;
+  return rows[0].visits ?? 1;
+}
+
+async function upsertShow(nextValue: number, key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
+    method: "POST",
+    headers: {
+      ...buildSupabaseHeaders(key, true),
+      Prefer: "resolution=merge-duplicates,return=representation",
+    },
+    body: JSON.stringify([{ id: 2, visits: nextValue }]),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "فشل حفظ حالة العداد");
+  }
+
+  const rows = (await res.json()) as Array<{ visits: number }>;
+  return rows?.[0]?.visits ?? nextValue;
 }
 
 export async function GET() {
@@ -77,8 +104,10 @@ export async function GET() {
       );
     }
 
-    const row = await getRow(key);
-    return NextResponse.json({ count: row?.visits ?? 0, show: row?.show ?? true });
+    const count = await getCountRow(key);
+    const showRow = await getShowRow(key);
+    const show = typeof showRow === "number" ? showRow === 1 : true;
+    return NextResponse.json({ count: count ?? 0, show });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -97,13 +126,13 @@ export async function POST() {
       );
     }
 
-    const row = await getRow(key);
-    const current = row?.visits ?? 0;
-    const show = row?.show ?? true;
-    const nextValue = current + 1;
-    const saved = await upsertRow(nextValue, show, key);
+    const current = await getCountRow(key);
+    const showRow = await getShowRow(key);
+    const show = typeof showRow === "number" ? showRow === 1 : true;
+    const nextValue = (current ?? 0) + 1;
+    const saved = await upsertCount(nextValue, key);
 
-    return NextResponse.json({ count: saved.visits, show: saved.show });
+    return NextResponse.json({ count: saved, show });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -134,11 +163,9 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const row = await getRow(key);
-    const current = row?.visits ?? 0;
-    const saved = await upsertRow(current, data.show, key);
-
-    return NextResponse.json({ ok: true, show: saved.show, count: saved.visits });
+    const current = await getCountRow(key);
+    const savedShow = await upsertShow(data.show ? 1 : 0, key);
+    return NextResponse.json({ ok: true, show: savedShow === 1, count: current ?? 0 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },

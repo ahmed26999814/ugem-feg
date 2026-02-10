@@ -1545,6 +1545,9 @@ select {
   font-weight: 800;
   color: #fde68a;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+  appearance: none;
+  cursor: default;
+  user-select: none;
 }
 
 .visitor-icon {
