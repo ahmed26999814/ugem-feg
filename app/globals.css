@@ -1532,6 +1532,30 @@ select {
   font-weight: 700;
 }
 
+.footer-visit {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  background: rgba(251, 191, 36, 0.12);
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #fde68a;
+}
+
+.footer-visit-count {
+  min-width: 34px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: rgba(15, 23, 42, 0.5);
+  color: #fef3c7;
+  font-weight: 900;
+}
+
 .footer-dev-btn {
   margin-top: 8px;
   position: relative;

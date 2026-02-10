@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Facebook, Laptop2, UserRound, Wrench } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 import InstallAppButton from "@/components/ui/InstallAppButton";
+import VisitorCounter from "@/components/ui/VisitorCounter";
 
 export default function Footer() {
   const [showDevLab, setShowDevLab] = useState(false);
@@ -36,6 +37,7 @@ export default function Footer() {
             هذا الموقع إهداء من الخلية التقنية للاتحاد العام بكلية الإقتصاد و التسيير للرئيس السابق محمد المختار انجيه
             مواصلةً لنهجه وخدمةً للطلاب💛
           </p>
+          <VisitorCounter />
 
         </motion.div>
 
