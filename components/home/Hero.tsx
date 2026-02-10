@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Search, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
@@ -62,7 +62,7 @@ export default function Hero() {
     router.push("/annonces");
   };
 
-  const container: Variants = {
+  const container = {
     hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
     show: {
       opacity: 1,
@@ -72,7 +72,7 @@ export default function Hero() {
     },
   };
 
-  const item: Variants = {
+  const item = {
     hidden: { opacity: 0, y: 16, filter: "blur(8px)" },
     show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 140, damping: 18 } },
   };
