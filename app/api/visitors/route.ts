@@ -32,6 +32,19 @@ function isMissingColumn(text: string) {
   return text.includes("show_counter") || text.includes("PGRST204");
 }
 
+async function getShowRowFallback(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.2&select=id,visits`, {
+    headers: buildSupabaseHeaders(key),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    return { show: true, missing: true };
+  }
+  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
+  if (!rows.length) return { show: true, missing: true };
+  return { show: (rows[0].visits ?? 1) === 1, missing: true };
+}
+
 async function getCountRow(key: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=id,visits`, {
     headers: buildSupabaseHeaders(key),
@@ -73,7 +86,7 @@ async function getShowFlag(key: string) {
   if (!res.ok) {
     const text = await res.text();
     if (isMissingColumn(text)) {
-      return { show: true, missing: true };
+      return getShowRowFallback(key);
     }
     throw new Error(text || "فشل تحميل حالة العداد");
   }
@@ -92,7 +105,18 @@ async function setShowFlag(show: boolean, key: string) {
   if (!res.ok) {
     const text = await res.text();
     if (isMissingColumn(text)) {
-      throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار/الإخفاء.");
+      const fallback = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
+        method: "POST",
+        headers: {
+          ...buildSupabaseHeaders(key, true),
+          Prefer: "resolution=merge-duplicates,return=representation",
+        },
+        body: JSON.stringify([{ id: 2, visits: show ? 1 : 0 }]),
+      });
+      if (!fallback.ok) {
+        throw new Error("فشل حفظ حالة العداد. تأكد من جدول site_stats.");
+      }
+      return show;
     }
     throw new Error(text || "فشل حفظ حالة العداد");
   }
