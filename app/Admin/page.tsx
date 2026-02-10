@@ -67,6 +67,7 @@ export default function AdminAnnoncesPage() {
   const [items, setItems] = useState<Notice[]>([]);
   const [showCounter, setShowCounter] = useState<boolean | null>(null);
   const [counterLoading, setCounterLoading] = useState(false);
+  const [counterHint, setCounterHint] = useState<string | null>(null);
 
   const loadItems = async () => {
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
@@ -89,6 +90,11 @@ export default function AdminAnnoncesPage() {
         .then((res) => res.json() as Promise<{ show?: boolean }>)
         .then((data) => {
           if (typeof data.show === "boolean") setShowCounter(data.show);
+          if ((data as { missingShowColumn?: boolean }).missingShowColumn) {
+            setCounterHint("أضف عمود show_counter (boolean) داخل جدول site_stats لتفعيل الإظهار/الإخفاء.");
+          } else {
+            setCounterHint(null);
+          }
         })
         .catch(() => {
           setShowCounter(true);
@@ -354,28 +360,6 @@ export default function AdminAnnoncesPage() {
                 </button>
               </div>
 
-              <div className="mt-4 rounded-xl border border-yellow-200/70 bg-yellow-50/80 p-3 text-sm font-bold text-slate-800 dark:border-yellow-500/30 dark:bg-yellow-500/10 dark:text-yellow-100">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span>عداد الزوار</span>
-                  <button
-                    type="button"
-                    onClick={toggleCounter}
-                    disabled={counterLoading || showCounter === null}
-                    className={`rounded-full px-4 py-2 text-xs font-black transition ${
-                      showCounter
-                        ? "bg-emerald-600 text-white hover:bg-emerald-500"
-                        : "bg-slate-700 text-white hover:bg-slate-600"
-                    } disabled:opacity-60`}
-                  >
-                    {counterLoading
-                      ? "جارٍ التحديث..."
-                      : showCounter
-                        ? "إخفاء العداد"
-                        : "إظهار العداد"}
-                  </button>
-                </div>
-              </div>
-
               <div className="mt-6 grid gap-2">
                 {items.map((item) => (
                   <article key={item.id} className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
@@ -409,6 +393,39 @@ export default function AdminAnnoncesPage() {
 
           {msg && <p className="mt-3 text-sm font-bold text-slate-700 dark:text-slate-200">{msg}</p>}
         </section>
+
+        {authed ? (
+          <section className="section-card mt-4">
+            <h2 className="text-xl font-black">عداد الزوار</h2>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              تحكم بإظهار أو إخفاء عداد الزوار في الموقع.
+            </p>
+            {counterHint ? (
+              <p className="mt-2 text-xs font-bold text-amber-600 dark:text-amber-300">{counterHint}</p>
+            ) : null}
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleCounter}
+                disabled={counterLoading || showCounter === null}
+                className={`rounded-full px-4 py-2 text-xs font-black transition ${
+                  showCounter
+                    ? "bg-emerald-600 text-white hover:bg-emerald-500"
+                    : "bg-slate-700 text-white hover:bg-slate-600"
+                } disabled:opacity-60`}
+              >
+                {counterLoading
+                  ? "جارٍ التحديث..."
+                  : showCounter
+                    ? "إخفاء العداد"
+                    : "إظهار العداد"}
+              </button>
+              <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
+                الحالة: {showCounter ? "ظاهر" : "مخفي"}
+              </span>
+            </div>
+          </section>
+        ) : null}
       </div>
     </div>
   );

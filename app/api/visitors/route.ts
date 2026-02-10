@@ -28,6 +28,10 @@ function buildSupabaseHeaders(key: string, withJson = false) {
   return headers;
 }
 
+function isMissingColumn(text: string) {
+  return text.includes("show_counter") || text.includes("PGRST204");
+}
+
 async function getCountRow(key: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=id,visits`, {
     headers: buildSupabaseHeaders(key),
@@ -61,37 +65,39 @@ async function upsertCount(nextValue: number, key: string) {
   return rows?.[0]?.visits ?? nextValue;
 }
 
-async function getShowRow(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.2&select=id,visits`, {
+async function getShowFlag(key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1&select=show_counter`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
   if (!res.ok) {
     const text = await res.text();
+    if (isMissingColumn(text)) {
+      return { show: true, missing: true };
+    }
     throw new Error(text || "فشل تحميل حالة العداد");
   }
-  const rows = (await res.json()) as Array<{ id: number; visits?: number }>;
-  if (!rows.length) return null;
-  return rows[0].visits ?? 1;
+  const rows = (await res.json()) as Array<{ show_counter?: boolean }>;
+  const show = typeof rows?.[0]?.show_counter === "boolean" ? rows[0].show_counter : true;
+  return { show, missing: false };
 }
 
-async function upsertShow(nextValue: number, key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits`, {
-    method: "POST",
-    headers: {
-      ...buildSupabaseHeaders(key, true),
-      Prefer: "resolution=merge-duplicates,return=representation",
-    },
-    body: JSON.stringify([{ id: 2, visits: nextValue }]),
+async function setShowFlag(show: boolean, key: string) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?id=eq.1`, {
+    method: "PATCH",
+    headers: buildSupabaseHeaders(key, true),
+    body: JSON.stringify({ show_counter: show }),
   });
 
   if (!res.ok) {
     const text = await res.text();
+    if (isMissingColumn(text)) {
+      throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار/الإخفاء.");
+    }
     throw new Error(text || "فشل حفظ حالة العداد");
   }
 
-  const rows = (await res.json()) as Array<{ visits: number }>;
-  return rows?.[0]?.visits ?? nextValue;
+  return show;
 }
 
 export async function GET() {
@@ -105,9 +111,8 @@ export async function GET() {
     }
 
     const count = await getCountRow(key);
-    const showRow = await getShowRow(key);
-    const show = typeof showRow === "number" ? showRow === 1 : true;
-    return NextResponse.json({ count: count ?? 0, show });
+    const showState = await getShowFlag(key);
+    return NextResponse.json({ count: count ?? 0, show: showState.show, missingShowColumn: showState.missing });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -127,12 +132,11 @@ export async function POST() {
     }
 
     const current = await getCountRow(key);
-    const showRow = await getShowRow(key);
-    const show = typeof showRow === "number" ? showRow === 1 : true;
+    const showState = await getShowFlag(key);
     const nextValue = (current ?? 0) + 1;
     const saved = await upsertCount(nextValue, key);
 
-    return NextResponse.json({ count: saved, show });
+    return NextResponse.json({ count: saved, show: showState.show, missingShowColumn: showState.missing });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -164,8 +168,8 @@ export async function PATCH(req: Request) {
     }
 
     const current = await getCountRow(key);
-    const savedShow = await upsertShow(data.show ? 1 : 0, key);
-    return NextResponse.json({ ok: true, show: savedShow === 1, count: current ?? 0 });
+    const savedShow = await setShowFlag(Boolean(data.show), key);
+    return NextResponse.json({ ok: true, show: savedShow, count: current ?? 0 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
