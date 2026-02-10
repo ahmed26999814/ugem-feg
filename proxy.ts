@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SITE_ACCESS_CODE, SITE_ACCESS_COOKIE, SITE_CLOSED } from "./lib/siteState";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
