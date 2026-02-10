@@ -10,13 +10,15 @@ export default function Hero() {
   const { t, lang } = useLang();
   const router = useRouter();
   const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(40);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    if (isMobile || reduce) return;
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+    if (media.matches || reduce) return;
 
     const onMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
@@ -108,7 +110,12 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        <motion.div className="hero-logo-wrap" variants={item} animate={reduce ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+        <motion.div
+          className="hero-logo-wrap"
+          variants={item}
+          animate={reduce || isMobile ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }}
+          transition={reduce || isMobile ? undefined : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
           <img src="/ugem-logo.jpg" alt="UGEM" className="hero-logo" />
         </motion.div>
 

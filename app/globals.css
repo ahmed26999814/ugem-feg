@@ -935,8 +935,8 @@ select {
 }
 
 .hero-logo-wrap {
-  width: 120px;
-  height: 120px;
+  width: clamp(84px, 18vw, 120px);
+  height: clamp(84px, 18vw, 120px);
   margin: 16px auto 0;
   border-radius: 999px;
   background: #fff;
@@ -1671,8 +1671,8 @@ select {
   }
 
   .hero-logo-wrap {
-    width: 96px;
-    height: 96px;
+    width: clamp(76px, 24vw, 96px);
+    height: clamp(76px, 24vw, 96px);
   }
 
   .hero-title {
