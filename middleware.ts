@@ -12,7 +12,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (SITE_CLOSED) {
-    const isAllowedPath = pathname === "/coming-soon" || pathname === "/admin2" || pathname.startsWith("/admin2/");
+    const isAllowedPath = pathname === "/coming-soon";
     const cookie = req.cookies.get(SITE_ACCESS_COOKIE)?.value;
     const hasAccess = cookie === SITE_ACCESS_CODE;
 
