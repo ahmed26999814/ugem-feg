@@ -46,7 +46,7 @@ async function getCount(key: string) {
 }
 
 async function setCount(nextValue: number, key: string) {
-  const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+  const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
     body: JSON.stringify({ visits: nextValue }),
@@ -87,7 +87,7 @@ async function getShowFlag(key: string) {
 }
 
 async function setShowFlag(show: boolean, key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
     body: JSON.stringify({ show_counter: show }),
