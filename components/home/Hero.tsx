@@ -108,7 +108,7 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        <motion.div className="hero-logo-wrap" variants={item}>
+        <motion.div className="hero-logo-wrap" variants={item} animate={reduce ? undefined : { y: [0, -7, 0], boxShadow: ["0 8px 22px rgba(0,0,0,0.12)", "0 16px 30px rgba(0,0,0,0.18)", "0 8px 22px rgba(0,0,0,0.12)"] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
           <img src="/ugem-logo.jpg" alt="UGEM" className="hero-logo" />
         </motion.div>
 
