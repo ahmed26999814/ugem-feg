@@ -91,22 +91,23 @@ export default function ReviewsPage() {
               {isFr ? "2. Choisissez la filiere" : "2. اختر التخصص"}
             </p>
             {level ? (
-              <div className="grid gap-2 md:grid-cols-2">
+              <div className="app-card-grid">
                 {DATA[level].map((item) => (
                   <a
                     key={item.url}
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="ui-action inline-flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-black text-slate-800 hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="app-card"
                   >
-                    <span className="inline-flex items-center gap-2">
-                      <Sparkles size={15} className="text-yellow-600 dark:text-yellow-300" />
-                      {item.title}
+                    <span className="app-card-icon">
+                      <Sparkles size={18} />
                     </span>
-                    <span className="text-xs font-black text-slate-500 dark:text-slate-300">
-                      {isFr ? "Telegram" : "تيليجرام"}
+                    <span className="app-card-body">
+                      <span className="app-card-title">{item.title}</span>
+                      <span className="app-card-subtitle">{isFr ? "Groupe Telegram" : "مجموعة تيليجرام"}</span>
                     </span>
+                    <span className="app-card-pill">{isFr ? "Telegram" : "تيليجرام"}</span>
                   </a>
                 ))}
               </div>
