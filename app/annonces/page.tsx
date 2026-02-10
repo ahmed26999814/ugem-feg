@@ -162,14 +162,14 @@ export default function AnnoncesPage() {
                       رسمي
                     </span>
                   </div>
-                  {showImage ? (
-                    <img
-                      src={item.link}
-                      alt={item.title}
-                      className="mt-3 h-44 w-full rounded-xl border border-slate-200 object-cover shadow-sm dark:border-slate-700"
-                      loading="lazy"
-                    />
-                  ) : null}
+                    {showImage ? (
+                      <img
+                        src={item.link}
+                        alt={item.title}
+                        className="mt-3 w-full rounded-xl border border-slate-200 object-contain shadow-sm dark:border-slate-700"
+                        loading="lazy"
+                      />
+                    ) : null}
                   {item.body ? (
                     <p className="mt-2 line-clamp-3 text-sm">{item.body}</p>
                   ) : null}
@@ -221,7 +221,7 @@ export default function AnnoncesPage() {
                       variants={cardIn}
                       src={selected.link}
                       alt={selected.title}
-                      className="w-full rounded-2xl border border-slate-200 object-cover shadow-md dark:border-slate-700"
+                      className="w-full rounded-2xl border border-slate-200 object-contain shadow-md dark:border-slate-700"
                     />
                   ) : null}
 

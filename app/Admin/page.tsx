@@ -282,7 +282,7 @@ export default function AdminAnnoncesPage() {
                       <img
                         src={imagePreview}
                         alt="معاينة"
-                        className="h-40 w-full rounded-xl border border-slate-200 object-cover dark:border-slate-700"
+                        className="w-full rounded-xl border border-slate-200 object-contain dark:border-slate-700"
                       />
                     ) : null}
                     <input
@@ -334,7 +334,7 @@ export default function AdminAnnoncesPage() {
                           <img
                             src={item.link}
                             alt={item.title}
-                            className="mt-2 w-full max-w-sm rounded-lg border border-slate-200 object-cover shadow-sm dark:border-slate-700"
+                            className="mt-2 w-full max-w-sm rounded-lg border border-slate-200 object-contain shadow-sm dark:border-slate-700"
                           />
                         ) : null}
                         {item.body ? (
