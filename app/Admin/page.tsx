@@ -59,6 +59,8 @@ export default function AdminAnnoncesPage() {
   const [source, setSource] = useState("الإدارة/الاتحاد");
   const [mode, setMode] = useState<"text" | "image">("text");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -82,6 +84,16 @@ export default function AdminAnnoncesPage() {
     if (authed) loadItems();
   }, [authed]);
 
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
+
   const login = () => {
     if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "44881891") {
       setAuthed(true);
@@ -96,7 +108,6 @@ export default function AdminAnnoncesPage() {
     const trimmedTitle = title.trim();
     const trimmedBody = body.trim();
     const trimmedImage = imageUrl.trim();
-    const finalImage = mode === "image" ? trimmedImage : "";
 
     if (!trimmedTitle) {
       setMsg("العنوان مطلوب.");
@@ -106,13 +117,36 @@ export default function AdminAnnoncesPage() {
       setMsg("المحتوى مطلوب للإعلان النصي.");
       return;
     }
-    if (mode === "image" && !trimmedImage) {
-      setMsg("رابط الصورة مطلوب لإعلان الصورة.");
+    if (mode === "image" && !imageFile && !trimmedImage) {
+      setMsg("اختر صورة للرفع أو ضع رابطها.");
       return;
     }
 
     setLoading(true);
     setMsg(null);
+
+    let finalImage = "";
+    if (mode === "image") {
+      if (imageFile) {
+        const form = new FormData();
+        form.append("username", username);
+        form.append("password", password);
+        form.append("file", imageFile);
+        const uploadRes = await fetch("/api/annonces-upload", {
+          method: "POST",
+          body: form,
+        });
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok) {
+          setLoading(false);
+          setMsg(uploadData?.error || "فشل رفع الصورة.");
+          return;
+        }
+        finalImage = uploadData?.url || "";
+      } else {
+        finalImage = trimmedImage;
+      }
+    }
 
     const res = await fetch("/api/annonces-v2", {
       method: "POST",
@@ -139,6 +173,7 @@ export default function AdminAnnoncesPage() {
     setBody("");
     setSource("الإدارة/الاتحاد");
     setImageUrl("");
+    setImageFile(null);
     setMsg("تمت إضافة الإعلان.");
     await loadItems();
   };
@@ -204,6 +239,7 @@ export default function AdminAnnoncesPage() {
                     onClick={() => {
                       setMode("text");
                       setImageUrl("");
+                      setImageFile(null);
                     }}
                     className={`rounded-xl border px-3 py-2 text-xs font-bold ${
                       mode === "text"
@@ -234,9 +270,25 @@ export default function AdminAnnoncesPage() {
                 {mode === "image" ? (
                   <>
                     <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] ?? null;
+                        setImageFile(file);
+                      }}
+                      className="rounded-xl border border-dashed border-emerald-300 bg-white px-3 py-2 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white dark:border-emerald-500/40 dark:bg-slate-800"
+                    />
+                    {imagePreview ? (
+                      <img
+                        src={imagePreview}
+                        alt="معاينة"
+                        className="h-40 w-full rounded-xl border border-slate-200 object-cover dark:border-slate-700"
+                      />
+                    ) : null}
+                    <input
                       value={imageUrl}
                       onChange={(e) => setImageUrl(e.target.value)}
-                      placeholder="رابط الصورة (https://...)"
+                      placeholder="أو ضع رابط الصورة (اختياري)"
                       className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none dark:border-slate-700 dark:bg-slate-800"
                     />
                     <textarea
