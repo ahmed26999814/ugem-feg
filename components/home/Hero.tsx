@@ -142,7 +142,7 @@ export default function Hero() {
 
         <motion.div className="hero-actions" variants={item}>
           <motion.a
-            href="https://tinyurl.com/5fcndzzt"
+            href="https://examen-feg.net/"
             target="_blank"
             rel="noreferrer"
             className="btn-shimmer btn-dark btn-results-highlight"
