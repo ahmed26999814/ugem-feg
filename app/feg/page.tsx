@@ -298,7 +298,7 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
               <h2 className="text-xl font-black">مصدر رسمي مرتبط بالكلية</h2>
               <a
-                href="https://examen-feg.net/"
+                href="https://tinyurl.com/5fcndzzt"
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 inline-flex items-center gap-2 rounded-xl bg-yellow-500 px-4 py-2 text-sm font-black text-slate-900 hover:bg-yellow-400"

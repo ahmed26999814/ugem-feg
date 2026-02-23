@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Search, GraduationCap } from "lucide-react";
+import { Search, GraduationCap, ExternalLink } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 
@@ -142,7 +142,7 @@ export default function Hero() {
 
         <motion.div className="hero-actions" variants={item}>
           <motion.a
-            href="https://examen-feg.net/"
+            href="https://tinyurl.com/5fcndzzt"
             target="_blank"
             rel="noreferrer"
             className="btn-shimmer btn-dark btn-results-highlight"
@@ -152,6 +152,18 @@ export default function Hero() {
           >
             <GraduationCap size={18} />
             <span>{t("nav.results")}</span>
+          </motion.a>
+          <motion.a
+            href="https://examen-feg.net/"
+            target="_blank"
+            rel="noreferrer"
+            className="btn-shimmer btn-gold"
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 330, damping: 18 }}
+          >
+            <ExternalLink size={18} />
+            <span>{lang === "fr" ? "Site temporaire des résultats" : "موقع مؤقت لعرض النتائج"}</span>
           </motion.a>
         </motion.div>
       </motion.div>
