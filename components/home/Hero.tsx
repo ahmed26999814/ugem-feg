@@ -37,14 +37,8 @@ export default function Hero() {
   );
 
   const goFromSearch = () => {
-    const rawValue = query.trim();
-    const value = rawValue.toLowerCase();
+    const value = query.trim().toLowerCase();
     if (!value) return;
-
-    if (/^(?:[be]\d{4,}|\d{4,})$/i.test(rawValue)) {
-      router.push(`/results?q=${encodeURIComponent(rawValue)}`);
-      return;
-    }
 
     if (value.includes("اعلان") || value.includes("annonce")) {
       router.push("/annonces");
@@ -148,7 +142,9 @@ export default function Hero() {
 
         <motion.div className="hero-actions" variants={item}>
           <motion.a
-            href="/results"
+            href="https://tinyurl.com/5fcndzzt"
+            target="_blank"
+            rel="noreferrer"
             className="btn-shimmer btn-dark btn-results-highlight"
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.95 }}
