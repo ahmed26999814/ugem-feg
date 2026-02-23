@@ -41,13 +41,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         {/* Google tag (gtag.js) */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-6LFTED24TW" strategy="afterInteractive" />
-        {/* Google AdSense */}
-        <Script
-          id="adsense-script"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8677539442954307"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
         <Script id="gtag-init" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
