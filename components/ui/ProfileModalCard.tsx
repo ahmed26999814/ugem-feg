@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 type ProfileModalCardProps = {
@@ -45,27 +44,34 @@ export default function ProfileModalCard({
                 transition={{ duration: 0.26, ease: "easeOut" }}
               >
                 <div
-                  className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-br from-violet-700 via-indigo-700 to-sky-600 p-5 shadow-[0_30px_90px_rgba(15,23,42,0.4)] sm:p-7"
+                  className="relative max-h-[92vh] w-full max-w-md overflow-y-auto overflow-x-hidden rounded-[2rem] border border-white/20 bg-gradient-to-br from-violet-700 via-indigo-700 to-sky-600 p-5 shadow-[0_30px_90px_rgba(15,23,42,0.4)] sm:p-7"
                   onClick={(event) => event.stopPropagation()}
                 >
                   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.25),transparent_38%),radial-gradient(circle_at_bottom,rgba(255,255,255,0.14),transparent_30%)]" />
 
-                  <button
-                    type="button"
-                    className="absolute left-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
-                    aria-label="إغلاق"
-                    onClick={() => onOpenChange(false)}
-                  >
-                    <X size={18} />
-                  </button>
-
                   <div className="relative z-10 flex flex-col items-center text-center">
+                    <div className="mb-4 flex w-full items-center justify-between gap-3">
+                      <button
+                        type="button"
+                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-white/20 active:scale-[0.98] [touch-action:manipulation]"
+                        aria-label="رجوع"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onOpenChange(false);
+                        }}
+                      >
+                        <X size={18} />
+                        <span>رجوع</span>
+                      </button>
+                      <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/80">
+                        <ArrowRight size={18} />
+                      </span>
+                    </div>
+
                     <div className="mb-5 flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-white/40 bg-white/15 shadow-[0_18px_35px_rgba(15,23,42,0.35)]">
-                      <Image
+                      <img
                         src={profileImageSrc}
                         alt="أحمد عبدالله مادي"
-                        width={112}
-                        height={112}
                         className="h-full w-full object-cover"
                       />
                     </div>
