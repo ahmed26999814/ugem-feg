@@ -1,4 +1,4 @@
-﻿﻿﻿﻿"use client";
+﻿﻿﻿﻿﻿﻿"use client";
 
 import { motion } from "framer-motion";
 import { MessageCircle, Code2, Users, Megaphone, ArrowLeft } from "lucide-react";
@@ -57,46 +57,38 @@ export default function ContactFooter() {
             href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
             target="_blank"
             rel="noreferrer"
-            className="group relative mt-6 block overflow-hidden rounded-[2rem] p-[2px] shadow-lg transition-shadow hover:shadow-2xl hover:shadow-indigo-500/20"
+            className="group relative mt-8 block w-full overflow-hidden rounded-3xl border border-slate-800 bg-[#0b0f19] shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(168,85,247,0.4)] dark:border-slate-800 dark:bg-slate-900/50"
             initial={{ opacity: 0, y: 25, filter: "blur(4px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-40px" }}
-            whileHover={{ y: -4, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            {/* إطار مضيء متحرك */}
-            <span 
-              className="absolute inset-[-1000%] animate-spin bg-[conic-gradient(from_90deg_at_50%_50%,#a855f7_0%,#6366f1_50%,#a855f7_100%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" 
-              style={{ animationDuration: '4s' }} 
-            />
-            
-            {/* المحتوى الداخلي للبطاقة */}
-            <div className="relative flex h-full w-full flex-col justify-between gap-4 rounded-[calc(2rem-2px)] bg-slate-950 p-5 sm:flex-row sm:items-center sm:p-6">
-              <div className="absolute inset-0 rounded-[calc(2rem-2px)] bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              
-              <div className="relative z-10 flex items-center gap-4 sm:gap-6">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
-                  <div className="absolute inset-0 rounded-2xl bg-white/20 blur-sm" />
-                  <Code2 size={28} className="relative z-10 text-white" />
-                </div>
-                
-                <div>
-                  <h3 className="flex items-center gap-2 text-lg font-black text-white sm:text-xl">
-                    تطوير الموقع
-                    <span className="inline-flex items-center justify-center rounded-full border border-indigo-500/30 bg-indigo-500/20 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-indigo-300 shadow-[0_0_10px_rgba(99,102,241,0.2)]">PRO</span>
-                  </h3>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-400">
-                    تم التصميم والبرمجة بواسطة <br className="sm:hidden" />
-                    <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-base font-black text-transparent drop-shadow-sm">المصطفى & أحمد</span>
-                  </p>
-                </div>
+            {/* كرات مضيئة متحركة في الخلفية */}
+            <div className="absolute -right-10 -top-20 h-64 w-64 animate-pulse rounded-full bg-indigo-600/20 blur-[80px]" style={{ animationDuration: '4s' }} />
+            <div className="absolute -bottom-20 -left-10 h-64 w-64 animate-pulse rounded-full bg-fuchsia-600/20 blur-[80px]" style={{ animationDuration: '5s' }} />
+
+            <div className="relative z-10 flex flex-col items-center gap-6 p-6 text-center sm:flex-row sm:p-8 sm:text-start">
+              {/* الأيقونة الدائرية الكبيرة */}
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-fuchsia-500 text-white shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110 sm:h-24 sm:w-24">
+                <Code2 size={40} className="max-sm:h-8 max-sm:w-8" />
               </div>
               
-              <div className="relative z-10 shrink-0">
-                <div className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur-md transition-all duration-300 group-hover:bg-white/20 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] sm:w-auto">
-                  <span>تواصل معنا</span>
-                  <ArrowLeft size={16} />
+              {/* النصوص */}
+              <div className="flex-1">
+                <span className="mb-3 inline-block rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-4 py-1 text-xs font-bold tracking-wider text-fuchsia-400 shadow-sm">
+                  نسخة المطورين ✨
+                </span>
+                <h3 className="mb-2 text-2xl font-black text-white sm:text-3xl">إعداد وتطوير المنصة</h3>
+                <p className="text-sm font-medium leading-relaxed text-slate-400 sm:text-base">
+                  تمت البرمجة والتصميم بكل حب بواسطة <br className="sm:hidden" />
+                  <span className="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-lg font-black text-transparent">المصطفى & أحمد</span>
+                </p>
+              </div>
+
+              {/* زر التواصل */}
+              <div className="w-full shrink-0 sm:w-auto">
+                <div className="flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-4 font-bold text-white backdrop-blur-md transition-all group-hover:bg-white/10 group-hover:text-fuchsia-300 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                  <MessageCircle size={22} />
+                  <span>تواصل مع المطور</span>
                 </div>
               </div>
             </div>
