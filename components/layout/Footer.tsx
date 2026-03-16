@@ -74,7 +74,7 @@ export default function Footer() {
           </motion.button>
         </motion.div>
       </div>
-      <ProfileModalCard open={showProfileCard} onOpenChange={setShowProfileCard} />
+      <ProfileModalCard open={showProfileCard} onOpenChange={setShowProfileCard} imageSrc="/ahmed.jfif" />
     </footer>
   );
 }

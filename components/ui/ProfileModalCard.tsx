@@ -17,6 +17,8 @@ export default function ProfileModalCard({
   onOpenChange,
   imageSrc,
 }: ProfileModalCardProps) {
+  const profileImageSrc = imageSrc ?? "/ahmed.jfif";
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <AnimatePresence>
@@ -25,6 +27,7 @@ export default function ProfileModalCard({
             <Dialog.Overlay asChild>
               <motion.div
                 className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm"
+                onClick={() => onOpenChange(false)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -35,44 +38,42 @@ export default function ProfileModalCard({
             <Dialog.Content asChild>
               <motion.div
                 className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                onClick={() => onOpenChange(false)}
                 initial={{ opacity: 0, scale: 0.96, y: 18 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 12 }}
                 transition={{ duration: 0.26, ease: "easeOut" }}
               >
-                <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-br from-violet-700 via-indigo-700 to-sky-600 p-5 shadow-[0_30px_90px_rgba(15,23,42,0.4)] sm:p-7">
+                <div
+                  className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-gradient-to-br from-violet-700 via-indigo-700 to-sky-600 p-5 shadow-[0_30px_90px_rgba(15,23,42,0.4)] sm:p-7"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.25),transparent_38%),radial-gradient(circle_at_bottom,rgba(255,255,255,0.14),transparent_30%)]" />
 
-                  <Dialog.Close asChild>
-                    <button
-                      type="button"
-                      className="absolute left-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
-                      aria-label="إغلاق"
-                    >
-                      <X size={18} />
-                    </button>
-                  </Dialog.Close>
+                  <button
+                    type="button"
+                    className="absolute left-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
+                    aria-label="إغلاق"
+                    onClick={() => onOpenChange(false)}
+                  >
+                    <X size={18} />
+                  </button>
 
                   <div className="relative z-10 flex flex-col items-center text-center">
                     <div className="mb-5 flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-white/40 bg-white/15 shadow-[0_18px_35px_rgba(15,23,42,0.35)]">
-                      {imageSrc ? (
-                        <Image
-                          src={imageSrc}
-                          alt="أحمد عبدالله مادي"
-                          width={112}
-                          height={112}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-white/30 to-white/10 text-3xl font-black text-white">
-                          أم
-                        </div>
-                      )}
+                      <Image
+                        src={profileImageSrc}
+                        alt="أحمد عبدالله مادي"
+                        width={112}
+                        height={112}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
 
                     <Dialog.Title className="text-2xl font-black tracking-tight text-white sm:text-3xl">
                       أحمد عبدالله مادي
                     </Dialog.Title>
+
                     <p className="mt-2 text-sm font-semibold text-sky-100 sm:text-base">
                       مطوّر الموقع
                     </p>
