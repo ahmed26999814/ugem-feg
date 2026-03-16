@@ -1,9 +1,8 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Code2, Sparkles, X } from "lucide-react";
+import { Code2, X } from "lucide-react";
 import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 
 type ProfileModalCardProps = {
@@ -53,12 +52,7 @@ export default function ProfileModalCard({
                   <div className="pointer-events-none absolute -bottom-12 -left-10 h-32 w-32 rounded-full bg-cyan-300/20 blur-3xl" />
 
                   <div className="relative z-10 flex flex-col items-center text-center">
-                    <div className="mb-4 flex w-full items-start justify-between gap-3">
-                      <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-black text-white/95 shadow-sm backdrop-blur-sm">
-                        <Sparkles size={13} />
-                        <span>إعداد وتطوير</span>
-                      </div>
-
+                    <div className="mb-4 flex w-full items-start justify-end">
                       <button
                         type="button"
                         className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm transition hover:bg-white/20 active:scale-[0.98] [touch-action:manipulation]"
@@ -73,13 +67,11 @@ export default function ProfileModalCard({
                     </div>
 
                     <div className="mb-4 flex h-28 w-28 items-center justify-center rounded-full bg-white/10 p-1.5 shadow-[0_20px_40px_rgba(15,23,42,0.35)] sm:h-32 sm:w-32">
-                      <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white/40">
-                        <Image
+                      <div className="h-full w-full overflow-hidden rounded-full border-4 border-white/40">
+                        <img
                           src={profileImageSrc}
                           alt="أحمد عبدالله مادي"
-                          fill
-                          sizes="128px"
-                          className="object-cover"
+                          className="h-full w-full object-cover"
                         />
                       </div>
                     </div>
