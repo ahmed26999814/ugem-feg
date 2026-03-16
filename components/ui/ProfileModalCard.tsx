@@ -3,7 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 
 type ProfileModalCardProps = {
   open: boolean;
@@ -85,27 +85,38 @@ export default function ProfileModalCard({
                     </p>
 
                     <p className="mt-5 text-sm leading-8 text-white/90 sm:text-[15px]">
-                      تم تطوير هذا الموقع دعمًا للعمل الطلابي وخدمةً لطلاب كلية الاقتصاد والتسيير،
-                      بهدف تسهيل الوصول إلى الأرشيف الدراسي والمحتوى الأكاديمي والمرجعات.
+                      طُوِّر هذا الموقع لخدمة طلاب كلية الاقتصاد والتسيير وتيسير الوصول إلى
+                      الأرشيف الدراسي والمحتوى الأكاديمي.
                     </p>
 
-                    <div className="mt-5 w-full rounded-2xl border border-white/35 bg-white/85 px-4 py-3 text-sm font-black text-slate-800 shadow-[0_12px_30px_rgba(255,255,255,0.2)]">
-                      نخدم الطلاب… نخدم الوطن
+                    <div className="mt-5 w-full rounded-2xl border border-amber-200/80 bg-gradient-to-r from-yellow-300 via-amber-300 to-yellow-400 px-4 py-3 text-sm font-black text-slate-900 shadow-[0_16px_34px_rgba(250,204,21,0.28)]">
+                      نخدم الطلاب نخدم الوطن
                     </div>
 
-                    <a
-                      href="https://wa.me/22244881891"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-emerald-500 px-5 py-4 text-base font-black text-white shadow-[0_18px_35px_rgba(16,185,129,0.35)] transition hover:bg-emerald-400 active:scale-[0.98]"
-                    >
-                      <FaWhatsapp size={22} />
-                      <span>تواصل عبر واتساب</span>
-                    </a>
+                    <div className="mt-5 grid w-full gap-3">
+                      <a
+                        href="https://wa.me/22244881891"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-emerald-500 px-5 py-4 text-base font-black text-white shadow-[0_18px_35px_rgba(16,185,129,0.35)] transition hover:bg-emerald-400 active:scale-[0.98]"
+                      >
+                        <FaWhatsapp size={22} />
+                        <span>تواصل عبر واتساب</span>
+                      </a>
+
+                      <a
+                        href="https://www.facebook.com/abdayem.said"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-white/25 bg-white/12 px-5 py-4 text-base font-black text-white shadow-[0_14px_30px_rgba(15,23,42,0.2)] transition hover:bg-white/20 active:scale-[0.98]"
+                      >
+                        <FaFacebook size={20} />
+                        <span>حسابي على فيسبوك</span>
+                      </a>
+                    </div>
 
                     <div className="mt-6 space-y-1 text-sm font-bold leading-7 text-white/95">
-                      <p>نسألكم الدعاء بالتوفيق</p>
-                      <p>جزاكم الله خيرًا وبارك فيكم</p>
+                      <p>نسعد بخدمتكم ونتمنى لكم التوفيق.</p>
                     </div>
                   </div>
                 </div>
