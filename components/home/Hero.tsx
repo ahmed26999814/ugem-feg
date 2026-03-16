@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Search, GraduationCap, ExternalLink } from "lucide-react";
+import { Search, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 
@@ -10,15 +10,23 @@ export default function Hero() {
   const { t, lang } = useLang();
   const router = useRouter();
   const reduce = useReducedMotion();
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches
+  );
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(40);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-    if (media.matches || reduce) return;
+    const onMediaChange = (event: MediaQueryListEvent) => {
+      setIsMobile(event.matches);
+    };
+
+    media.addEventListener("change", onMediaChange);
+    if (media.matches || reduce) {
+      return () => media.removeEventListener("change", onMediaChange);
+    }
 
     const onMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
@@ -28,13 +36,13 @@ export default function Hero() {
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
+    return () => {
+      media.removeEventListener("change", onMediaChange);
+      window.removeEventListener("mousemove", onMove);
+    };
   }, [reduce]);
 
-  const words = useMemo(
-    () => t("hero.title").split(" "),
-    [t]
-  );
+  const words = useMemo(() => t("hero.title").split(" "), [t]);
 
   const goFromSearch = () => {
     const value = query.trim().toLowerCase();
@@ -76,7 +84,12 @@ export default function Hero() {
 
   const item: Variants = {
     hidden: { opacity: 0, y: 16, filter: "blur(8px)" },
-    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 140, damping: 18 } },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 140, damping: 18 },
+    },
   };
 
   return (
@@ -152,18 +165,6 @@ export default function Hero() {
           >
             <GraduationCap size={18} />
             <span>{t("nav.results")}</span>
-          </motion.a>
-          <motion.a
-            href="https://examen-feg.net/"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-shimmer btn-gold"
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 330, damping: 18 }}
-          >
-            <ExternalLink size={18} />
-            <span>{lang === "fr" ? "Site temporaire des résultats" : "موقع مؤقت لعرض النتائج"}</span>
           </motion.a>
         </motion.div>
       </motion.div>

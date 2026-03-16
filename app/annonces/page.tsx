@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AlertTriangle, CalendarDays, Megaphone, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";

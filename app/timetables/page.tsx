@@ -5,7 +5,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { CalendarRange, ExternalLink, FileClock, FolderOpenDot } from "lucide-react";
 import {
   cardIn,
-  easeOutExpo,
   fadeUp,
   slideHorizontal,
   staggerContainer,

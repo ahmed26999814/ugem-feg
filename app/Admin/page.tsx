@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Lock, PlusCircle, Trash2 } from "lucide-react";
 
 type Notice = {
@@ -49,6 +49,18 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_a9vgnTKPnx9SK1u8wKHoTw_37glO0q3";
 
+function useObjectUrls(files: File[]) {
+  const urls = useMemo(() => files.map((file) => URL.createObjectURL(file)), [files]);
+
+  useEffect(() => {
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [urls]);
+
+  return urls;
+}
+
 export default function AdminAnnoncesPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -61,29 +73,28 @@ export default function AdminAnnoncesPage() {
   const [mode, setMode] = useState<"text" | "image">("text");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [items, setItems] = useState<Notice[]>([]);
   const [counterValue, setCounterValue] = useState<boolean | null>(null);
   const [counterSaved, setCounterSaved] = useState<boolean | null>(null);
-  const [counterLoading, setCounterLoading] = useState(false);
   const [counterSaving, setCounterSaving] = useState(false);
   const [counterHint, setCounterHint] = useState<string | null>(null);
   const [homeImageFiles, setHomeImageFiles] = useState<File[]>([]);
-  const [homeImagePreviews, setHomeImagePreviews] = useState<string[]>([]);
   const [homeImageUrls, setHomeImageUrls] = useState<string[]>([]);
   const [homeImageSaving, setHomeImageSaving] = useState(false);
   const [homeImageHint, setHomeImageHint] = useState<string | null>(null);
   const [ugemImageFiles, setUgemImageFiles] = useState<File[]>([]);
   const [ugemVideoFiles, setUgemVideoFiles] = useState<File[]>([]);
-  const [ugemImagePreviews, setUgemImagePreviews] = useState<string[]>([]);
-  const [ugemVideoPreviews, setUgemVideoPreviews] = useState<string[]>([]);
   const [ugemImages, setUgemImages] = useState<string[]>([]);
   const [ugemVideos, setUgemVideos] = useState<string[]>([]);
   const [ugemSaving, setUgemSaving] = useState(false);
   const [ugemHint, setUgemHint] = useState<string | null>(null);
+  const imagePreviews = useObjectUrls(imageFiles);
+  const homeImagePreviews = useObjectUrls(homeImageFiles);
+  const ugemImagePreviews = useObjectUrls(ugemImageFiles);
+  const ugemVideoPreviews = useObjectUrls(ugemVideoFiles);
 
   const loadItems = async () => {
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
@@ -100,102 +111,67 @@ export default function AdminAnnoncesPage() {
   };
 
   useEffect(() => {
-    if (authed) {
-      loadItems();
-      fetch("/api/visitors")
-        .then((res) => res.json() as Promise<{ show?: boolean }>)
-        .then((data) => {
-          if (typeof data.show === "boolean") {
-            setCounterValue(data.show);
-            setCounterSaved(data.show);
-          }
-          if ((data as { missingShowColumn?: boolean }).missingShowColumn) {
-            setCounterHint("أضف عمود show_counter (boolean) داخل جدول site_stats لتفعيل الإظهار/الإخفاء.");
-          } else {
-            setCounterHint(null);
-          }
-        })
-        .catch(() => {
-          setCounterValue(true);
-          setCounterSaved(true);
-        });
+    if (!authed) return;
 
-      fetch("/api/site-assets")
-        .then((res) => res.json() as Promise<{ urls?: string[]; missingColumn?: boolean }>)
-        .then((data) => {
-          if (Array.isArray(data.urls)) {
-            setHomeImageUrls(data.urls.filter(Boolean));
-          }
-          if (data.missingColumn) {
-            setHomeImageHint("أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة.");
-          } else {
-            setHomeImageHint(null);
-          }
-        })
-        .catch(() => {});
+    const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
+    fetch(endpoint, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      cache: "no-store",
+    })
+      .then((res) => (res.ok ? (res.json() as Promise<Row[]>) : []))
+      .then((data) => {
+        setItems((Array.isArray(data) ? data : []).map(normalizeRow));
+      })
+      .catch(() => {});
 
-      fetch("/api/ugem-media")
-        .then((res) => res.json() as Promise<{ images?: string[]; videos?: string[]; missingColumn?: boolean }>)
-        .then((data) => {
-          if (Array.isArray(data.images)) setUgemImages(data.images.filter(Boolean));
-          if (Array.isArray(data.videos)) setUgemVideos(data.videos.filter(Boolean));
-          if (data.missingColumn) {
-            setUgemHint("أضف عمودين ugem_media_images و ugem_media_videos (text) داخل جدول site_stats.");
-          } else {
-            setUgemHint(null);
-          }
-        })
-        .catch(() => {});
-    }
+    fetch("/api/visitors")
+      .then((res) => res.json() as Promise<{ show?: boolean; missingShowColumn?: boolean }>)
+      .then((data) => {
+        if (typeof data.show === "boolean") {
+          setCounterValue(data.show);
+          setCounterSaved(data.show);
+        }
+        if (data.missingShowColumn) {
+          setCounterHint("أضف عمود show_counter (boolean) داخل جدول site_stats لتفعيل الإظهار/الإخفاء.");
+        } else {
+          setCounterHint(null);
+        }
+      })
+      .catch(() => {
+        setCounterValue(true);
+        setCounterSaved(true);
+      });
+
+    fetch("/api/site-assets")
+      .then((res) => res.json() as Promise<{ urls?: string[]; missingColumn?: boolean }>)
+      .then((data) => {
+        if (Array.isArray(data.urls)) {
+          setHomeImageUrls(data.urls.filter(Boolean));
+        }
+        if (data.missingColumn) {
+          setHomeImageHint("أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة.");
+        } else {
+          setHomeImageHint(null);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/ugem-media")
+      .then((res) => res.json() as Promise<{ images?: string[]; videos?: string[]; missingColumn?: boolean }>)
+      .then((data) => {
+        if (Array.isArray(data.images)) setUgemImages(data.images.filter(Boolean));
+        if (Array.isArray(data.videos)) setUgemVideos(data.videos.filter(Boolean));
+        if (data.missingColumn) {
+          setUgemHint("أضف عمودين ugem_media_images و ugem_media_videos (text) داخل جدول site_stats.");
+        } else {
+          setUgemHint(null);
+        }
+      })
+      .catch(() => {});
   }, [authed]);
-
-  useEffect(() => {
-    if (!homeImageFiles.length) {
-      setHomeImagePreviews([]);
-      return;
-    }
-    const urls = homeImageFiles.map((file) => URL.createObjectURL(file));
-    setHomeImagePreviews(urls);
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [homeImageFiles]);
-
-  useEffect(() => {
-    if (!ugemImageFiles.length) {
-      setUgemImagePreviews([]);
-      return;
-    }
-    const urls = ugemImageFiles.map((file) => URL.createObjectURL(file));
-    setUgemImagePreviews(urls);
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [ugemImageFiles]);
-
-  useEffect(() => {
-    if (!ugemVideoFiles.length) {
-      setUgemVideoPreviews([]);
-      return;
-    }
-    const urls = ugemVideoFiles.map((file) => URL.createObjectURL(file));
-    setUgemVideoPreviews(urls);
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [ugemVideoFiles]);
-
-  useEffect(() => {
-    if (!imageFiles.length) {
-      setImagePreviews([]);
-      return;
-    }
-    const urls = imageFiles.map((file) => URL.createObjectURL(file));
-    setImagePreviews(urls);
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [imageFiles]);
 
   const login = () => {
     if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "44881891") {

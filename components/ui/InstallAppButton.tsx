@@ -14,10 +14,8 @@ export default function InstallAppButton() {
   const isComingSoon = pathname === "/coming-soon";
 
   const [promptEvent, setPromptEvent] = useState<DeferredInstallPrompt | null>(null);
-  const [iosHint, setIosHint] = useState(false);
-
-  useEffect(() => {
-    if (isComingSoon) return;
+  const iosHint = useMemo(() => {
+    if (typeof window === "undefined" || isComingSoon) return false;
 
     const ua = navigator.userAgent.toLowerCase();
     const isIOS = /iphone|ipad|ipod/.test(ua);
@@ -26,9 +24,11 @@ export default function InstallAppButton() {
       (navigator as Navigator & { standalone?: boolean }).standalone === true;
     const isSafari = /safari/.test(ua) && !/crios|fxios|edgios/.test(ua);
 
-    if (isIOS && isSafari && !isStandalone) {
-      setIosHint(true);
-    }
+    return isIOS && isSafari && !isStandalone;
+  }, [isComingSoon]);
+
+  useEffect(() => {
+    if (isComingSoon) return;
 
     const onBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
