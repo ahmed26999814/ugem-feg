@@ -1,14 +1,15 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, Facebook, Laptop2, UserRound, Wrench } from "lucide-react";
-import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
+import { motion } from "framer-motion";
+import { MessageCircle, Facebook, Laptop2 } from "lucide-react";
+import { UGEM_CONTACTS } from "@/lib/prefs";
 import InstallAppButton from "@/components/ui/InstallAppButton";
+import ProfileModalCard from "@/components/ui/ProfileModalCard";
 import VisitorCounter from "@/components/ui/VisitorCounter";
 
 export default function Footer() {
-  const [showDevLab, setShowDevLab] = useState(false);
+  const [showProfileCard, setShowProfileCard] = useState(false);
   const unionWhatsapp = `https://wa.me/${UGEM_CONTACTS.whatsapp.replace(/\D/g, "")}`;
 
   return (
@@ -58,7 +59,7 @@ export default function Footer() {
           <motion.button
             type="button"
             className="footer-dev-btn"
-            onClick={() => setShowDevLab((prev) => !prev)}
+            onClick={() => setShowProfileCard(true)}
             whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             aria-label="إعداد وتطوير"
@@ -71,51 +72,9 @@ export default function Footer() {
               <strong>إعداد وتطوير</strong>
             </span>
           </motion.button>
-
-          <AnimatePresence initial={false}>
-            {showDevLab ? (
-              <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 14 }}
-                transition={{ duration: 0.28 }}
-                className="footer-dev-lab"
-              >
-                <div className="footer-dev-lab-scene" aria-hidden="true">
-                  <motion.span
-                    className="footer-dev-lab-person"
-                    animate={{ y: [0, -1.5, 0] }}
-                    transition={{ duration: 1.2, repeat: Infinity }}
-                  >
-                    <UserRound size={13} />
-                  </motion.span>
-                  <span className="footer-dev-lab-laptop">
-                    <Laptop2 size={16} />
-                    <motion.i
-                      className="footer-dev-lab-typing"
-                      animate={{ opacity: [0.3, 1, 0.3], x: [0, 2, 0] }}
-                      transition={{ duration: 0.7, repeat: Infinity }}
-                    />
-                  </span>
-                  <span className="footer-dev-lab-tools">
-                    <Wrench size={12} />
-                  </span>
-                </div>
-
-                <p className="footer-dev-lab-copy">إعداد وتطوير المصطفى وأحمد</p>
-                <a
-                  className="footer-dev-lab-link"
-                  href={`https://wa.me/${DEV_WHATSAPP.replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  واتساب المطور
-                </a>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
         </motion.div>
       </div>
+      <ProfileModalCard open={showProfileCard} onOpenChange={setShowProfileCard} />
     </footer>
   );
 }
