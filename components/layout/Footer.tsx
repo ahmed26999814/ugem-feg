@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, Facebook, Laptop2, UserRound, Wrench, Phone, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Facebook, Laptop2, UserRound, Wrench } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 import InstallAppButton from "@/components/ui/InstallAppButton";
 import VisitorCounter from "@/components/ui/VisitorCounter";
@@ -10,22 +10,17 @@ import VisitorCounter from "@/components/ui/VisitorCounter";
 export default function Footer() {
   const [showDevLab, setShowDevLab] = useState(false);
   const unionWhatsapp = `https://wa.me/${UGEM_CONTACTS.whatsapp.replace(/\D/g, "")}`;
-  const mediaPhone = `tel:${UGEM_CONTACTS.mediaPhone.replace(/\s+/g, "")}`;
 
   return (
     <footer className="main-footer">
-      <div className="footer-aura footer-aura-one" />
-      <div className="footer-aura footer-aura-two" />
-
       <div className="container footer-inner">
         <motion.div
-          className="footer-brand-block"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
         >
-          <div className="footer-brand-pill">
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-yellow-300/10 px-3 py-1.5">
             <img
               src="/ugem-logo.jpg"
               alt="شعار الاتحاد"
@@ -43,78 +38,39 @@ export default function Footer() {
             مواصلةً لنهجه وخدمةً للطلاب💛
           </p>
           <VisitorCounter />
+
         </motion.div>
 
         <motion.div
-          className="footer-side"
+          className="footer-links"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45, delay: 0.08 }}
         >
-          <div className="footer-links">
-            <a
-              href={unionWhatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="footer-chip footer-chip-wide"
-              aria-label="واتساب الاتحاد"
-              title="واتساب الاتحاد"
-            >
-              <MessageCircle size={17} />
-              <span>واتساب</span>
-            </a>
-            <a
-              href={UGEM_CONTACTS.facebook}
-              target="_blank"
-              rel="noreferrer"
-              className="footer-chip footer-chip-wide"
-              aria-label="فيسبوك الاتحاد"
-              title="فيسبوك الاتحاد"
-            >
-              <Facebook size={17} />
-              <span>فيسبوك</span>
-            </a>
-            <InstallAppButton />
-            <motion.button
-              type="button"
-              className="footer-dev-btn"
-              onClick={() => setShowDevLab((prev) => !prev)}
-              whileHover={{ y: -2, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              aria-label="إعداد وتطوير"
-              title="إعداد وتطوير"
-            >
-              <span className="footer-dev-icon" aria-hidden="true">
-                <Laptop2 size={14} />
-              </span>
-              <span className="footer-dev-text">
-                <strong>إعداد وتطوير</strong>
-              </span>
-            </motion.button>
-          </div>
-
-          <div className="footer-contact-grid">
-            <a className="footer-contact-card" href={unionWhatsapp} target="_blank" rel="noreferrer">
-              <span className="footer-contact-icon">
-                <MessageCircle size={16} />
-              </span>
-              <span className="footer-contact-copy">
-                <strong>تواصل مباشر</strong>
-                <span>{UGEM_CONTACTS.whatsapp}</span>
-              </span>
-              <ArrowUpRight size={15} />
-            </a>
-            <a className="footer-contact-card" href={mediaPhone}>
-              <span className="footer-contact-icon">
-                <Phone size={16} />
-              </span>
-              <span className="footer-contact-copy">
-                <strong>الهاتف الإعلامي</strong>
-                <span>{UGEM_CONTACTS.mediaPhone}</span>
-              </span>
-            </a>
-          </div>
+          <a href={unionWhatsapp} target="_blank" rel="noreferrer" className="footer-chip" aria-label="واتساب الاتحاد" title="واتساب الاتحاد">
+            <MessageCircle size={17} />
+          </a>
+          <a href={UGEM_CONTACTS.facebook} target="_blank" rel="noreferrer" className="footer-chip" aria-label="فيسبوك الاتحاد" title="فيسبوك الاتحاد">
+            <Facebook size={17} />
+          </a>
+          <InstallAppButton />
+          <motion.button
+            type="button"
+            className="footer-dev-btn"
+            onClick={() => setShowDevLab((prev) => !prev)}
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            aria-label="إعداد وتطوير"
+            title="إعداد وتطوير"
+          >
+            <span className="footer-dev-icon" aria-hidden="true">
+              <Laptop2 size={14} />
+            </span>
+            <span className="footer-dev-text">
+              <strong>إعداد وتطوير</strong>
+            </span>
+          </motion.button>
 
           <AnimatePresence initial={false}>
             {showDevLab ? (

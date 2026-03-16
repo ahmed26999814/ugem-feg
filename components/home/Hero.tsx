@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Search, GraduationCap, BadgeCheck, FolderOpen, MessagesSquare, ArrowDownLeft, ArrowDownRight } from "lucide-react";
+import { Search, GraduationCap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n";
 
@@ -43,37 +43,6 @@ export default function Hero() {
   }, [reduce]);
 
   const words = useMemo(() => t("hero.title").split(" "), [t]);
-  const quickFacts = useMemo(
-    () =>
-      lang === "fr"
-        ? [
-            { icon: BadgeCheck, label: "Plateforme officielle", value: "UGEM FEG" },
-            { icon: FolderOpen, label: "Archives", value: "Cours et PDF" },
-            { icon: MessagesSquare, label: "Groupes", value: "Acces rapide" },
-          ]
-        : [
-            { icon: BadgeCheck, label: "منصة رسمية", value: "UGEM FEG" },
-            { icon: FolderOpen, label: "الأرشيف", value: "ملفات ودروس PDF" },
-            { icon: MessagesSquare, label: "المجموعات", value: "وصول سريع" },
-          ],
-    [lang]
-  );
-  const quickLinks = useMemo(
-    () =>
-      lang === "fr"
-        ? [
-            { href: "#discover", label: "Explorer les sections" },
-            { href: "/annonces", label: "Dernieres annonces" },
-            { href: "/archive", label: "Ouvrir les archives" },
-          ]
-        : [
-            { href: "#discover", label: "استكشف الأقسام" },
-            { href: "/annonces", label: "آخر الإعلانات" },
-            { href: "/archive", label: "افتح الأرشيف" },
-          ],
-    [lang]
-  );
-  const ScrollIcon = lang === "fr" ? ArrowDownRight : ArrowDownLeft;
 
   const goFromSearch = () => {
     const value = query.trim().toLowerCase();
@@ -137,11 +106,6 @@ export default function Hero() {
       <div className="hero-noise" />
 
       <motion.div className="hero-inner" variants={container} initial="hidden" animate="show">
-        <motion.div className="hero-eyebrow" variants={item}>
-          <span className="hero-eyebrow-dot" />
-          <span>{lang === "fr" ? "Portail etudiant officiel" : "بوابة طلابية رسمية"}</span>
-        </motion.div>
-
         <motion.div className="hero-search" variants={item}>
           <Search size={18} className="text-slate-500" />
           <input
@@ -189,28 +153,6 @@ export default function Hero() {
           {t("hero.desc")}
         </motion.p>
 
-        <motion.div className="hero-facts" variants={item}>
-          {quickFacts.map(({ icon: Icon, label, value }) => (
-            <div key={label} className="hero-fact-card">
-              <span className="hero-fact-icon">
-                <Icon size={16} />
-              </span>
-              <div className="hero-fact-copy">
-                <strong>{value}</strong>
-                <span>{label}</span>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        <motion.div className="hero-shortcuts" variants={item}>
-          {quickLinks.map((link) => (
-            <a key={link.href} href={link.href} className="hero-shortcut">
-              {link.label}
-            </a>
-          ))}
-        </motion.div>
-
         <motion.div className="hero-actions" variants={item}>
           <motion.a
             href="https://tinyurl.com/5fcndzzt"
@@ -223,16 +165,6 @@ export default function Hero() {
           >
             <GraduationCap size={18} />
             <span>{t("nav.results")}</span>
-          </motion.a>
-          <motion.a
-            href="#discover"
-            className="btn-shimmer btn-secondary"
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 330, damping: 18 }}
-          >
-            <ScrollIcon size={18} />
-            <span>{lang === "fr" ? "Explorer la page" : "استكشف الصفحة"}</span>
           </motion.a>
         </motion.div>
       </motion.div>

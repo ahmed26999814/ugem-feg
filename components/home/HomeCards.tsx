@@ -5,8 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 import {
-  ArrowUpLeft,
-  ArrowUpRight,
   House,
   BellRing,
   FolderArchive,
@@ -42,14 +40,6 @@ export default function HomeCards() {
   const reduce = useReducedMotion();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; key: string }[]>([]);
   const [extraImages, setExtraImages] = useState<string[]>([]);
-  const ActionArrow = lang === "fr" ? ArrowUpRight : ArrowUpLeft;
-  const sectionHighlights = useMemo(
-    () =>
-      lang === "fr"
-        ? ["Navigation plus rapide", "Sections essentielles", "Acces direct"]
-        : ["تنقل أسرع", "الأقسام الأساسية", "وصول مباشر"],
-    [lang]
-  );
 
   const variants = useMemo<Variants>(
     () => ({
@@ -90,28 +80,7 @@ export default function HomeCards() {
   }, []);
 
   return (
-    <section className="cards-shell" id="discover">
-      <div className="cards-head">
-        <div className="cards-head-copy">
-          <span className="cards-kicker">{lang === "fr" ? "Sections principales" : "الأقسام الرئيسية"}</span>
-          <h2 className="cards-title">
-            {lang === "fr" ? "Accedez vite a ce dont vous avez besoin" : "ادخل بسرعة إلى ما تحتاجه"}
-          </h2>
-          <p className="cards-desc">
-            {lang === "fr"
-              ? "Toutes les parties importantes du site sont regroupees ici pour reduire le temps de recherche."
-              : "جمعنا أهم أقسام الموقع في مكان واحد لتصل إلى الأخبار والملفات والروابط بأقل عدد من الخطوات."}
-          </p>
-        </div>
-        <div className="cards-highlight-row">
-          {sectionHighlights.map((item) => (
-            <span key={item} className="cards-highlight-pill">
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-
+    <section className="cards-shell">
       <motion.div className="cards-grid" variants={variants} initial="hidden" animate="show">
         {cards.map((card) => {
           const Icon = card.icon;
@@ -151,11 +120,7 @@ export default function HomeCards() {
                   }}
                 >
                   <div className="card-spot" />
-                  <div className="home-card-topline">
-                    <span className="home-card-badge">{lang === "fr" ? "Ouvrir" : "افتح"}</span>
-                    <span className="home-card-index">{String(cards.indexOf(card) + 1).padStart(2, "0")}</span>
-                  </div>
-                  <motion.div className="home-card-icon-wrap" whileHover={reduce ? undefined : { rotate: 8, y: -2 }} transition={{ type: "spring", stiffness: 360, damping: 14 }}>
+                  <motion.div whileHover={reduce ? undefined : { rotate: 8, y: -2 }} transition={{ type: "spring", stiffness: 360, damping: 14 }}>
                     {card.logo ? (
                       <img
                         src="/ugem-logo.jpg"
@@ -168,10 +133,6 @@ export default function HomeCards() {
                   </motion.div>
                   <h3 className="home-card-title">{t(card.titleKey)}</h3>
                   <p className="home-card-subtitle">{lang === "fr" ? card.desc.fr : card.desc.ar}</p>
-                  <div className="home-card-action">
-                    <span>{lang === "fr" ? "Entrer dans la section" : "الدخول إلى القسم"}</span>
-                    <ActionArrow size={15} />
-                  </div>
 
                   {ripples
                     .filter((r) => r.key === key)
@@ -188,22 +149,13 @@ export default function HomeCards() {
           );
         })}
       </motion.div>
-
-      <div className="home-collage-stage">
-        <div className="home-collage-caption">
-          <span className="home-collage-kicker">{lang === "fr" ? "Vie etudiante" : "الحياة الطلابية"}</span>
-          <h3 className="home-collage-title">
-            {lang === "fr" ? "Un apercu des activites et initiatives UGEM" : "لمحة من الأنشطة والمبادرات داخل الاتحاد"}
-          </h3>
-        </div>
-        <div className="home-collage">
-          <img
-            src="/publicugem-collage.jpg"
-            alt="لقطات من أنشطة الاتحاد العام للطلاب الموريتانيين"
-            className="home-collage-img"
-            loading="lazy"
-          />
-        </div>
+      <div className="home-collage">
+        <img
+          src="/publicugem-collage.jpg"
+          alt="لقطات من أنشطة الاتحاد العام للطلاب الموريتانيين"
+          className="home-collage-img"
+          loading="lazy"
+        />
       </div>
       {extraImages.length
         ? extraImages.map((img) => (
