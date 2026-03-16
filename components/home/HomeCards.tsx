@@ -9,6 +9,7 @@ import {
   BellRing,
   FolderArchive,
   Landmark,
+  Lock,
   Star,
   MessagesSquare,
   GraduationCap,
@@ -16,12 +17,14 @@ import {
 } from "lucide-react";
 
 type CardItem = {
-  titleKey: string;
+  titleKey?: string;
+  title?: { ar: string; fr: string };
   desc: { ar: string; fr: string };
   href: string;
   icon?: LucideIcon;
   logo?: boolean;
   gradient: string;
+  locked?: boolean;
 };
 
 const cards: CardItem[] = [
@@ -33,6 +36,14 @@ const cards: CardItem[] = [
   { titleKey: "nav.ugem", desc: { ar: "عن قسم الاتحاد", fr: "Section UGEM" }, href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
   { titleKey: "nav.groups", desc: { ar: "روابط المجموعات", fr: "Liens des groupes" }, href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
   { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
+  {
+    title: { ar: "طالب جديد", fr: "Nouveau etudiant" },
+    desc: { ar: "قسم مخصص للطلاب الجدد", fr: "Section dediee aux nouveaux etudiants" },
+    href: "#",
+    icon: Lock,
+    gradient: "from-slate-600 to-slate-800",
+    locked: true,
+  },
 ];
 
 export default function HomeCards() {
@@ -85,11 +96,19 @@ export default function HomeCards() {
         {cards.map((card) => {
           const Icon = card.icon;
           const key = card.href;
+          const title = card.titleKey ? t(card.titleKey) : lang === "fr" ? card.title?.fr : card.title?.ar;
+          const isLocked = Boolean(card.locked);
           return (
             <motion.div key={card.href} variants={item}>
-              <Link href={card.href}>
+              <Link
+                href={card.href}
+                aria-disabled={isLocked}
+                onClick={(event) => {
+                  if (isLocked) event.preventDefault();
+                }}
+              >
                 <motion.article
-                  className={`home-card bg-gradient-to-br ${card.gradient}`}
+                  className={`home-card bg-gradient-to-br ${card.gradient} ${isLocked ? "cursor-not-allowed saturate-75" : ""}`}
                   whileHover={reduce ? undefined : { y: -6, scale: 1.03 }}
                   whileTap={reduce ? undefined : { scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -131,7 +150,12 @@ export default function HomeCards() {
                       Icon && <Icon size={46} className="text-white" />
                     )}
                   </motion.div>
-                  <h3 className="home-card-title">{t(card.titleKey)}</h3>
+                  {isLocked ? (
+                    <span className="mb-2 inline-flex items-center rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[11px] font-black text-white">
+                      قريبًا
+                    </span>
+                  ) : null}
+                  <h3 className="home-card-title">{title}</h3>
                   <p className="home-card-subtitle">{lang === "fr" ? card.desc.fr : card.desc.ar}</p>
 
                   {ripples
