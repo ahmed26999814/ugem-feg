@@ -1,4 +1,4 @@
-﻿﻿"use client";
+﻿﻿﻿﻿"use client";
 
 import { motion } from "framer-motion";
 import { MessageCircle, Code2, Users, Megaphone } from "lucide-react";
@@ -26,9 +26,9 @@ export default function ContactFooter() {
   return (
     <footer className="site-footer">
       <div className="container">
-        <section className="section-card">
-          <h2 className="text-xl font-black">تواصل معنا</h2>
-          <p className="mt-2 text-sm text-slate-600">
+        <section className="section-card dark:border-slate-800 dark:bg-slate-900/40">
+          <h2 className="text-xl font-black dark:text-slate-100">تواصل معنا</h2>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             يمكنك التواصل مع المطور أو مع الاتحاد مباشرة عبر واتساب.
           </p>
 
@@ -41,7 +41,7 @@ export default function ContactFooter() {
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="contact-link"
+                  className="contact-link dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:border-emerald-500/50 dark:hover:bg-slate-800"
                   whileHover={{ y: -2, scale: 1.01 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}

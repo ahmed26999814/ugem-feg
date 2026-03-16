@@ -1,4 +1,4 @@
-﻿"use client";
+﻿﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -53,7 +53,7 @@ export default function ReviewsPage() {
     <div className="page-shell">
       <div className="container">
         <motion.section
-          className="section-card"
+          className="section-card dark:border-slate-800 dark:bg-slate-900/40"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
@@ -62,20 +62,20 @@ export default function ReviewsPage() {
             <span className="app-hero-icon app-hero-icon-gold">
               <BookOpenCheck size={18} />
             </span>
-            <h1 className="mt-3 text-2xl font-black md:text-3xl">
+            <h1 className="mt-3 text-2xl font-black md:text-3xl dark:text-slate-100">
               {isFr ? "Revisions & Syntheses" : "المراجعات والملخصات"}
             </h1>
-            <p className="ui-muted mt-3">
+            <p className="ui-muted mt-3 dark:text-slate-400">
               {isFr
                 ? "Acces organise par niveau pour retrouver rapidement les revisions."
                 : "وصول مرتب حسب السنوات حتى تصل للمراجعات بسرعة."}
             </p>
-            <p className="ui-muted mt-2">
+            <p className="ui-muted mt-2 dark:text-slate-400">
               {isFr
                 ? "Nous travaillons en continu pour ajouter de nouvelles revisions. Merci pour votre comprehension."
                 : "نعمل بشكل مستمر على إضافة المراجعات الجديدة. شكرا على تفهمكم."}
             </p>
-            <p className="text-soft-bg mt-3 text-xs font-bold">
+            <p className="text-soft-bg mt-3 text-xs font-bold dark:text-slate-500">
               {isFr
                 ? "Les nouvelles revisions seront ajoutees progressivement."
                 : "تتم إضافة المراجعات الجديدة بشكل تدريجي."}
@@ -83,9 +83,9 @@ export default function ReviewsPage() {
           </div>
         </motion.section>
 
-        <section className="section-card mt-3 app-phone-panel">
+        <section className="section-card mt-3 app-phone-panel dark:border-slate-800 dark:bg-slate-900/40">
           <div className="section-content">
-            <p className="mb-2 text-sm font-bold">
+            <p className="mb-2 text-sm font-bold dark:text-slate-200">
               {isFr ? "1. Choisissez le niveau" : "1. اختر السنة الدراسية"}
             </p>
             <div className="grid grid-cols-2 gap-2 max-[420px]:grid-cols-1 sm:grid-cols-3">
@@ -105,7 +105,7 @@ export default function ReviewsPage() {
               ))}
             </div>
 
-            <p className="mb-2 mt-4 text-sm font-bold">
+            <p className="mb-2 mt-4 text-sm font-bold dark:text-slate-200">
               {isFr ? "2. Choisissez la filiere" : "2. اختر التخصص"}
             </p>
             {level ? (
@@ -119,16 +119,16 @@ export default function ReviewsPage() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="app-card"
+                      className="app-card dark:border-slate-700 dark:bg-slate-800/80 dark:hover:border-emerald-500/50 dark:hover:bg-slate-800"
                     >
                       <span className={`app-card-icon is-${kind}`}>
                         <Icon size={18} />
                       </span>
                       <span className="app-card-body">
-                        <span className="app-card-title">{item.title}</span>
-                        <span className="app-card-subtitle">{isFr ? "Groupe Telegram" : "مجموعة تيليجرام"}</span>
+                        <span className="app-card-title dark:text-slate-100">{item.title}</span>
+                        <span className="app-card-subtitle dark:text-slate-400">{isFr ? "Groupe Telegram" : "مجموعة تيليجرام"}</span>
                       </span>
-                      <span className="app-card-pill">{isFr ? "Telegram" : "تيليجرام"}</span>
+                      <span className="app-card-pill dark:bg-slate-700 dark:text-slate-300">{isFr ? "Telegram" : "تيليجرام"}</span>
                     </a>
                   );
                 })}
