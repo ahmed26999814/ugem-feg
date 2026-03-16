@@ -9,7 +9,7 @@ import {
   BellRing,
   FolderArchive,
   Landmark,
-  School,
+  Lock,
   Star,
   MessagesSquare,
   GraduationCap,
@@ -39,9 +39,10 @@ const cards: CardItem[] = [
   {
     title: { ar: "طالب جديد", fr: "Nouveau etudiant" },
     desc: { ar: "قسم مخصص للطلاب الجدد", fr: "Section dediee aux nouveaux etudiants" },
-    href: "/new-student",
-    icon: School,
-    gradient: "from-emerald-700 to-teal-500",
+    href: "#",
+    icon: Lock,
+    gradient: "from-slate-600 to-slate-800",
+    locked: true,
   },
 ];
 
