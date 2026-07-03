@@ -1661,15 +1661,6 @@ select {
   font-weight: 700;
 }
 
-.footer-dedication {
-  margin-top: 10px;
-  max-width: 520px;
-  font-size: 0.84rem;
-  line-height: 1.8;
-  color: #fde68a;
-  font-weight: 700;
-}
-
 .visitor-pill {
   margin-top: 12px;
   display: inline-flex;
