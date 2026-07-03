@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { hasAdminSession } from "@/lib/adminAuth";
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+import { getSupabaseUrl } from "@/lib/supabaseEnv";
 
 function getServiceKey() {
   return (
@@ -54,7 +53,7 @@ export async function GET() {
       );
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=home_collage_urls&limit=1`, {
+    const res = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?select=home_collage_urls&limit=1`, {
       headers: buildSupabaseHeaders(key),
       cache: "no-store",
     });
@@ -68,7 +67,7 @@ export async function GET() {
     const text = await res.text();
     if (isMissingColumn(text, "home_collage_urls")) {
       const fallbackRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/site_stats?select=home_collage_url&limit=1`,
+        `${getSupabaseUrl()}/rest/v1/site_stats?select=home_collage_url&limit=1`,
         { headers: buildSupabaseHeaders(key), cache: "no-store" }
       );
       if (!fallbackRes.ok) {
@@ -111,7 +110,7 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
+    const patchRes = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?visits=gte.0`, {
       method: "PATCH",
       headers: buildSupabaseHeaders(key, true),
       body: JSON.stringify({ home_collage_urls: JSON.stringify(finalUrls) }),
@@ -126,7 +125,7 @@ export async function PATCH(req: Request) {
         );
       }
 
-      const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+      const insertRes = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats`, {
         method: "POST",
         headers: buildSupabaseHeaders(key, true),
         body: JSON.stringify([{ visits: 0, home_collage_urls: JSON.stringify(finalUrls) }]),

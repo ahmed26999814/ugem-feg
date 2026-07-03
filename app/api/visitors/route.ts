@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { hasAdminSession } from "@/lib/adminAuth";
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+import { getSupabaseUrl } from "@/lib/supabaseEnv";
 
 function getServiceKey() {
   return (
@@ -26,7 +25,7 @@ function isMissingColumn(text: string) {
 }
 
 async function getCount(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=visits&limit=1`, {
+  const res = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?select=visits&limit=1`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
@@ -39,7 +38,7 @@ async function getCount(key: string) {
 }
 
 async function setCount(nextValue: number, key: string) {
-  const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
+  const patchRes = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?visits=gte.0`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
     body: JSON.stringify({ visits: nextValue }),
@@ -48,7 +47,7 @@ async function setCount(nextValue: number, key: string) {
 
   const text = await patchRes.text();
   if (patchRes.status === 404) {
-    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats`, {
+    const insertRes = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats`, {
       method: "POST",
       headers: buildSupabaseHeaders(key, true),
       body: JSON.stringify([{ visits: nextValue }]),
@@ -63,7 +62,7 @@ async function setCount(nextValue: number, key: string) {
 }
 
 async function getShowFlag(key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?select=show_counter&limit=1`, {
+  const res = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?select=show_counter&limit=1`, {
     headers: buildSupabaseHeaders(key),
     cache: "no-store",
   });
@@ -80,7 +79,7 @@ async function getShowFlag(key: string) {
 }
 
 async function setShowFlag(show: boolean, key: string) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
+  const res = await fetch(`${getSupabaseUrl()}/rest/v1/site_stats?visits=gte.0`, {
     method: "PATCH",
     headers: buildSupabaseHeaders(key, true),
     body: JSON.stringify({ show_counter: show }),
