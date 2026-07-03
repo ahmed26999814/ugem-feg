@@ -25,7 +25,7 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const isComingSoon = pathname === "/coming-soon";
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { lang, toggleLang } = useLang();
   const [mounted, setMounted] = useState(false);
   const [typingIndex, setTypingIndex] = useState(0);
@@ -36,7 +36,7 @@ export default function Navbar() {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  const isDark = mounted && theme === "dark";
+  const isDark = mounted && resolvedTheme === "dark";
   const brandTitle =
     lang === "fr"
       ? "UGEM - Faculte d'Economie et de Gestion"
@@ -80,9 +80,9 @@ export default function Navbar() {
   if (isComingSoon) return null;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/80">
+    <header className="site-header border-b border-emerald-100 bg-white text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100">
       <div className="container py-2 sm:py-3">
-        <div className="rounded-2xl border border-slate-200/80 bg-white/80 p-2 shadow-sm dark:border-slate-700/80 dark:bg-slate-900/70">
+        <div className="rounded-2xl border border-emerald-100 bg-white p-2 shadow-sm dark:border-slate-700/80 dark:bg-slate-900/80">
           <div className="mb-2 flex items-center justify-between gap-2 px-1">
             <Link
               href="/"

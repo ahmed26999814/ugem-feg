@@ -372,8 +372,18 @@ select {
 }
 
 .app-main {
-  padding-top: calc(146px + env(safe-area-inset-top));
+  padding-top: 0;
   padding-bottom: 24px;
+}
+
+.site-header {
+  position: relative;
+  z-index: 40;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04), 0 10px 28px rgba(15, 23, 42, 0.05);
+}
+
+.dark .site-header {
+  box-shadow: 0 1px 0 rgba(148, 163, 184, 0.08), 0 10px 28px rgba(2, 6, 23, 0.35);
 }
 
 .container {
@@ -985,6 +995,11 @@ select {
 }
 
 .btn-dark {
+  background: linear-gradient(135deg, #047857, #16a34a);
+  color: #fff;
+}
+
+.dark .btn-dark {
   background: linear-gradient(135deg, #0f172a, #14532d);
   color: #fff;
 }
@@ -1533,6 +1548,7 @@ select {
   font-weight: 900;
   text-align: center;
   line-height: 1.35;
+  text-shadow: 0 1px 10px rgba(15, 23, 42, 0.28);
 }
 
 .home-card-subtitle {
@@ -1542,6 +1558,7 @@ select {
   text-align: center;
   color: rgba(255, 255, 255, 0.86);
   line-height: 1.55;
+  text-shadow: 0 1px 8px rgba(15, 23, 42, 0.22);
 }
 
 .ripple {
@@ -1840,7 +1857,7 @@ select {
 
 @media (max-width: 768px) {
   .app-main {
-    padding-top: calc(176px + env(safe-area-inset-top));
+    padding-top: 0;
   }
 
   .container {

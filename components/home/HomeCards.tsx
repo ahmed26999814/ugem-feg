@@ -29,13 +29,13 @@ type CardItem = {
 
 const cards: CardItem[] = [
   { titleKey: "nav.home", desc: { ar: "الواجهة الرئيسية", fr: "Page principale" }, href: "/", icon: House, gradient: "from-emerald-700 to-teal-500" },
-  { titleKey: "nav.annonces", desc: { ar: "آخر الأخبار الرسمية", fr: "Actualités officielles" }, href: "/annonces", icon: BellRing, gradient: "from-amber-500 to-yellow-400" },
+  { titleKey: "nav.annonces", desc: { ar: "آخر الأخبار الرسمية", fr: "Actualités officielles" }, href: "/annonces", icon: BellRing, gradient: "from-amber-700 to-yellow-600" },
   { titleKey: "nav.archive", desc: { ar: "ملفات ومحاضرات PDF", fr: "Fichiers et supports PDF" }, href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
   { titleKey: "nav.reviews", desc: { ar: "المراجعات", fr: "Revisions" }, href: "/reviews", icon: Star, gradient: "from-indigo-700 to-blue-500" },
   { titleKey: "nav.feg", desc: { ar: "معلومات عن الكلية", fr: "Infos sur la faculté" }, href: "/feg", icon: Landmark, gradient: "from-rose-700 to-red-500" },
   { titleKey: "nav.ugem", desc: { ar: "عن قسم الاتحاد", fr: "Section UGEM" }, href: "/ugem", logo: true, gradient: "from-green-800 to-emerald-500" },
   { titleKey: "nav.groups", desc: { ar: "روابط المجموعات", fr: "Liens des groupes" }, href: "/groupes", icon: MessagesSquare, gradient: "from-lime-700 to-green-500" },
-  { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-700 to-amber-500" },
+  { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-800 to-amber-600" },
   {
     title: { ar: "طالب جديد", fr: "Nouveau etudiant" },
     desc: { ar: "قسم مخصص للطلاب الجدد", fr: "Section dediee aux nouveaux etudiants" },
