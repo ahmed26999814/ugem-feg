@@ -45,9 +45,9 @@ function isImageUrl(url?: string) {
 }
 
 const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SUPABASE_ANON_KEY =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_a9vgnTKPnx9SK1u8wKHoTw_37glO0q3";
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 function useObjectUrls(files: File[]) {
   const urls = useMemo(() => files.map((file) => URL.createObjectURL(file)), [files]);
@@ -97,6 +97,8 @@ export default function AdminAnnoncesPage() {
   const ugemVideoPreviews = useObjectUrls(ugemVideoFiles);
 
   const loadItems = async () => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
     const res = await fetch(endpoint, {
       headers: {
@@ -112,6 +114,7 @@ export default function AdminAnnoncesPage() {
 
   useEffect(() => {
     if (!authed) return;
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
 
     const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
     fetch(endpoint, {
@@ -173,13 +176,20 @@ export default function AdminAnnoncesPage() {
       .catch(() => {});
   }, [authed]);
 
-  const login = () => {
-    if (username.trim().toLowerCase() === "ugem feg" && password.trim() === "44881891") {
+  const login = async () => {
+    const res = await fetch("/api/admin-auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+
+    if (res.ok) {
       setAuthed(true);
       setMsg("تم تسجيل الدخول.");
     } else {
       setAuthed(false);
-      setMsg("بيانات الأدمن غير صحيحة.");
+      setMsg(data?.error || "بيانات الأدمن غير صحيحة.");
     }
   };
 
@@ -208,8 +218,6 @@ export default function AdminAnnoncesPage() {
       const uploadedUrls: string[] = [];
       for (const file of imageFiles) {
         const form = new FormData();
-        form.append("username", username);
-        form.append("password", password);
         form.append("file", file);
         const uploadRes = await fetch("/api/annonces-upload", {
           method: "POST",
@@ -243,8 +251,6 @@ export default function AdminAnnoncesPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            username,
-            password,
             title: trimmedTitle,
             body: trimmedBody,
             source,
@@ -275,8 +281,6 @@ export default function AdminAnnoncesPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username,
-        password,
         title: trimmedTitle,
         body: trimmedBody,
         source,
@@ -306,7 +310,7 @@ export default function AdminAnnoncesPage() {
     const res = await fetch("/api/annonces-v2", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, id }),
+      body: JSON.stringify({ id }),
     });
 
     const data = await res.json();
@@ -327,7 +331,7 @@ export default function AdminAnnoncesPage() {
     const res = await fetch("/api/visitors", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, show: counterValue }),
+      body: JSON.stringify({ show: counterValue }),
     });
     const data = await res.json();
     setCounterSaving(false);
@@ -351,8 +355,6 @@ export default function AdminAnnoncesPage() {
     const uploaded: string[] = [];
     for (const file of homeImageFiles) {
       const form = new FormData();
-      form.append("username", username);
-      form.append("password", password);
       form.append("file", file);
 
       const uploadRes = await fetch("/api/site-assets-upload", {
@@ -374,7 +376,7 @@ export default function AdminAnnoncesPage() {
     const saveRes = await fetch("/api/site-assets", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, urls: nextUrls }),
+      body: JSON.stringify({ urls: nextUrls }),
     });
     const saveData = await saveRes.json();
     setHomeImageSaving(false);
@@ -392,7 +394,7 @@ export default function AdminAnnoncesPage() {
     const res = await fetch("/api/ugem-media", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, images, videos }),
+      body: JSON.stringify({ images, videos }),
     });
     const data = await res.json();
     if (!res.ok) {
@@ -416,8 +418,6 @@ export default function AdminAnnoncesPage() {
     const uploadedImages: string[] = [];
     for (const file of ugemImageFiles) {
       const form = new FormData();
-      form.append("username", username);
-      form.append("password", password);
       form.append("file", file);
       const uploadRes = await fetch("/api/site-assets-upload", { method: "POST", body: form });
       const uploadData = await uploadRes.json();
@@ -432,8 +432,6 @@ export default function AdminAnnoncesPage() {
     const uploadedVideos: string[] = [];
     for (const file of ugemVideoFiles) {
       const form = new FormData();
-      form.append("username", username);
-      form.append("password", password);
       form.append("file", file);
       const uploadRes = await fetch("/api/site-assets-upload", { method: "POST", body: form });
       const uploadData = await uploadRes.json();
@@ -623,7 +621,7 @@ export default function AdminAnnoncesPage() {
                             const res = await fetch("/api/site-assets", {
                               method: "PATCH",
                               headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify({ username, password, urls: nextUrls }),
+                              body: JSON.stringify({ urls: nextUrls }),
                             });
                             const data = await res.json();
                             setHomeImageSaving(false);

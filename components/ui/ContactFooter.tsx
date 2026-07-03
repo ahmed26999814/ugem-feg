@@ -1,7 +1,7 @@
 ﻿﻿﻿﻿﻿﻿"use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Code2, Users, Megaphone, ArrowLeft } from "lucide-react";
+import { MessageCircle, Code2, Users, Megaphone } from "lucide-react";
 import { DEV_WHATSAPP, UGEM_CONTACTS } from "@/lib/prefs";
 
 const contacts = [

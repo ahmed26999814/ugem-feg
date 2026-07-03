@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
+import { hasAdminSession } from "@/lib/adminAuth";
 
-const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
-
-const ADMIN_USER = process.env.ANNONCES_ADMIN_USER ?? "ugem feg";
-const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "44881891";
-
-function isValidAdmin(username: string, password: string) {
-  return username.trim().toLowerCase() === ADMIN_USER.toLowerCase() && password.trim() === ADMIN_PASS;
-}
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
 function getServiceKey() {
   return (
@@ -96,7 +89,7 @@ async function setShowFlag(show: boolean, key: string) {
 
   const text = await res.text();
   if (isMissingColumn(text)) {
-    throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار/الإخفاء.");
+    throw new Error("أضف عمود show_counter (boolean) في جدول site_stats لتفعيل الإظهار والإخفاء.");
   }
   throw new Error(text || "فشل حفظ حالة العداد");
 }
@@ -106,7 +99,7 @@ export async function GET() {
     const key = getServiceKey();
     if (!key) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }
@@ -127,7 +120,7 @@ export async function POST() {
     const key = getServiceKey();
     if (!key) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }
@@ -148,14 +141,11 @@ export async function POST() {
 
 export async function PATCH(req: Request) {
   try {
-    const data = (await req.json()) as { username?: string; password?: string; show?: boolean };
-    const username = data.username ?? "";
-    const password = data.password ?? "";
-
-    if (!isValidAdmin(username, password)) {
+    if (!(await hasAdminSession())) {
       return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
     }
 
+    const data = (await req.json()) as { show?: boolean };
     if (typeof data.show !== "boolean") {
       return NextResponse.json({ error: "قيمة العرض غير صحيحة" }, { status: 400 });
     }
@@ -163,7 +153,7 @@ export async function PATCH(req: Request) {
     const key = getServiceKey();
     if (!key) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }

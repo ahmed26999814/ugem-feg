@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
     useLightningcss: false,
     webpackBuildWorker: false,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   webpack: (config) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = {

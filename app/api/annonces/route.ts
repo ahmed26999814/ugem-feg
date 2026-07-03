@@ -1,8 +1,7 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { hasAdminSession } from "@/lib/adminAuth";
 
 type Payload = {
-  username?: string;
-  password?: string;
   title?: string;
   body?: string;
   source?: string;
@@ -10,15 +9,7 @@ type Payload = {
   id?: string;
 };
 
-const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
-
-const ADMIN_USER = process.env.ANNONCES_ADMIN_USER ?? "ugem feg";
-const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "44881891";
-
-function isValidAdmin(username: string, password: string) {
-  return username.trim().toLowerCase() === ADMIN_USER.toLowerCase() && password.trim() === ADMIN_PASS;
-}
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
 function getServiceKey() {
   return (
@@ -31,7 +22,6 @@ function getServiceKey() {
 
 function buildSupabaseHeaders(key: string, withJson = false) {
   const headers: Record<string, string> = { apikey: key };
-  // New Supabase keys (sb_secret / sb_publishable) are API keys, not JWTs.
   if (!key.startsWith("sb_")) {
     headers.Authorization = `Bearer ${key}`;
   }
@@ -51,11 +41,11 @@ async function insertNotice(title: string, body: string, source: string, imageUr
     );
     if (probe.ok) {
       const rows = (await probe.json()) as Array<{ type?: unknown }>;
-      const t = rows?.[0]?.type;
-      if (typeof t === "string" && t.trim()) inferredType = t.trim();
+      const type = rows?.[0]?.type;
+      if (typeof type === "string" && type.trim()) inferredType = type.trim();
     }
   } catch {
-    // Keep safe fallback when probe fails.
+    // Keep fallback when the probe fails.
   }
 
   const content = body
@@ -87,17 +77,15 @@ async function insertNotice(title: string, body: string, source: string, imageUr
 
 export async function POST(req: Request) {
   try {
+    if (!(await hasAdminSession())) {
+      return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
+    }
+
     const data = (await req.json()) as Payload;
-    const username = data.username ?? "";
-    const password = data.password ?? "";
     const title = (data.title ?? "").trim();
     const body = (data.body ?? "").trim();
     const source = (data.source ?? "").trim() || "الإدارة/الاتحاد";
     const imageUrl = (data.imageUrl ?? "").trim();
-
-    if (!isValidAdmin(username, password)) {
-      return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
-    }
 
     if (!title || (!body && !imageUrl)) {
       return NextResponse.json({ error: "العنوان والمحتوى أو صورة الإعلان مطلوبان" }, { status: 400 });
@@ -106,7 +94,7 @@ export async function POST(req: Request) {
     const serviceKey = getServiceKey();
     if (!serviceKey) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط. بدون هذا المفتاح سيظهر خطأ RLS." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط. بدون هذا المفتاح سيظهر خطأ RLS." },
         { status: 500 }
       );
     }
@@ -127,14 +115,12 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const data = (await req.json()) as Payload;
-    const username = data.username ?? "";
-    const password = data.password ?? "";
-    const id = (data.id ?? "").trim();
-
-    if (!isValidAdmin(username, password)) {
+    if (!(await hasAdminSession())) {
       return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
     }
+
+    const data = (await req.json()) as Payload;
+    const id = (data.id ?? "").trim();
 
     if (!id) {
       return NextResponse.json({ error: "id مطلوب" }, { status: 400 });
@@ -143,7 +129,7 @@ export async function DELETE(req: Request) {
     const serviceKey = getServiceKey();
     if (!serviceKey) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط. بدون هذا المفتاح سيظهر خطأ RLS." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط. بدون هذا المفتاح سيظهر خطأ RLS." },
         { status: 500 }
       );
     }

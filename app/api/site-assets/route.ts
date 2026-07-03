@@ -1,14 +1,7 @@
 import { NextResponse } from "next/server";
+import { hasAdminSession } from "@/lib/adminAuth";
 
-const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
-
-const ADMIN_USER = process.env.ANNONCES_ADMIN_USER ?? "ugem feg";
-const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS ?? "44881891";
-
-function isValidAdmin(username: string, password: string) {
-  return username.trim().toLowerCase() === ADMIN_USER.toLowerCase() && password.trim() === ADMIN_PASS;
-}
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
 function getServiceKey() {
   return (
@@ -44,7 +37,7 @@ function parseUrls(value: unknown): string[] {
         return parsed.filter((v) => typeof v === "string" && v.trim()) as string[];
       }
     } catch {
-      // keep string fallback
+      // Keep string fallback.
     }
     return [trimmed];
   }
@@ -56,7 +49,7 @@ export async function GET() {
     const key = getServiceKey();
     if (!key) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }
@@ -101,58 +94,27 @@ export async function GET() {
 
 export async function PATCH(req: Request) {
   try {
-    const data = (await req.json()) as { username?: string; password?: string; url?: string; urls?: string[] };
-    const username = data.username ?? "";
-    const password = data.password ?? "";
+    if (!(await hasAdminSession())) {
+      return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
+    }
+
+    const data = (await req.json()) as { url?: string; urls?: string[] };
     const urls = Array.isArray(data.urls) ? data.urls.filter(Boolean) : [];
     const fallbackUrl = typeof data.url === "string" ? data.url.trim() : "";
     const finalUrls = urls.length ? urls : fallbackUrl ? [fallbackUrl] : [];
 
-    if (!isValidAdmin(username, password)) {
-      return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
-    }
-    if (!finalUrls.length) {
-      // allow clearing all images
-      const key = getServiceKey();
-      if (!key) {
-        return NextResponse.json(
-          { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
-          { status: 500 }
-        );
-      }
-
-      const payload = { home_collage_urls: "[]" };
-      const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
-        method: "PATCH",
-        headers: buildSupabaseHeaders(key, true),
-        body: JSON.stringify(payload),
-      });
-      if (!patchRes.ok) {
-        const text = await patchRes.text();
-        if (isMissingColumn(text, "home_collage_urls")) {
-          return NextResponse.json(
-            { error: "أضف عمود home_collage_urls (text) داخل جدول site_stats لتفعيل الصور المتعددة." },
-            { status: 400 }
-          );
-        }
-        return NextResponse.json({ error: text || "فشل حفظ الصور" }, { status: 500 });
-      }
-      return NextResponse.json({ ok: true, urls: [] });
-    }
-
     const key = getServiceKey();
     if (!key) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }
 
-    const payload = { home_collage_urls: JSON.stringify(finalUrls) };
     const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/site_stats?visits=gte.0`, {
       method: "PATCH",
       headers: buildSupabaseHeaders(key, true),
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ home_collage_urls: JSON.stringify(finalUrls) }),
     });
 
     if (!patchRes.ok) {

@@ -1,17 +1,8 @@
 import { NextResponse } from "next/server";
+import { hasAdminSession } from "@/lib/adminAuth";
 
-const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
-
-const ADMIN_USER = process.env.ANNONCES_ADMIN_USER;
-const ADMIN_PASS = process.env.ANNONCES_ADMIN_PASS;
-
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const DEFAULT_BUCKET = process.env.SUPABASE_STORAGE_BUCKET ?? "annonces";
-
-function isValidAdmin(username: string, password: string) {
-  if (!ADMIN_USER || !ADMIN_PASS) return false;
-  return username.trim().toLowerCase() === ADMIN_USER.toLowerCase() && password.trim() === ADMIN_PASS;
-}
 
 function getServiceKey() {
   return (
@@ -40,14 +31,11 @@ export function sanitizeFileName(name: string) {
 
 export async function handleUpload(req: Request, getFilePath: (safeName: string) => string) {
   try {
-    const form = await req.formData();
-    const username = String(form.get("username") ?? "");
-    const password = String(form.get("password") ?? "");
-
-    if (!isValidAdmin(username, password)) {
+    if (!(await hasAdminSession())) {
       return NextResponse.json({ error: "بيانات الأدمن غير صحيحة" }, { status: 401 });
     }
 
+    const form = await req.formData();
     const file = form.get("file");
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "الصورة مطلوبة" }, { status: 400 });
@@ -56,18 +44,17 @@ export async function handleUpload(req: Request, getFilePath: (safeName: string)
     const serviceKey = getServiceKey();
     if (!serviceKey) {
       return NextResponse.json(
-        { error: "SUPABASE_SERVICE_ROLE_KEY (أو SUPABASE_SECRET_KEY) غير مضبوط." },
+        { error: "SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY غير مضبوط." },
         { status: 500 }
       );
     }
 
-    const bucket = DEFAULT_BUCKET;
     const safeName = sanitizeFileName(file.name);
     const path = getFilePath(safeName);
     const arrayBuffer = await file.arrayBuffer();
     const contentType = file.type || "application/octet-stream";
 
-    const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`, {
+    const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${DEFAULT_BUCKET}/${path}`, {
       method: "POST",
       headers: buildSupabaseHeaders(serviceKey, contentType),
       body: Buffer.from(arrayBuffer),
@@ -81,7 +68,7 @@ export async function handleUpload(req: Request, getFilePath: (safeName: string)
       );
     }
 
-    const url = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+    const url = `${SUPABASE_URL}/storage/v1/object/public/${DEFAULT_BUCKET}/${path}`;
     return NextResponse.json({ ok: true, url });
   } catch (error) {
     return NextResponse.json(

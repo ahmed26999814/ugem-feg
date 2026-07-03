@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AlertTriangle, CalendarDays, Megaphone, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import {
-  cardIn,
-  easeOutExpo,
-  fadeUp,
-  staggerContainer,
-} from "@/components/motion/variants";
+import { cardIn, easeOutExpo, fadeUp, staggerContainer } from "@/components/motion/variants";
 
 type Row = Record<string, unknown>;
 type Notice = {
@@ -22,8 +17,8 @@ type Notice = {
   createdAt?: string;
 };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ctqqttielcknjpzbynbk.supabase.co";
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_a9vgnTKPnx9SK1u8wKHoTw_37glO0q3";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 function toText(value: unknown, fallback = ""): string {
   if (typeof value === "string") return value;
@@ -56,8 +51,13 @@ export default function AnnoncesPage() {
   const [selected, setSelected] = useState<Notice | null>(null);
   const [listRef] = useAutoAnimate();
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        setError("إعدادات Supabase العامة غير مضبوطة.");
+        return;
+      }
+
       const endpoint = `${SUPABASE_URL}/rest/v1/annonces?select=*&order=created_at.desc.nullslast`;
       const res = await fetch(endpoint, {
         headers: {
@@ -79,11 +79,14 @@ export default function AnnoncesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    load();
-  }, []);
+    const timer = window.setTimeout(() => {
+      void load();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [load]);
 
   const headerVariants = useMemo(
     () => ({
@@ -106,7 +109,7 @@ export default function AnnoncesPage() {
             <button
               onClick={() => {
                 setLoading(true);
-                load();
+                void load();
               }}
               className="ui-action cta-shine mt-3 inline-flex items-center gap-2 bg-yellow-500 text-sm font-black text-slate-900"
             >
@@ -120,7 +123,7 @@ export default function AnnoncesPage() {
           <motion.section className="section-card mt-3 border-red-300/60 bg-red-50/80 dark:bg-red-500/10" variants={fadeUp} initial="hidden" animate="show">
             <div className="inline-flex items-center gap-2 text-red-700 dark:text-red-300">
               <AlertTriangle size={16} />
-              <p className="text-sm font-bold">تعذّر تحميل الإعلانات.</p>
+              <p className="text-sm font-bold">تعذر تحميل الإعلانات.</p>
             </div>
             <p className="mt-2 text-xs text-red-700/80 dark:text-red-300/80">{error}</p>
           </motion.section>
@@ -134,8 +137,8 @@ export default function AnnoncesPage() {
           animate="show"
         >
           {loading &&
-            [1, 2, 3, 4].map((k) => (
-              <motion.article key={k} className="section-card animate-pulse" variants={cardIn}>
+            [1, 2, 3, 4].map((key) => (
+              <motion.article key={key} className="section-card animate-pulse" variants={cardIn}>
                 <div className="h-6 w-2/3 rounded bg-slate-200 dark:bg-slate-700" />
                 <div className="mt-3 h-4 w-full rounded bg-slate-200 dark:bg-slate-700" />
                 <div className="mt-2 h-4 w-4/5 rounded bg-slate-200 dark:bg-slate-700" />
@@ -146,22 +149,22 @@ export default function AnnoncesPage() {
             notices.map((item) => {
               const showImage = isImageUrl(item.link);
               return (
-              <motion.article
-                key={item.id}
-                className="section-card animated-border-card cursor-pointer"
-                variants={cardIn}
-                whileHover={reduceMotion ? undefined : { y: -3 }}
-                whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-                onClick={() => setSelected(item)}
-              >
-                <div className="section-content">
-                  <div className="flex items-center justify-between gap-2">
-                    <h2 className="text-lg font-black">{item.title}</h2>
-                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 text-xs font-black text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-300">
-                      <ShieldCheck size={12} />
-                      رسمي
-                    </span>
-                  </div>
+                <motion.article
+                  key={item.id}
+                  className="section-card animated-border-card cursor-pointer"
+                  variants={cardIn}
+                  whileHover={reduceMotion ? undefined : { y: -3 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                  onClick={() => setSelected(item)}
+                >
+                  <div className="section-content">
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="text-lg font-black">{item.title}</h2>
+                      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2 py-1 text-xs font-black text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-300">
+                        <ShieldCheck size={12} />
+                        رسمي
+                      </span>
+                    </div>
                     {showImage ? (
                       <img
                         src={item.link}
@@ -170,22 +173,22 @@ export default function AnnoncesPage() {
                         loading="lazy"
                       />
                     ) : null}
-                  {item.body ? (
-                    <p className="mt-2 line-clamp-3 text-sm">{item.body}</p>
-                  ) : null}
-                  {(item.source || item.createdAt) && (
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
-                      {item.source ? <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-slate-800">المصدر: {item.source}</span> : null}
-                      {item.createdAt ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 dark:bg-slate-800">
-                          <CalendarDays size={12} />
-                          {item.createdAt}
-                        </span>
-                      ) : null}
-                    </div>
-                  )}
-                </div>
-              </motion.article>
+                    {item.body ? (
+                      <p className="mt-2 line-clamp-3 text-sm">{item.body}</p>
+                    ) : null}
+                    {(item.source || item.createdAt) && (
+                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-400">
+                        {item.source ? <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-slate-800">المصدر: {item.source}</span> : null}
+                        {item.createdAt ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 dark:bg-slate-800">
+                            <CalendarDays size={12} />
+                            {item.createdAt}
+                          </span>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                </motion.article>
               );
             })}
         </motion.section>
@@ -210,12 +213,7 @@ export default function AnnoncesPage() {
                   </Dialog.Close>
                 </div>
 
-                <motion.div
-                  className="mt-3 space-y-3"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                >
+                <motion.div className="mt-3 space-y-3" variants={staggerContainer} initial="hidden" animate="show">
                   {selected?.link && isImageUrl(selected.link) ? (
                     <motion.img
                       variants={cardIn}
