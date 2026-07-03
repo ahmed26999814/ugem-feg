@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
+import { getSupabaseServiceKey } from "@/lib/supabaseEnv";
 
 export const ADMIN_SESSION_COOKIE = "ugem_admin_session";
 
@@ -14,7 +15,7 @@ function getAdminPass() {
 }
 
 function getSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.ANNONCES_ADMIN_PASS;
+  return process.env.ADMIN_SESSION_SECRET ?? getSupabaseServiceKey() ?? process.env.ANNONCES_ADMIN_PASS;
 }
 
 function safeCompare(left: string, right: string) {

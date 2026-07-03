@@ -17,8 +17,18 @@ type Notice = {
   createdAt?: string;
 };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ??
+  process.env.SUPABASE_URL ??
+  process.env.next_public_supabase_url ??
+  process.env.supabase_url ??
+  "";
+const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+  process.env.SUPABASE_ANON_KEY ??
+  process.env.next_public_supabase_anon_key ??
+  process.env.supabase_anon_key ??
+  "";
 
 function toText(value: unknown, fallback = ""): string {
   if (typeof value === "string") return value;

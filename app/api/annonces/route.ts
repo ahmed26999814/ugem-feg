@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { hasAdminSession } from "@/lib/adminAuth";
+import { getSupabaseServiceKey, getSupabaseUrl } from "@/lib/supabaseEnv";
 
 type Payload = {
   title?: string;
@@ -9,15 +10,8 @@ type Payload = {
   id?: string;
 };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-
 function getServiceKey() {
-  return (
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.SUPABASE_SERVICE_KEY ??
-    process.env.SUPABASE_SECRET_KEY ??
-    process.env.SUPABASE_SERVICE_ROLE
-  );
+  return getSupabaseServiceKey();
 }
 
 function buildSupabaseHeaders(key: string, withJson = false) {
@@ -33,7 +27,7 @@ async function insertNotice(title: string, body: string, source: string, imageUr
   let inferredType = "news";
   try {
     const probe = await fetch(
-      `${SUPABASE_URL}/rest/v1/annonces?select=type&order=created_at.desc.nullslast&limit=1`,
+      `${getSupabaseUrl()}/rest/v1/annonces?select=type&order=created_at.desc.nullslast&limit=1`,
       {
         headers: buildSupabaseHeaders(key),
         cache: "no-store",
@@ -57,7 +51,7 @@ async function insertNotice(title: string, body: string, source: string, imageUr
       : "";
   const payload = [{ title, content, type: inferredType, is_active: true, link: imageUrl || "" }];
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces`, {
+  const res = await fetch(`${getSupabaseUrl()}/rest/v1/annonces`, {
     method: "POST",
     headers: {
       ...buildSupabaseHeaders(key, true),
@@ -139,7 +133,7 @@ export async function DELETE(req: Request) {
     let lastError = "فشل حذف الإعلان";
 
     for (const col of columns) {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/annonces?${col}=eq.${encodeURIComponent(id)}`, {
+      const res = await fetch(`${getSupabaseUrl()}/rest/v1/annonces?${col}=eq.${encodeURIComponent(id)}`, {
         method: "DELETE",
         headers: {
           ...buildSupabaseHeaders(serviceKey),

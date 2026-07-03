@@ -45,9 +45,17 @@ function isImageUrl(url?: string) {
 }
 
 const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  process.env.NEXT_PUBLIC_SUPABASE_URL ??
+  process.env.SUPABASE_URL ??
+  process.env.next_public_supabase_url ??
+  process.env.supabase_url ??
+  "";
 const SUPABASE_ANON_KEY =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+  process.env.SUPABASE_ANON_KEY ??
+  process.env.next_public_supabase_anon_key ??
+  process.env.supabase_anon_key ??
+  "";
 
 function useObjectUrls(files: File[]) {
   const urls = useMemo(() => files.map((file) => URL.createObjectURL(file)), [files]);
@@ -133,6 +141,10 @@ export default function AdminAnnoncesPage() {
     fetch("/api/visitors")
       .then((res) => res.json() as Promise<{ show?: boolean; missingShowColumn?: boolean }>)
       .then((data) => {
+        if ("error" in data) {
+          setCounterHint("إعدادات Supabase غير مكتملة. تحقق من متغيرات البيئة في Vercel.");
+          return;
+        }
         if (typeof data.show === "boolean") {
           setCounterValue(data.show);
           setCounterSaved(data.show);

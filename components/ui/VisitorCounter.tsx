@@ -17,12 +17,19 @@ export default function VisitorCounter() {
     fetch("/api/visitors", { method })
       .then((res) => res.json() as Promise<VisitorResponse>)
       .then((data) => {
+        if (data.error) {
+          setShow(false);
+          return;
+        }
         if (typeof data.count === "number") {
           setCount(data.count);
         }
         if (typeof data.show === "boolean") {
           setShow(data.show);
         }
+      })
+      .catch(() => {
+        setShow(false);
       })
       .finally(() => {
         if (!seen) {
@@ -39,7 +46,7 @@ export default function VisitorCounter() {
         <Users size={14} />
       </span>
       <span className="visitor-label">الزوار</span>
-      <span className="visitor-count">{count ?? "—"}</span>
+      <span className="visitor-count">{count ?? "-"}</span>
     </button>
   );
 }

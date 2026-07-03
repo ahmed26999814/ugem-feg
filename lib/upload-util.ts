@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import { hasAdminSession } from "@/lib/adminAuth";
+import { getSupabaseServiceKey, getSupabaseUrl } from "@/lib/supabaseEnv";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const DEFAULT_BUCKET = process.env.SUPABASE_STORAGE_BUCKET ?? "annonces";
 
 function getServiceKey() {
-  return (
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.SUPABASE_SERVICE_KEY ??
-    process.env.SUPABASE_SECRET_KEY ??
-    process.env.SUPABASE_SERVICE_ROLE
-  );
+  return getSupabaseServiceKey();
 }
 
 function buildSupabaseHeaders(key: string, contentType: string) {
@@ -54,7 +49,8 @@ export async function handleUpload(req: Request, getFilePath: (safeName: string)
     const arrayBuffer = await file.arrayBuffer();
     const contentType = file.type || "application/octet-stream";
 
-    const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${DEFAULT_BUCKET}/${path}`, {
+    const supabaseUrl = getSupabaseUrl();
+    const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/${DEFAULT_BUCKET}/${path}`, {
       method: "POST",
       headers: buildSupabaseHeaders(serviceKey, contentType),
       body: Buffer.from(arrayBuffer),
@@ -68,7 +64,7 @@ export async function handleUpload(req: Request, getFilePath: (safeName: string)
       );
     }
 
-    const url = `${SUPABASE_URL}/storage/v1/object/public/${DEFAULT_BUCKET}/${path}`;
+    const url = `${supabaseUrl}/storage/v1/object/public/${DEFAULT_BUCKET}/${path}`;
     return NextResponse.json({ ok: true, url });
   } catch (error) {
     return NextResponse.json(

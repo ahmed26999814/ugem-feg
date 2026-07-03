@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
 import { hasAdminSession } from "@/lib/adminAuth";
-import { getSupabaseUrl } from "@/lib/supabaseEnv";
+import { getSupabaseServiceKey, getSupabaseUrl } from "@/lib/supabaseEnv";
 
 function getServiceKey() {
-  return (
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.SUPABASE_SERVICE_KEY ??
-    process.env.SUPABASE_SECRET_KEY ??
-    process.env.SUPABASE_SERVICE_ROLE
-  );
+  return getSupabaseServiceKey();
 }
 
 function buildSupabaseHeaders(key: string, withJson = false) {
