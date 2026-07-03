@@ -1,4 +1,4 @@
-﻿export const RESULTS_URL = "https://tinyurl.com/5fcndzzt";
+export const RESULTS_URL = "https://resultats.univ-nkc.mr/FSEG/";
 export const DEV_WHATSAPP = "+22244881891";
 
 export const UGEM_CONTACTS = {

@@ -15,6 +15,7 @@ import {
   Users,
 } from "lucide-react";
 import { cardIn, fadeUp, staggerContainer } from "@/components/motion/variants";
+import { RESULTS_URL } from "@/lib/prefs";
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
@@ -298,7 +299,7 @@ export default function FegPage() {
             <motion.article className="section-card" variants={cardIn} initial="hidden" animate="show">
               <h2 className="text-xl font-black">مصدر رسمي مرتبط بالكلية</h2>
               <a
-                href="https://tinyurl.com/5fcndzzt"
+                href={RESULTS_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 inline-flex items-center gap-2 rounded-xl bg-yellow-500 px-4 py-2 text-sm font-black text-slate-900 hover:bg-yellow-400"

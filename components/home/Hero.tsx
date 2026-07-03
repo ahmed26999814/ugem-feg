@@ -2,20 +2,18 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { Search, GraduationCap } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { GraduationCap } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { RESULTS_URL } from "@/lib/prefs";
 
 export default function Hero() {
-  const { t, lang } = useLang();
-  const router = useRouter();
+  const { t } = useLang();
   const reduce = useReducedMotion();
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches
   );
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(40);
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 768px)");
@@ -43,34 +41,6 @@ export default function Hero() {
   }, [reduce]);
 
   const words = useMemo(() => t("hero.title").split(" "), [t]);
-
-  const goFromSearch = () => {
-    const value = query.trim().toLowerCase();
-    if (!value) return;
-
-    if (value.includes("اعلان") || value.includes("annonce")) {
-      router.push("/annonces");
-      return;
-    }
-    if (value.includes("ارشيف") || value.includes("archive")) {
-      router.push("/archive");
-      return;
-    }
-    if (value.includes("تخصص") || value.includes("special")) {
-      router.push("/specialites");
-      return;
-    }
-    if (value.includes("جدول") || value.includes("emploi")) {
-      router.push("/timetables");
-      return;
-    }
-    if (value.includes("مراجعة") || value.includes("revision")) {
-      router.push("/reviews");
-      return;
-    }
-
-    router.push("/annonces");
-  };
 
   const container: Variants = {
     hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
@@ -106,24 +76,6 @@ export default function Hero() {
       <div className="hero-noise" />
 
       <motion.div className="hero-inner" variants={container} initial="hidden" animate="show">
-        <motion.div className="hero-search" variants={item}>
-          <Search size={18} className="text-slate-500" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") goFromSearch();
-            }}
-            placeholder={t("hero.search")}
-            className="hero-search-input"
-          />
-          <button type="button" className="hero-search-btn cta-shine" onClick={goFromSearch}>
-            <Search size={14} className="hero-search-btn-icon" />
-            <span>{lang === "fr" ? "Aller" : "اذهب"}</span>
-          </button>
-        </motion.div>
-
         <motion.div
           className="hero-logo-wrap"
           variants={item}
@@ -155,7 +107,7 @@ export default function Hero() {
 
         <motion.div className="hero-actions" variants={item}>
           <motion.a
-            href="https://tinyurl.com/5fcndzzt"
+            href={RESULTS_URL}
             target="_blank"
             rel="noreferrer"
             className="btn-shimmer btn-dark btn-results-highlight"
