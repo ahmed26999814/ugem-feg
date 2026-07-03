@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { GraduationCap } from "lucide-react";
+import Link from "next/link";
+import { FolderArchive, GraduationCap } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { RESULTS_URL } from "@/lib/prefs";
 
@@ -118,6 +119,16 @@ export default function Hero() {
             <GraduationCap size={18} />
             <span>{t("nav.results")}</span>
           </motion.a>
+          <motion.div
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 330, damping: 18 }}
+          >
+            <Link href="/archive" className="btn-shimmer btn-light">
+              <FolderArchive size={18} />
+              <span>{t("nav.archive")}</span>
+            </Link>
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>

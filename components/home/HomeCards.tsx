@@ -28,14 +28,14 @@ type CardItem = {
 };
 
 const cards: CardItem[] = [
-  { titleKey: "nav.home", desc: { ar: "الواجهة الرئيسية", fr: "Page principale" }, href: "/", icon: House, gradient: "from-indigo-600 to-blue-500" },
-  { titleKey: "nav.annonces", desc: { ar: "آخر الأخبار الرسمية", fr: "Actualités officielles" }, href: "/annonces", icon: BellRing, gradient: "from-purple-600 to-fuchsia-500" },
+  { titleKey: "nav.home", desc: { ar: "الواجهة الرئيسية", fr: "Page principale" }, href: "/", icon: House, gradient: "from-emerald-700 to-teal-500" },
+  { titleKey: "nav.annonces", desc: { ar: "آخر الأخبار الرسمية", fr: "Actualités officielles" }, href: "/annonces", icon: BellRing, gradient: "from-amber-500 to-yellow-400" },
   { titleKey: "nav.archive", desc: { ar: "ملفات ومحاضرات PDF", fr: "Fichiers et supports PDF" }, href: "/archive", icon: FolderArchive, gradient: "from-sky-700 to-cyan-500" },
-  { titleKey: "nav.reviews", desc: { ar: "المراجعات", fr: "Revisions" }, href: "/reviews", icon: Star, gradient: "from-violet-700 to-indigo-500" },
-  { titleKey: "nav.feg", desc: { ar: "معلومات عن الكلية", fr: "Infos sur la faculté" }, href: "/feg", icon: Landmark, gradient: "from-pink-700 to-rose-500" },
-  { titleKey: "nav.ugem", desc: { ar: "عن قسم الاتحاد", fr: "Section UGEM" }, href: "/ugem", logo: true, gradient: "from-teal-700 to-emerald-500" },
-  { titleKey: "nav.groups", desc: { ar: "روابط المجموعات", fr: "Liens des groupes" }, href: "/groupes", icon: MessagesSquare, gradient: "from-green-700 to-lime-500" },
-  { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-600 to-amber-400" },
+  { titleKey: "nav.reviews", desc: { ar: "المراجعات", fr: "Revisions" }, href: "/reviews", icon: Star, gradient: "from-indigo-700 to-blue-500" },
+  { titleKey: "nav.feg", desc: { ar: "معلومات عن الكلية", fr: "Infos sur la faculté" }, href: "/feg", icon: Landmark, gradient: "from-rose-700 to-red-500" },
+  { titleKey: "nav.ugem", desc: { ar: "عن قسم الاتحاد", fr: "Section UGEM" }, href: "/ugem", logo: true, gradient: "from-green-800 to-emerald-500" },
+  { titleKey: "nav.groups", desc: { ar: "روابط المجموعات", fr: "Liens des groupes" }, href: "/groupes", icon: MessagesSquare, gradient: "from-lime-700 to-green-500" },
+  { titleKey: "nav.specialites", desc: { ar: "كل التخصصات", fr: "Toutes les spécialités" }, href: "/specialites", icon: GraduationCap, gradient: "from-orange-700 to-amber-500" },
   {
     title: { ar: "طالب جديد", fr: "Nouveau etudiant" },
     desc: { ar: "قسم مخصص للطلاب الجدد", fr: "Section dediee aux nouveaux etudiants" },
@@ -108,8 +108,8 @@ export default function HomeCards() {
               >
                 <motion.article
                   className={`home-card bg-gradient-to-br ${card.gradient} ${isLocked ? "cursor-not-allowed saturate-75" : ""}`}
-                  whileHover={reduce ? undefined : { y: -6, scale: 1.03 }}
-                  whileTap={reduce ? undefined : { scale: 0.95 }}
+                  whileHover={reduce ? undefined : { y: -4, scale: 1.015 }}
+                  whileTap={reduce ? undefined : { scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   onMouseMove={(e) => {
                     if (reduce) return;
@@ -117,8 +117,8 @@ export default function HomeCards() {
                     const rect = target.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    const rx = ((y / rect.height) * 2 - 1) * -4;
-                    const ry = ((x / rect.width) * 2 - 1) * 4;
+                    const rx = ((y / rect.height) * 2 - 1) * -2;
+                    const ry = ((x / rect.width) * 2 - 1) * 2;
                     target.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
                     target.style.setProperty("--sx", `${x}px`);
                     target.style.setProperty("--sy", `${y}px`);
@@ -138,7 +138,7 @@ export default function HomeCards() {
                   }}
                 >
                   <div className="card-spot" />
-                  <motion.div whileHover={reduce ? undefined : { rotate: 8, y: -2 }} transition={{ type: "spring", stiffness: 360, damping: 14 }}>
+                  <motion.div className="home-card-icon" whileHover={reduce ? undefined : { rotate: 4, y: -2 }} transition={{ type: "spring", stiffness: 360, damping: 14 }}>
                     {card.logo ? (
                       <img
                         src="/ugem-logo.jpg"
