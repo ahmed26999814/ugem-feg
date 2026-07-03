@@ -9,10 +9,10 @@ import {
   BellRing,
   FolderArchive,
   Landmark,
-  Lock,
   Star,
   MessagesSquare,
   GraduationCap,
+  UserPlus,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,10 +39,9 @@ const cards: CardItem[] = [
   {
     title: { ar: "طالب جديد", fr: "Nouveau etudiant" },
     desc: { ar: "قسم مخصص للطلاب الجدد", fr: "Section dediee aux nouveaux etudiants" },
-    href: "#",
-    icon: Lock,
-    gradient: "from-slate-600 to-slate-800",
-    locked: true,
+    href: "/new-student",
+    icon: UserPlus,
+    gradient: "from-emerald-700 to-teal-500",
   },
 ];
 
