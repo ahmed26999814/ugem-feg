@@ -26,37 +26,24 @@ const missionItems = [
 ];
 
 const leadership = [
-  "محمد المختار انجيه — رئيس القسم",
-  "إبراهيم عبدولا با — النائب الأول",
-  "محمد عبدالله لحبوس — النائب الثاني",
+  "محمد شعثه بابينه — الرئيس",
+  "محمد الشيكر — النائب الأول",
+  "موني محمد يسلم — النائب الثاني",
 ];
 
 const office = [
+  "أحمد يالي — مسؤول الشؤون الطلابية",
   "المصطفى عبدالله مادي — مسؤول الإعلام",
-  "منى محمد يسلم — مسؤولة الانتساب والتعبئة والتحسيس",
-  "فاطمة ديا — مسؤولة الانتساب",
-  "محمد شغف يايينه (العويض) — مسؤول الثقافة والرياضة",
-  "بنيته عبد الدايم — مسؤولة النساء",
-  "زينة إبراهيم لي — مسؤولة العلاقات الخارجية",
-  "أحمد لحبيب — مسؤول الشؤون الطلابية",
-  "محمد عالي سيدي أحمد — مسؤول الطلبة الأجانب",
-  "أحمد يابه سالم — مسؤول التنظيم",
-  "أسماء محمد — مسؤولة المالية",
+  "محمد لمين — مسؤول الثقافة والرياضة والطلبة الأجانب",
+  "توت يعقوب — مسؤولة المالية والتنظيم",
+  "السالكة الجوالي — مسؤولة الانتساب والتكوين والتحسيس",
+  "بينة عبد الدائم — مسؤولة النساء",
+  "أسماء محمد لمين — مسؤولة الخلية التقنية",
+  "أحمد الباه — مسؤول الخدمات الجامعية والعمل التطوعي",
+  "عيشة سليمان — مسؤولة العلاقات الخارجية",
 ];
 
-const deputies = [
-  "ماكه المختار التلميدي — نائب مسؤول الإعلام",
-  "امغيلي القطب — نائب مسؤول الانتساب",
-  "محمد لمين سيدي الهادي — نائب مسؤول التنظيم",
-  "السالكة فال اجوالي — نائب مسؤول التعبئة والتحسيس",
-  "فاطمة الثابت (فاه) — نائب مسؤولة النساء",
-  "الناه الداه اسويدي — نائب مسؤولة العلاقات الخارجية",
-  "أحمد سالك بناهي — نائب مسؤول الشؤون الطلابية",
-  "زيدان مولود — نائب مسؤول الثقافة والرياضة",
-  "حفصة أنساني ديوب — نائب مسؤولة المالية",
-];
-
-type TeamView = "leaders" | "officials" | "deputies";
+type TeamView = "leaders" | "officials";
 type TeamMember = { role: string; name: string };
 
 function toMember(item: string, fallbackRole: string): TeamMember {
@@ -74,7 +61,6 @@ export default function UgemPage() {
     () => ({
       leaders: leadership.map((i) => toMember(i, "القيادة")),
       officials: office.map((i) => toMember(i, "مسؤول")),
-      deputies: deputies.map((i) => toMember(i, "نائب")),
     }),
     []
   );
@@ -82,7 +68,6 @@ export default function UgemPage() {
   const teamTitleMap: Record<TeamView, string> = {
     leaders: "القيادة",
     officials: "المسؤولون",
-    deputies: "النواب",
   };
 
   const activeMembers = teamView ? teamMembersMap[teamView] : [];
@@ -216,15 +201,6 @@ export default function UgemPage() {
                     className={`ui-action border ${teamView === "officials" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
                   >
                     المسؤولون
-                  </button>
-                  <button
-                    onClick={() => {
-                      setTeamView((prev) => (prev === "deputies" ? null : "deputies"));
-                      setSelectedMember(null);
-                    }}
-                    className={`ui-action border ${teamView === "deputies" ? "border-yellow-400 bg-yellow-500 text-slate-900 dark:border-yellow-400/60 dark:bg-yellow-500/20 dark:text-yellow-100" : "border-slate-200 bg-white text-slate-700 hover:border-yellow-300 hover:bg-yellow-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-yellow-500/40 dark:hover:bg-slate-800"}`}
-                  >
-                    النواب
                   </button>
                 </div>
               </div>
