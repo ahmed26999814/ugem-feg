@@ -10,8 +10,9 @@ type Group = { title: string; href: string };
 
 const GROUPS: Record<"L1" | "L2" | "L3", Group[]> = {
   L1: [
+    { title: "مجموعة عامة L1", href: "https://chat.whatsapp.com/HghgE75B3KjKwKrdMvIIGB?s=sw&p=a&ilr=0" },
     { title: "ECO L1", href: "https://chat.whatsapp.com/LAQxEZa5ZtYE8v4tQWl9Tw?s=sw&p=a&ilr=0" },
-    { title: "FC L1", href: "https://chat.whatsapp.com/HghgE75B3KjKwKrdMvIIGB?s=sw&p=a&ilr=0" },
+    { title: "FC L1", href: "https://chat.whatsapp.com/KRjjvuybeiq8WDpgCtMrXX?mode=gi_c" },
     { title: "GRH L1", href: "https://chat.whatsapp.com/EI59lATIM6pCBKdUETyEhs?s=sw&p=a&ilr=0" },
     { title: "BA L1", href: "https://chat.whatsapp.com/BdWMhkjyHKm2LeRugxkPF8?s=sw&p=a&ilr=0" },
   ],
