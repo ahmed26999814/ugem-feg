@@ -16,8 +16,9 @@ const GROUPS: Record<"L1" | "L2" | "L3", Group[]> = {
     { title: "BA L1", href: "https://chat.whatsapp.com/BdWMhkjyHKm2LeRugxkPF8?s=sw&p=a&ilr=0" },
   ],
   L2: [
+    { title: "ECO L2", href: "https://chat.whatsapp.com/CsQWSNs40p9IaS0m4yTDYh?s=sw&p=a&ilr=0" },
     { title: "FC L2", href: "https://chat.whatsapp.com/KdxvNCTNPa9BZ2WuNbitWF?s=sw&p=a&ilr=0" },
-    { title: "GRH L2", href: "https://chat.whatsapp.com/CsQWSNs40p9IaS0m4yTDYh?s=sw&p=a&ilr=0" },
+    { title: "GRH L2", href: "https://chat.whatsapp.com/EQCkppVKgF3K3Y3ZEfT5dx?mode=gi_c" },
     { title: "BA L2", href: "https://chat.whatsapp.com/JRr5QlOI0Xe2JXBQDgn9d1?mode=gi_c" },
   ],
   L3: [{ title: "مجموعة عامة L3", href: "https://chat.whatsapp.com/JhigkMEj99sFrManYzMuNY?mode=gi_c" }],
