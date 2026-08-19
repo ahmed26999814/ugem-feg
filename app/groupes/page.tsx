@@ -14,11 +14,11 @@ const GROUPS: Record<"L1" | "L2" | "L3", Group[]> = {
     { title: "ECO L1", href: "https://chat.whatsapp.com/LAQxEZa5ZtYE8v4tQWl9Tw?s=sw&p=a&ilr=0" },
     { title: "FC L1", href: "https://chat.whatsapp.com/BdWMhkjyHKm2LeRugxkPF8?s=sw&p=a&ilr=0" },
     { title: "GRH L1", href: "https://chat.whatsapp.com/EI59lATIM6pCBKdUETyEhs?s=sw&p=a&ilr=0" },
-    { title: "BA L1", href: "https://chat.whatsapp.com/BsZPE695grr7qXxcItJ0ro?mode=gi_c" },
+    { title: "BA L1", href: "https://chat.whatsapp.com/KdxvNCTNPa9BZ2WuNbitWF?s=sw&p=a&ilr=0" },
   ],
   L2: [
     { title: "ECO L2", href: "https://chat.whatsapp.com/CsQWSNs40p9IaS0m4yTDYh?s=sw&p=a&ilr=0" },
-    { title: "FC L2", href: "https://chat.whatsapp.com/KdxvNCTNPa9BZ2WuNbitWF?s=sw&p=a&ilr=0" },
+    { title: "FC L2", href: "https://chat.whatsapp.com/Jj4oTPo9wvf4nktrx1cPWE?mode=gi_c" },
     { title: "GRH L2", href: "https://chat.whatsapp.com/EQCkppVKgF3K3Y3ZEfT5dx?mode=gi_c" },
     { title: "BA L2", href: "https://chat.whatsapp.com/JRr5QlOI0Xe2JXBQDgn9d1?mode=gi_c" },
   ],
