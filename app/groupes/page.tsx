@@ -11,18 +11,26 @@ type Group = { title: string; href: string };
 const GROUPS: Record<"L1" | "L2" | "L3", Group[]> = {
   L1: [
     { title: "مجموعة عامة L1", href: "https://chat.whatsapp.com/HghgE75B3KjKwKrdMvIIGB?s=sw&p=a&ilr=0" },
-    { title: "ECO L1", href: "https://chat.whatsapp.com/LAQxEZa5ZtYE8v4tQWl9Tw?s=sw&p=a&ilr=0" },
+    { title: "ECO 1 L1", href: "https://chat.whatsapp.com/LAQxEZa5ZtYE8v4tQWl9Tw?s=sw&p=a&ilr=0" },
+    { title: "ECO 2 L1", href: "https://chat.whatsapp.com/CsQWSNs40p9IaS0m4yTDYh?s=sw&p=a&ilr=0" },
     { title: "FC L1", href: "https://chat.whatsapp.com/BdWMhkjyHKm2LeRugxkPF8?s=sw&p=a&ilr=0" },
     { title: "GRH L1", href: "https://chat.whatsapp.com/EI59lATIM6pCBKdUETyEhs?s=sw&p=a&ilr=0" },
     { title: "BA L1", href: "https://chat.whatsapp.com/KdxvNCTNPa9BZ2WuNbitWF?s=sw&p=a&ilr=0" },
   ],
   L2: [
-    { title: "ECO L2", href: "https://chat.whatsapp.com/CsQWSNs40p9IaS0m4yTDYh?s=sw&p=a&ilr=0" },
-    { title: "FC L2", href: "https://chat.whatsapp.com/Jj4oTPo9wvf4nktrx1cPWE?mode=gi_c" },
-    { title: "GRH L2", href: "https://chat.whatsapp.com/EQCkppVKgF3K3Y3ZEfT5dx?mode=gi_c" },
-    { title: "BA L2", href: "https://chat.whatsapp.com/JRr5QlOI0Xe2JXBQDgn9d1?mode=gi_c" },
+    { title: "ECO 1 L2", href: "https://chat.whatsapp.com/Kdn5n4dpUvRLskw7ctLwbP?s=sw&p=a&ilr=0" },
+    { title: "ECO 2 L2", href: "https://chat.whatsapp.com/IWHfepGy2h3D8oFcYikdRp?s=sw&p=a&ilr=0" },
+    { title: "FC L2", href: "https://chat.whatsapp.com/KRjjvuybeiq8WDpgCtMrXX?s=sw&p=a&ilr=0" },
+    { title: "BA L2", href: "https://chat.whatsapp.com/BsZPE695grr7qXxcItJ0ro?s=sw&p=a&ilr=0" },
+    { title: "GRH L2", href: "https://chat.whatsapp.com/IrxXqEAsa4O6FteckLts8R?s=sw&p=a&ilr=0" },
   ],
-  L3: [{ title: "مجموعة عامة L3", href: "https://chat.whatsapp.com/JhigkMEj99sFrManYzMuNY?mode=gi_c" }],
+  L3: [
+    { title: "FC L3", href: "https://chat.whatsapp.com/Jj4oTPo9wvf4nktrx1cPWE?s=sw&p=a&ilr=0" },
+    { title: "ECO 1 L3", href: "https://chat.whatsapp.com/FpQgD7JKF5k0Jn4HjWctuc?s=sw&p=a&ilr=0" },
+    { title: "ECO 2 L3", href: "https://chat.whatsapp.com/Db97H6BoZ80277c2zFktPO?s=sw&p=a&ilr=0" },
+    { title: "BA L3", href: "https://chat.whatsapp.com/JRr5QlOI0Xe2JXBQDgn9d1?s=sw&p=a&ilr=0" },
+    { title: "GRH L3", href: "https://chat.whatsapp.com/EQCkppVKgF3K3Y3ZEfT5dx?s=sw&p=a&ilr=0" },
+  ],
 };
 
 export default function GroupesPage() {
